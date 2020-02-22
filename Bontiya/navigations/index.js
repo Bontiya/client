@@ -1,10 +1,16 @@
 import React from 'react'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import EventsTopNav from './EventsTopNav'
+import LogReg from '../screens/LoginReg'
+import { useSelector } from 'react-redux';
 
 const Tab = createMaterialBottomTabNavigator();
 
 function RootNavigation() {
+  const general = useSelector(state => state.general)
+  if (!general.isLogged) {
+    return <LogReg />
+  } 
   return (
     <Tab.Navigator>
       <Tab.Screen name="Events" component={EventsTopNav} />
