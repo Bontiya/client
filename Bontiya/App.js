@@ -17,7 +17,9 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native'
+import store from './store'
 import RootNavigation from './navigations/index'
 import LogReg from './screens/LoginReg'
 
@@ -26,13 +28,15 @@ const App: () => React$Node = () => {
   const [ isLogin, setIsLogin ] = useState(false)
 
   return (
-    <NavigationContainer>
-      {
-        !isLogin
-        ? <LogReg />
-        : <RootNavigation />
-      }
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        {
+          !isLogin
+          ? <LogReg />
+          : <RootNavigation />
+        }
+      </NavigationContainer>
+    </Provider>
   );
 };
 
