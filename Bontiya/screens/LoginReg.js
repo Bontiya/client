@@ -8,30 +8,65 @@ import {
     StatusBar, 
     Picker, 
     Image,
-    Animated
+    TouchableOpacity
 } from 'react-native'
 import { TapGestureHandler } from 'react-native-gesture-handler'
 import Google from '../assets/googleIcon.png'
 import Password from '../assets/password.png'
 import NameTag from '../assets/nametag.png'
 import Email from '../assets/email.png'
+import axios from 'axios'
 
 const DEVICE_WIDTH = Dimensions.get('window').width
 const DEVICE_HEIGHT = Dimensions.get('window').height
 
 const loginReg = () => {
 
-    const [ fadeAnim, setFadeAnim ] = useState(new Animated.Value(0))
     const [ form, setForm ] =  useState('signin')
-    const [ input, setInput ] = useState({
-        name: '',
-        email: '',
-        password: '',
-        gender: ''
-    })
+    const [ email, setEmail ] = useState('')
+    const [ name, setName ] = useState('')
+    const [ password, setPassword ] =  useState('')
+    const [ gender, setGender ] = useState('')
 
     const switchFormHandler = (e,payload) => {
+        console.log(payload)
         setForm(payload)
+    }
+
+    const login = () => {
+        axios({
+            method: 'post',
+            url: '',
+            data: {
+                email,name,password,gender
+            }
+        })
+            .then( ({data}) => {
+                console.log(data)
+                setEmail('')
+                setName('')
+                setPassword('')
+                setGender('')
+            })
+            .catch ( err => console.log(err))
+    }
+
+    const register = () => {
+        axios({
+            method: 'post',
+            url: '',
+            data: {
+                email,name,password,gender
+            }
+        })
+            .then( ({data}) => {
+                console.log(data)
+                setEmail('')
+                setName('')
+                setPassword('')
+                setGender('')
+            })
+            .catch ( err => console.log(err))
     }
 
     return (
@@ -106,7 +141,8 @@ const loginReg = () => {
                             } />
                             <TextInput 
                                 style={styles.inputText} 
-                                value={input.name} 
+                                value={name} 
+                                onChange={ e => setName(e.target.value)}
                                 placeholder={"Input name"}
                             />
                           </View>  
@@ -123,7 +159,8 @@ const loginReg = () => {
                         />
                         <TextInput 
                             style={styles.inputText} 
-                            value={input.email} 
+                            value={email} 
+                            onChange={ e => setEmail(e.target.value)}
                             placeholder={"Input email"}
                         />
                     </View>
@@ -131,7 +168,8 @@ const loginReg = () => {
                         <Image source={Password} style={styles.inputImage} />
                         <TextInput 
                             style={styles.inputText} 
-                            value={input.password} 
+                            value={password} 
+                            onChange={ e => setPassword(e.target.value)}
                             placeholder={"Input password"}
                         />
                     </View>
@@ -139,19 +177,27 @@ const loginReg = () => {
                         form === 'signin'
                         ?   null
                         :   <Picker
-                                selectedValue={input.gender}
+                                selectedValue={gender}
                                 style={styles.picker}
-                                onValueChange={(itemValue, itemIndex) => setInput(input.gender=itemValue)
+                                onValueChange={(itemValue, itemIndex) => setGender(itemValue)
                             }>
                             <Picker.Item label="Male" value="male" />
                             <Picker.Item label="Female" value="female" />
                     </Picker>
                     }
-                    <TapGestureHandler>
-                        <View style={styles.submitButton}>
-                            <Text style={{color: '#fff'}}>Submit</Text>
-                        </View>
-                    </TapGestureHandler>
+                    {
+                        form==='signin'
+                        ? <TapGestureHandler onHandlerStateChange={login}>
+                              <View style={styles.submitButton}>
+                                  <Text style={{color: '#fff'}}>Signin</Text>
+                              </View>
+                          </TapGestureHandler>
+                        : <TapGestureHandler onHandlerStateChange={register}>
+                              <View style={styles.submitButton}>
+                                  <Text style={{color: '#fff'}}>Signup</Text>
+                              </View>
+                          </TapGestureHandler>
+                    }
                     {
                         form == 'signin'
                             ? <Text style={{

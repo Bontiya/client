@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -19,11 +19,19 @@ import {
 
 import { NavigationContainer } from '@react-navigation/native'
 import RootNavigation from './navigations/index'
+import LogReg from './screens/LoginReg'
 
 const App: () => React$Node = () => {
+
+  const [ isLogin, setIsLogin ] = useState(false)
+
   return (
     <NavigationContainer>
-      <RootNavigation />
+      {
+        !isLogin
+        ? <LogReg />
+        : <RootNavigation />
+      }
     </NavigationContainer>
   );
 };
