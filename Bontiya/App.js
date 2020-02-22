@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -7,6 +7,7 @@ import {
   View,
   Text,
   StatusBar,
+  AsyncStorage,
 } from 'react-native';
 
 import {
@@ -21,7 +22,7 @@ import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native'
 import store from './store'
 import RootNavigation from './navigations/index'
-import LogReg from './screens/LoginReg'
+// import LogReg from './screens/LoginReg'
 
 const App: () => React$Node = () => {
 
@@ -30,11 +31,7 @@ const App: () => React$Node = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        {
-          !isLogin
-          ? <LogReg />
-          : <RootNavigation />
-        }
+        <RootNavigation />
       </NavigationContainer>
     </Provider>
   );
