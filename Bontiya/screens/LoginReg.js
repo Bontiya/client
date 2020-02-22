@@ -11,6 +11,9 @@ import {
     TouchableOpacity
 } from 'react-native'
 import { TapGestureHandler } from 'react-native-gesture-handler'
+import {  useDispatch, useSelector } from 'react-redux';
+import { registerAction } from '../store/actions/authAction';
+
 import Google from '../assets/googleIcon.png'
 import Password from '../assets/password.png'
 import NameTag from '../assets/nametag.png'
@@ -21,6 +24,9 @@ const DEVICE_WIDTH = Dimensions.get('window').width
 const DEVICE_HEIGHT = Dimensions.get('window').height
 
 const loginReg = () => {
+
+    const disptach = useDispatch()
+    const general = useSelector(state => state.general);
 
     const [ form, setForm ] =  useState('signin')
     const [ email, setEmail ] = useState('')
@@ -52,21 +58,13 @@ const loginReg = () => {
     }
 
     const register = () => {
-        axios({
-            method: 'post',
-            url: '',
-            data: {
-                email,name,password,gender
-            }
-        })
-            .then( ({data}) => {
-                console.log(data)
-                setEmail('')
-                setName('')
-                setPassword('')
-                setGender('')
-            })
-            .catch ( err => console.log(err))
+        disptach(registerAction({
+            email,name,password,gender
+        }))
+        setEmail('')
+        setName('')
+        setPassword('')
+        setGender('')
     }
 
     return (

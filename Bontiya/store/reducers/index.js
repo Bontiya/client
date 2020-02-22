@@ -32,7 +32,7 @@ function general(state = initalState, action) {
                 success: action.data
             }
         default:
-            break;
+            return state
     }
 }
 
