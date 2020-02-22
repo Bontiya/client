@@ -34,22 +34,21 @@ const loginReg = () => {
     }
 
     const login = () => {
-        console.log('masuk')
-        // axios({
-        //     method: 'post',
-        //     url: '',
-        //     data: {
-        //         email,name,password,gender
-        //     }
-        // })
-        //     .then( ({data}) => {
-        //         console.log(data)
-        //         setEmail('')
-        //         setName('')
-        //         setPassword('')
-        //         setGender('')
-        //     })
-        //     .catch ( err => console.log(err))
+        axios({
+            method: 'post',
+            url: '',
+            data: {
+                email,name,password,gender
+            }
+        })
+            .then( ({data}) => {
+                console.log(data)
+                setEmail('')
+                setName('')
+                setPassword('')
+                setGender('')
+            })
+            .catch ( err => console.log(err))
     }
 
     const register = () => {
