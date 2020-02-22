@@ -8,17 +8,22 @@ import {
     StatusBar, 
     Picker, 
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    AsyncStorage
 } from 'react-native'
 import { TapGestureHandler } from 'react-native-gesture-handler'
 import {  useDispatch, useSelector } from 'react-redux';
 import { registerAction } from '../store/actions/authAction';
+import axios from 'axios'
+import { ERRORS, ISLOGIN } from '../store/actionTypes';
 
 import Google from '../assets/googleIcon.png'
 import Password from '../assets/password.png'
 import NameTag from '../assets/nametag.png'
 import Email from '../assets/email.png'
-import axios from 'axios'
+import AlertError from '../components/AlertError';
+
 
 const DEVICE_WIDTH = Dimensions.get('window').width
 const DEVICE_HEIGHT = Dimensions.get('window').height
@@ -29,10 +34,30 @@ const loginReg = () => {
     const general = useSelector(state => state.general);
 
     const [ form, setForm ] =  useState('signin')
-    const [ email, setEmail ] = useState('')
-    const [ name, setName ] = useState('')
-    const [ password, setPassword ] =  useState('')
-    const [ gender, setGender ] = useState('')
+    const [ email, setEmail ] = useState('testing@gmail.com')
+    const [ name, setName ] = useState('testing')
+    const [ password, setPassword ] =  useState('testing')
+    const [ gender, setGender ] = useState('male')
+
+
+    useEffect(() => {
+        Promise.all([
+            AsyncStorage.getItem('name'),
+            AsyncStorage.getItem('email'),
+            AsyncStorage.getItem('token')
+        ]).then(result => {
+          if ((result[0] && result[1]) && result[2]) {
+              disptach({
+                  type: ISLOGIN,
+                  data: {
+                      name: result[0],
+                      email : result[1],
+                      token: result[2]
+                  }
+              })
+          }
+        })
+    }, [])
 
     const switchFormHandler = (e,payload) => {
         console.log(payload)
@@ -52,24 +77,29 @@ const loginReg = () => {
                 setEmail('')
                 setName('')
                 setPassword('')
-                setGender('')
+                setGender('male')
             })
             .catch ( err => console.log(err))
     }
-
     const register = () => {
-        disptach(registerAction({
-            email,name,password,gender
-        }))
+        const form = { email, name, password, gender }
+        console.log(form)
+        disptach(registerAction(form))
         setEmail('')
         setName('')
         setPassword('')
-        setGender('')
+        setGender('male')
     }
+    console.log(general.isLogged)
 
     return (
         <>
             <View style={styles.container}>
+                { 
+                    general.errors
+                        ? <AlertError type={ERRORS} errors={general.errors} title={ form } />
+                        : null
+                }
                 <View style={styles.titleContainer}>
                     {
                         form === 'signin'
@@ -79,7 +109,7 @@ const loginReg = () => {
                 </View>
                 <View style={styles.formContainer}>
                     <View style={styles.switchFormContainer}>
-                        <TapGestureHandler onHandlerStateChange={ e => switchFormHandler(e,'signin')}>
+                        <TouchableWithoutFeedback onPress={ e => switchFormHandler(e,'signin')}>
                             <View style={[styles.switchFormButton,
                                 form === 'signin'
                                     ? { 
@@ -100,8 +130,8 @@ const loginReg = () => {
                                         : { color: '#525C67' }
                                 ]} >Sign In</Text>
                             </View>
-                        </TapGestureHandler>
-                        <TapGestureHandler onHandlerStateChange={ e => switchFormHandler(e,'signup')}>
+                        </TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback onPress={ e => switchFormHandler(e,'signup')}>
                             <View style={[styles.switchFormButton,
                                 form === 'signin'
                                     ? { 
@@ -122,7 +152,7 @@ const loginReg = () => {
                                     : { color: '#fff' }
                                 ]} >Sign Up</Text>
                             </View>
-                        </TapGestureHandler>
+                        </TouchableWithoutFeedback>
                     </View>
                     {
                         form == 'signin'
@@ -140,7 +170,7 @@ const loginReg = () => {
                             <TextInput 
                                 style={styles.inputText} 
                                 value={name} 
-                                onChange={ e => setName(e.target.value)}
+                                onChangeText={ val => setName(val) }
                                 placeholder={"Input name"}
                             />
                           </View>  
@@ -158,7 +188,7 @@ const loginReg = () => {
                         <TextInput 
                             style={styles.inputText} 
                             value={email} 
-                            onChange={ e => setEmail(e.target.value)}
+                            onChangeText={ val => setEmail(val) }
                             placeholder={"Input email"}
                         />
                     </View>
@@ -166,8 +196,8 @@ const loginReg = () => {
                         <Image source={Password} style={styles.inputImage} />
                         <TextInput 
                             style={styles.inputText} 
-                            value={password} 
-                            onChange={ e => setPassword(e.target.value)}
+                            value={password}
+                            onChangeText={ val => setPassword(val) }
                             placeholder={"Input password"}
                         />
                     </View>
@@ -185,16 +215,16 @@ const loginReg = () => {
                     }
                     {
                         form==='signin'
-                        ? <TapGestureHandler onHandlerStateChange={login}>
+                        ? <TouchableWithoutFeedback onPress={login}>
                               <View style={styles.submitButton}>
                                   <Text style={{color: '#fff'}}>Signin</Text>
                               </View>
-                          </TapGestureHandler>
-                        : <TapGestureHandler onHandlerStateChange={register}>
+                          </TouchableWithoutFeedback>
+                        : <TouchableWithoutFeedback onPress={register}>
                               <View style={styles.submitButton}>
                                   <Text style={{color: '#fff'}}>Signup</Text>
                               </View>
-                          </TapGestureHandler>
+                          </TouchableWithoutFeedback>
                     }
                     {
                         form == 'signin'
