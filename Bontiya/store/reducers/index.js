@@ -1,5 +1,5 @@
 import {  combineReducers } from 'redux';
-import { ISLOGIN, GENERAL_ONLOAD, ERRORS, SUCCESS } from '../actionTypes';
+import { ISLOGIN, GENERAL_ONLOAD, ERRORS, SUCCESS, LOGOUT } from '../actionTypes';
 
 const initalState = {
     isLogged: null,
@@ -30,6 +30,11 @@ function general(state = initalState, action) {
             return {
                 ...state,
                 success: action.data
+            }
+        case LOGOUT: 
+            return {
+                ...state,
+                isLogged: null
             }
         default:
             return state

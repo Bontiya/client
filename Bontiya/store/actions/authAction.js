@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ISLOGIN, GENERAL_ONLOAD, SUCCESS, ERRORS } from '../actionTypes';
+import { ISLOGIN, GENERAL_ONLOAD, SUCCESS, ERRORS, LOGOUT } from '../actionTypes';
 import { apiUrl } from '../urlTypes';
 import { AsyncStorage } from 'react-native';
 
@@ -10,14 +10,14 @@ export const registerAction = (form) => async (dispatch, state) => {
         const { data:user } = await axios.post(`${apiUrl}/auth/register`, form)
         console.log(user)
         await AsyncStorage.setItem('name', user.name)
-        await AsyncStorage.setItem('email', user.email)
+        await AsyncStorage.setItem('email', user.email) 
         await AsyncStorage.setItem('token', user.token)
 
         dispatch({
             type: ISLOGIN,
             data: user
         })
-    } catch ({ response }) {
+    } catch ({response}) {
         dispatch({
             type: ISLOGIN,
             data: null
@@ -27,4 +27,37 @@ export const registerAction = (form) => async (dispatch, state) => {
             data: response.data.errors
         })
     }
+}
+
+export const loginAction = (form) => async (dispatch, state) => {
+    try {
+        dispatch({ type: GENERAL_ONLOAD })
+        const { data:user } = await axios.post(`${apiUrl}/auth/login`, form)
+        await AsyncStorage.setItem('name', user.name)
+        await AsyncStorage.setItem('email', user.email) 
+        await AsyncStorage.setItem('token', user.token)
+
+        dispatch({
+            type: ISLOGIN,
+            data: user
+        })
+    } catch ({response}) {
+        dispatch({
+            type: ISLOGIN,
+            data: null
+        })
+        dispatch({
+            type: ERRORS,
+            data: response.data.errors
+        })
+    }
+}
+
+export const logout = () => (dispatch, state) => {
+    dispatch({
+        type: LOGOUT
+    })
+    AsyncStorage.removeItem('name')
+    AsyncStorage.removeItem('email')
+    AsyncStorage.removeItem('token')
 }

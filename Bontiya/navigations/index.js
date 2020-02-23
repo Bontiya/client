@@ -1,12 +1,9 @@
 import React from 'react'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import EventsTopNav from './EventsTopNav'
-<<<<<<< HEAD
 import LogReg from '../screens/LoginReg'
 import { useSelector } from 'react-redux';
-=======
 import Profile from '../screens/Profile'
->>>>>>> Added stars and profile
 
 const Tab = createMaterialBottomTabNavigator();
 
