@@ -7,7 +7,6 @@ import {
   View,
   Text,
   StatusBar,
-  AsyncStorage,
 } from 'react-native';
 
 import {
