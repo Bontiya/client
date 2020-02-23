@@ -42,10 +42,10 @@ const star = (props) => {
     return (
         <View style={styles.container}>
             {
-                stars.map( star => {
-                    if( star == 'FullStar') return <Image style={styles.star} source={FullStar} />
-                    else if( star == 'HalfStar') return <Image style={styles.star} source={HalfStar} />
-                    else return <Image style={styles.star} source={EmptyStar} />
+                stars.map( (star, i) => {
+                    if( star == 'FullStar') return <Image key={i} style={styles.star} source={FullStar} />
+                    else if( star == 'HalfStar') return <Image key={i} style={styles.star} source={HalfStar} />
+                    else return <Image key={i} style={styles.star} source={EmptyStar} />
                 })
             }
         </View>

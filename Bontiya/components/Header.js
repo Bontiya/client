@@ -1,11 +1,14 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Image, StyleSheet, Dimensions } from 'react-native'
+import logo from '../assets/logo.png'
 
+const DEVICE_WIDTH = Dimensions.get('window').width
+const DEVICE_HEIGHT = Dimensions.get('window').height
 
 const header = () => {
     return (
         <View style={styles.header}>
-            <Text style={styles.logo}>Bontiya</Text>
+            <Image style={styles.logo} resizeMode="contain" source={logo} />
         </View>
     )
 }
@@ -19,10 +22,8 @@ const styles = StyleSheet.create({
     },
     logo: {
         alignSelf:"center",
-        fontFamily: 'simonettaregular',
-        fontSize: 32,
-        fontWeight: 'bold',
-        color: '#444286'
+        width: 0.3 * DEVICE_WIDTH,
+        height: 0.15 * DEVICE_HEIGHT,
     }
 })
 

@@ -134,7 +134,7 @@ const EventCard = (props) => {
                 </View>
                 <View style={[styles.status,{
                     backgroundColor: 
-                        props.payload.status === 'Pending' 
+                        props.payload.status === 'scheduled' 
                         ? '#FBDCCB' 
                         : '#B9E5EB'
                 }]}>
