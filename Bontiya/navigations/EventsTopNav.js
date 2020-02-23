@@ -13,13 +13,16 @@ function EventTopNav() {
         <Tab.Navigator
             tabBarOptions={{
                 labelStyle: {
-                    // fontFamily: 'Signika',
+                    fontFamily: 'Signika',
                     fontWeight: 'bold',
                 },
                 activeTintColor: '#444286',
                 indicatorStyle: {
                     width: 180,
                     marginLeft: 12
+                },
+                style: {
+                    elevation: 0
                 }
             }}
         >

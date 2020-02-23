@@ -26,7 +26,7 @@ import RootNavigation from './navigations/index'
 
 const App: () => React$Node = () => {
 
-  const [ isLogin, setIsLogin ] = useState(false)
+  const [ isLogin, setIsLogin ] = useState(true)
 
   return (
     <Provider store={store}>

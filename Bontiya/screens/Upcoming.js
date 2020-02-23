@@ -1,45 +1,72 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, ScrollView, Text, StyleSheet } from 'react-native'
 import EventCard from '../components/EventCard'
-
-const data = [{
-    date: new Date,
-    name: 'Event Name',
-    description: 'This is the event description.',
-    members: ['Member1','Member2','Member3'],
-    status: 'Pending'
-}]
 
 const Upcoming = () => {
 
     const [ upcoming, setUpcoming ] = useState([
         {
-            date: new Date,
+            date: new Date().toLocaleString(),
             name: 'Event Name',
             description: 'This is the event description.',
-            members: ['Member1','Member2','Member3'],
-            status: 'Pending'
+            status: 'Pending',
+            members: [
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'}
+            ]
         },
         {
-            date: new Date,
+            date: new Date().toLocaleString(),
             name: 'Event Name',
             description: 'This is the event description.',
-            members: ['Member1','Member2','Member3'],
-            status: 'Pending'
+            status: 'Pending',
+            members: [
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+            ]
         },
         {
-            date: new Date,
+            date: new Date().toLocaleString(),
             name: 'Event Name',
             description: 'This is the event description.',
-            members: ['Member1','Member2','Member3'],
-            status: 'Pending'
+            status: 'Pending',
+            members: [
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+            ]
         },
         {
-            date: new Date,
+            date: new Date().toLocaleString(),
             name: 'Event Name',
             description: 'This is the event description.',
-            members: ['Member1','Member2','Member3'],
-            status: 'Pending'
+            status: 'Pending',
+            members: [
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+            ]
+        },
+        {
+            date: new Date().toLocaleString(),
+            name: 'Event Name',
+            description: 'This is the event description.',
+            status: 'Pending',
+            members: [
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
+            ]
         }
     ])
 
@@ -52,19 +79,21 @@ const Upcoming = () => {
     }
 
     return (
-        <View style={styles.container}> 
+        <ScrollView style={styles.container}> 
             {
                 upcoming.map( (event,i) => {
                     return <EventCard key={i} payload={event} />
                 })
             }
-        </View>
+            <View style={{marginBottom:30}}></View>
+        </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingBottom: 30
     }
 })
 
