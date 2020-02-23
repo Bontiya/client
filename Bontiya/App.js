@@ -25,12 +25,14 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import EventDetail from './components/EventDetail'
+import FormScreen from './screens/FormScreen'
 
 const App: () => React$Node = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <EventDetail />
+      {/* <EventDetail /> */}
+      <FormScreen />
     </>
   );
 };
