@@ -40,6 +40,7 @@ const loginReg = () => {
     useEffect(() => {
         AsyncStorage.clear()
         Promise.all([
+            AsyncStorage.getItem('userId'),
             AsyncStorage.getItem('name'),
             AsyncStorage.getItem('email'),
             AsyncStorage.getItem('token')
@@ -48,9 +49,10 @@ const loginReg = () => {
               disptach({
                   type: ISLOGIN,
                   data: {
-                      name: result[0],
-                      email : result[1],
-                      token: result[2]
+                      userId: result[0],
+                      name: result[1],
+                      email : result[2],
+                      token: result[3]
                   }
               })
           }

@@ -9,7 +9,7 @@ export const registerAction = (form) => async dispatch => {
     try {
         dispatch({ type: GENERAL_ONLOAD })
         const { data:user } = await axios.post(`${apiUrl}/auth/register`, form)
-        console.log(user)
+        await AsyncStorage.setItem('userId', user._id)
         await AsyncStorage.setItem('name', user.name)
         await AsyncStorage.setItem('email', user.email)
         await AsyncStorage.setItem('token', user.token)
@@ -34,7 +34,7 @@ export const loginAction = (form) => async dispatch => {
     try {
         dispatch({ type: GENERAL_ONLOAD })
         const { data:user } = await axios.post(`${apiUrl}/auth/login`, form)
-        console.log(user)
+        await AsyncStorage.setItem('userId', user._id)
         await AsyncStorage.setItem('name', user.name)
         await AsyncStorage.setItem('email', user.email)
         await AsyncStorage.setItem('token', user.token)
@@ -59,6 +59,7 @@ export const logout = () => (dispatch, state) => {
     dispatch({
         type: LOGOUT
     })
+    AsyncStorage.removeItem('userId')
     AsyncStorage.removeItem('name')
     AsyncStorage.removeItem('email')
     AsyncStorage.removeItem('token')
