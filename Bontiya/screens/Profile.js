@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Image, Dimensions, AsyncStorage } from 'react-native'
+import { TapGestureHandler } from 'react-native-gesture-handler'
 import Header from '../components/Header'
 import Star from '../components/Star'
 
@@ -14,6 +15,10 @@ const profile = () => {
         avatar: 'https://img.icons8.com/wired/2x/small-smile.png',
         rating: 3.3
     })
+
+    const signout = () => {
+        // AsyncStorage.removeItem('')
+    }
 
     return (
         <>
@@ -34,8 +39,15 @@ const profile = () => {
                         ]
                     }
                 >
+                    <Text style={[styles.profileName,{marginTop:10}]}>Rating</Text>
                     <Star payload={data.rating} />
+                    <Text style={[styles.profileName,{marginTop: 10,opacity:0.3}]}>{data.rating}</Text>
                 </View>
+                <TapGestureHandler onHandlerStateChange={signout}>
+                    <View style={styles.logoutBtn}>
+                        <Text style={[styles.profileName,{marginTop: 0,fontSize: 24,color: '#FFF', fontWeight: 'normal'}]}>Sign Out</Text>
+                    </View>
+                </TapGestureHandler>
             </View>
         </>
     )
@@ -68,6 +80,16 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         alignSelf: "center",
         marginTop: 0.03 * DEVICE_HEIGHT,
+    },
+    logoutBtn: {
+        alignSelf: "center",
+        marginTop: 0.22 * DEVICE_HEIGHT,
+        width: 0.85 * DEVICE_WIDTH,
+        height: 0.08 * DEVICE_HEIGHT,
+        borderRadius: 10,
+        backgroundColor: '#4A80E3',
+        alignItems: "center",
+        justifyContent: "center"
     }
 })
 
