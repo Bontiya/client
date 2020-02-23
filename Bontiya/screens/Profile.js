@@ -3,12 +3,25 @@ import { View, Text, StyleSheet, Image, Dimensions, AsyncStorage } from 'react-n
 import { TapGestureHandler } from 'react-native-gesture-handler'
 import Header from '../components/Header'
 import Star from '../components/Star'
+<<<<<<< HEAD
+import { useDispatch } from 'react-redux'
+import { logout } from '../store/actions/authAction'
+=======
+>>>>>>> a6f6465661b861a09c1afdf560a9861ab11cdc6f
 
 const DEVICE_HEIGHT = Dimensions.get('window').height
 const DEVICE_WIDTH = Dimensions.get('window').width
 
+<<<<<<< HEAD
+
 const profile = () => {
 
+    const dispatch = useDispatch()
+
+=======
+const profile = () => {
+
+>>>>>>> a6f6465661b861a09c1afdf560a9861ab11cdc6f
     const [ data ] = useState({
         name: 'Username',
         email: 'example@email.com',
@@ -17,7 +30,11 @@ const profile = () => {
     })
 
     const signout = () => {
+<<<<<<< HEAD
+        dispatch(logout())
+=======
         // AsyncStorage.removeItem('')
+>>>>>>> a6f6465661b861a09c1afdf560a9861ab11cdc6f
     }
 
     return (

@@ -14,7 +14,11 @@ import {
 } from 'react-native'
 import { TapGestureHandler } from 'react-native-gesture-handler'
 import {  useDispatch, useSelector } from 'react-redux';
+<<<<<<< HEAD
+import { registerAction, loginAction } from '../store/actions/authAction';
+=======
 import { registerAction } from '../store/actions/authAction';
+>>>>>>> a6f6465661b861a09c1afdf560a9861ab11cdc6f
 import axios from 'axios'
 import { ERRORS, ISLOGIN } from '../store/actionTypes';
 
@@ -65,6 +69,14 @@ const loginReg = () => {
     }
 
     const login = () => {
+<<<<<<< HEAD
+        const form = { email, name, password, gender }
+        disptach(loginAction(form))
+        setEmail('')
+        setName('')
+        setPassword('')
+        setGender('male')
+=======
         axios({
             method: 'post',
             url: '',
@@ -80,6 +92,7 @@ const loginReg = () => {
                 setGender('male')
             })
             .catch ( err => console.log(err))
+>>>>>>> a6f6465661b861a09c1afdf560a9861ab11cdc6f
     }
     const register = () => {
         const form = { email, name, password, gender }
