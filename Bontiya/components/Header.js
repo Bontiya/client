@@ -1,6 +1,5 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-// import Constants from 'expo-constants'
 
 
 const header = () => {
@@ -16,12 +15,11 @@ const styles = StyleSheet.create({
         height: 50,
         flexDirection: 'column',
         justifyContent:"center",
-        // marginTop: Constants.statusBarHeight,
         backgroundColor:'#fff',
     },
     logo: {
         alignSelf:"center",
-        // fontFamily: 'Signika',
+        fontFamily: 'simonettaregular',
         fontSize: 32,
         fontWeight: 'bold',
         color: '#444286'

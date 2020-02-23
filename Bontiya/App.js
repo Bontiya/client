@@ -23,7 +23,7 @@ import LogReg from './screens/LoginReg'
 
 const App: () => React$Node = () => {
 
-  const [ isLogin, setIsLogin ] = useState(false)
+  const [ isLogin, setIsLogin ] = useState(true)
 
   return (
     <NavigationContainer>
