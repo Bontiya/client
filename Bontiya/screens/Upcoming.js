@@ -9,7 +9,7 @@ const Upcoming = () => {
             date: new Date().toLocaleString(),
             name: 'Event Name',
             description: 'This is the event description.',
-            status: 'Pending',
+            status: 'scheduled',
             members: [
                 {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
                 {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
@@ -24,7 +24,7 @@ const Upcoming = () => {
             date: new Date().toLocaleString(),
             name: 'Event Name',
             description: 'This is the event description.',
-            status: 'Pending',
+            status: 'scheduled',
             members: [
                 {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
                 {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
@@ -37,7 +37,7 @@ const Upcoming = () => {
             date: new Date().toLocaleString(),
             name: 'Event Name',
             description: 'This is the event description.',
-            status: 'Pending',
+            status: 'scheduled',
             members: [
                 {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
                 {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
@@ -48,7 +48,7 @@ const Upcoming = () => {
             date: new Date().toLocaleString(),
             name: 'Event Name',
             description: 'This is the event description.',
-            status: 'Pending',
+            status: 'scheduled',
             members: [
                 {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
                 {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
@@ -62,7 +62,7 @@ const Upcoming = () => {
             date: new Date().toLocaleString(),
             name: 'Event Name',
             description: 'This is the event description.',
-            status: 'Pending',
+            status: 'scheduled',
             members: [
                 {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
                 {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
