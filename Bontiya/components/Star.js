@@ -13,19 +13,26 @@ const star = (props) => {
 
     useEffect( () => {
         let tempStars = []
-        let half = props.payload % 1
+        let fullStars = props.payload
+        let half = fullStars % 1
+
+        if( half ) fullStars - 1
         let empty = 5 - props.payload
-        for( let i=0; i<props.payload ; i++) {
+
+        for( let i=0; i<Math.floor(fullStars) ; i++) {
             tempStars.push('FullStar')
         }
-        if( half > 0.3 && half < 1 ) {
+
+        if( half >= 0.29 && half < 1 ) {
             tempStars.push('HalfStar')
-        }
-        for( let i=0; i<empty ; i++) {
+        } else if ( half < 0.29 && half !== 0 ) {
             tempStars.push('EmptyStar')
         }
+        for( let i=0; i<Math.floor(empty) ; i++) {
+            tempStars.push('EmptyStar')
+        }
+
         setStars(tempStars)
-        console.log(stars)
     },[])
 
     if( stars.length < 5 ) {
@@ -35,10 +42,10 @@ const star = (props) => {
     return (
         <View style={styles.container}>
             {
-                stars.map( star => {
-                    if( star == 'FullStar') return <Image style={styles.star} source={FullStar} />
-                    else if( star == 'HalfStar') return <Image style={styles.star} source={HalfStar} />
-                    else return <Image style={styles.star} source={EmptyStar} />
+                stars.map( (star, i) => {
+                    if( star == 'FullStar') return <Image key={i} style={styles.star} source={FullStar} />
+                    else if( star == 'HalfStar') return <Image key={i} style={styles.star} source={HalfStar} />
+                    else return <Image key={i} style={styles.star} source={EmptyStar} />
                 })
             }
         </View>
@@ -51,7 +58,9 @@ const styles = StyleSheet.create({
         height: 0.05 * DEVICE_HEIGHT
     },
     container: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignSelf: "center",
+        marginTop: 0.02 * DEVICE_HEIGHT
     }
 })
 
