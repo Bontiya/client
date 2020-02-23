@@ -10,7 +10,7 @@ export const registerAction = (form) => async (dispatch, state) => {
         const { data:user } = await axios.post(`${apiUrl}/auth/register`, form)
         console.log(user)
         await AsyncStorage.setItem('name', user.name)
-        await AsyncStorage.setItem('email', user.email) 
+        await AsyncStorage.setItem('email', user.email)
         await AsyncStorage.setItem('token', user.token)
 
         dispatch({

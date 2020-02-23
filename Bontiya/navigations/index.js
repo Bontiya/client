@@ -1,9 +1,15 @@
 import React from 'react'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import EventsTopNav from './EventsTopNav'
+<<<<<<< HEAD
 import LogReg from '../screens/LoginReg'
 import { useSelector } from 'react-redux';
 import Profile from '../screens/Profile'
+=======
+import Profile from '../screens/Profile'
+import LogReg from '../screens/LoginReg'
+import { useSelector } from 'react-redux';
+>>>>>>> a6f6465661b861a09c1afdf560a9861ab11cdc6f
 
 const Tab = createMaterialBottomTabNavigator();
 
