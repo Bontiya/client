@@ -1,16 +1,25 @@
-import React, { useState } from 'react'
-import { View, Text, Button, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, Text, Button, StyleSheet, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native'
 import { Icon } from 'react-native-elements'
 import DateTimePickerModal from "react-native-modal-datetime-picker"
+import { useDispatch } from 'react-redux'
+import { createEvent } from '../store/actions/eventAction'
+import LocationModal from '../components/LocationModal'
 
 function Form() {
   const [eventName, setEventName] = useState('')
   const [location, setLocation] = useState('')
   const [date, setDate] = useState('')
+  const [time, setTime] = useState('')
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+  const [key, setKey] = useState('')
+  const dispatch = useDispatch()
+  const [locationModal, setLocationModal] = useState(false)
+
 
   const showDatePicker = () => {
+    setDate('')
     setDatePickerVisibility(true);
   };
 
@@ -19,11 +28,12 @@ function Form() {
   };
  
   const handleConfirm = date => {
-    console.warn("A date has been picked: ", date);
+    setDate(date)
     hideDatePicker();
   };
 
   const showTimePicker = () => {
+    setTime('')
     setTimePickerVisibility(true);
   };
 
@@ -32,11 +42,64 @@ function Form() {
   };
  
   const handleConfirmTime = time => {
-    console.warn("A time has been picked: ", time);
+    setTime(time)
     hideTimePicker();
   };
+
+  const submitKey = () => {
+    console.log('aa')
+  }
+
+  const openLocationModal = (value) => {
+    console.log(value, '!!!')
+    setLocationModal(value)
+  }
+
+  // IMPORTANT
+  const locPreviewRender = () => {
+    if (!location) { // <---- delete the exclamation mark (!) for the correct logic
+      return (
+        <>
+          <Text style={{paddingHorizontal: 15, paddingVertical: 10}}>Location Preview</Text>
+          <View style={styles.map}>
+            <Image source={require('../assets/map.png')}
+              style={{width: '100%', height: '100%', borderRadius: 10}}
+            />
+          </View>
+        </>
+      )
+    }
+    return <View></View>
+  }
+
+  const submitEvent = () => {
+    const event = { 
+      name: eventName,
+      location: {
+        name: location,
+        lat: 19.311143,
+        lon: -1.406250
+      },
+      time : JSON.stringify(date).slice(1, 12) + JSON.stringify(time).slice(12, 25),
+      key: 'shoe',
+      description: 'nothing',
+      locationHost: {
+          name: "PIM",
+          lat: 19.311122,
+          lon: -1.406250
+      },
+    }
+    dispatch(createEvent(event))
+    setEventName('')
+    setLocation('')
+    setDate('')
+    setTime('')
+    setDatePickerVisibility(false)
+    setTimePickerVisibility(false)
+  }
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
+      <LocationModal visible={locationModal} setVisible={openLocationModal} />
       <View>
         <Text style={styles.title}>New Event</Text>
       </View>
@@ -53,6 +116,7 @@ function Form() {
           <TextInput
             style={styles.text_input}
             value={eventName}
+            onChangeText={text => setEventName(text)}
             placeholder="Event Name"
           />
         </View>
@@ -64,12 +128,16 @@ function Form() {
               color='blue'
             />
           </View>
-          <TextInput
-            style={styles.text_input}
-            value={location}
-            placeholder='Location'
-          />
+          <TouchableOpacity
+            onPress={() => openLocationModal(true)} 
+            style={[styles.form_row, {flex: 1, borderBottomWidth: 2, borderColor: 'gray', height: 40, marginBottom: 0}]}>
+              <Text style={styles.picker_form}>Location</Text>
+          </TouchableOpacity>
         </View>
+        {
+          locPreviewRender()
+        }
+
         <View style={styles.form_row}>
           <View style={styles.icon_wrapper}>
             <Icon
@@ -82,18 +150,21 @@ function Form() {
             onPress={showDatePicker} 
             style={[styles.form_row, {flex: 1, borderBottomWidth: 2, borderColor: 'gray', height: 40, marginBottom: 0}]}>
             <DateTimePickerModal
-              isVisible={isDatePickerVisible}
+              isVisible={!date && isDatePickerVisible}
               mode="date"
-              onConfirm={handleConfirm}
+              onConfirm={date => setDate(date)}
               onCancel={hideDatePicker}
             />
-            <Text style={{alignSelf: 'center', paddingHorizontal: 10, color: 'gray'}}>Date</Text>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
+              <Text style={styles.picker_form}>Date</Text>
+              <Text style={[styles.picker_form, {color: 'black'}]}>{date ? date.toLocaleString().slice(0, 10) : ''}</Text>
+            </View>
           </TouchableOpacity>
         </View>
         <View style={styles.form_row}>
           <View style={styles.icon_wrapper}>
             <Icon
-              name='calendar'
+              name='clock'
               type='octicon'
               color='blue'
             />
@@ -102,19 +173,48 @@ function Form() {
             onPress={showTimePicker} 
             style={[styles.form_row, {flex: 1, borderBottomWidth: 2, borderColor: 'gray', height: 40, marginBottom: 0}]}>
             <DateTimePickerModal
-              isVisible={isTimePickerVisible}
+              isVisible={!time && isTimePickerVisible}
               mode="time"
               onConfirm={handleConfirmTime}
               onCancel={hideTimePicker}
             />
-            <Text style={{alignSelf: 'center', paddingHorizontal: 10, color: 'gray'}}>Time</Text>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
+              <Text style={styles.picker_form}>Time</Text>
+              <Text style={[styles.picker_form, {color: 'black'}]}>{time ? time.toLocaleString().slice(10, 16) : ''}</Text>
+            </View>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.btn}>
+        <View style={styles.form_row}>
+          <View style={styles.icon_wrapper}>
+            <Icon
+              name='lock'
+              type='octicon'
+              color='blue'
+            />
+          </View>
+          <TouchableOpacity
+            onPress={submitKey} 
+            style={[styles.form_row, {flex: 1, borderBottomWidth: 2, borderColor: 'gray', height: 40, marginBottom: 0}]}>
+            <DateTimePickerModal
+              isVisible={!time && isTimePickerVisible}
+              mode="time"
+              onConfirm={handleConfirmTime}
+              onCancel={hideTimePicker}
+            />
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
+              <Text style={styles.picker_form}>Magical Entity</Text>
+              <Text style={[styles.picker_form, {color: 'black'}]}>Shoes</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={submitEvent}
+        >
           <Text style={{color: '#fff'}}>Create Event</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -122,14 +222,15 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     backgroundColor: '#4A80E3',
-    paddingHorizontal: 5,
+    paddingHorizontal: 10,
     height: '100%'
   },
   title: {
     fontSize: 25,
     fontWeight: 'bold',
-    marginBottom: 15,
-    color: 'white'
+    marginBottom: 5,
+    color: 'white',
+    padding: 10
   },
   icon_wrapper: {
     alignSelf: 'center',
@@ -154,7 +255,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#4A80E3',
     borderRadius: 5,
     marginBottom:10,
-    padding: 15
+    padding: 15,
+    marginTop: 20
   },
   inner_container: {
     backgroundColor: 'white',
@@ -163,7 +265,21 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20, 
     marginBottom: 10,
     height: '100%',
-  }
+  },
+  picker_form: {
+    alignSelf: 'center', 
+    paddingHorizontal: 10, 
+    color: 'gray'
+  },
+  map: {
+    width: 300,
+    height: 200,
+    alignSelf: 'center',
+    borderRadius: 10,
+    elevation: 10,
+    backgroundColor: 'white',
+    marginBottom: 20
+  },
 })
 
 export default Form
