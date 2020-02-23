@@ -38,7 +38,6 @@ const loginReg = () => {
 
 
     useEffect(() => {
-        AsyncStorage.clear()
         Promise.all([
             AsyncStorage.getItem('userId'),
             AsyncStorage.getItem('name'),

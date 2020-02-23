@@ -1,4 +1,5 @@
 import {  combineReducers } from 'redux';
+import event from "./eventReducer";
 import { ISLOGIN, GENERAL_ONLOAD, ERRORS, SUCCESS, LOGOUT } from '../actionTypes';
 
 const initalState = {
@@ -42,5 +43,6 @@ function general(state = initalState, action) {
 }
 
 export default combineReducers({
-    general
+    general,
+    event
 })
