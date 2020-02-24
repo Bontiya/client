@@ -1,82 +1,28 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useSelector } from "react-redux";
+import useUpcomingEvent from "../hooks/useUpcomingEvent";
 import { View, ScrollView, Text, StyleSheet } from 'react-native'
 import EventCard from '../components/EventCard'
-import { useSelector } from 'react-redux'
 
 const Upcoming = () => {
+    useUpcomingEvent()
+    const { event:eventSelector } = useSelector(state => state)
+    const { upcomingEvents, upcomingEventsOnload } = eventSelector
 
-    const general = useSelector(state => state.general)
+    const general = useSelector( state => state.general )
 
-    const [ upcoming, setUpcoming ] = useState([
-        {
-            date: new Date().toLocaleString(),
-            name: 'Event Name',
-            description: 'This is the event description.',
-            status: 'scheduled',
-            members: [
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'}
-            ]
-        },
-        {
-            date: new Date().toLocaleString(),
-            name: 'Event Name',
-            description: 'This is the event description.',
-            status: 'scheduled',
-            members: [
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-            ]
-        },
-        {
-            date: new Date().toLocaleString(),
-            name: 'Event Name',
-            description: 'This is the event description.',
-            status: 'scheduled',
-            members: [
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-            ]
-        },
-        {
-            date: new Date().toLocaleString(),
-            name: 'Event Name',
-            description: 'This is the event description.',
-            status: 'scheduled',
-            members: [
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-            ]
-        },
-        {
-            date: new Date().toLocaleString(),
-            name: 'Event Name',
-            description: 'This is the event description.',
-            status: 'scheduled',
-            members: [
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-            ]
-        }
-    ])
-
-    if(upcoming.length<1) {
+    if(upcomingEventsOnload) {
         return (
             <View style={[styles.container]}>
                 <Text>Loading...</Text>
+            </View>
+        )
+    }
+    console.log(upcomingEvents)
+    if (!upcomingEvents.length) {
+        return (
+            <View style={styles.container}>
+                <Text>Events not yet available</Text>
             </View>
         )
     }
@@ -84,7 +30,7 @@ const Upcoming = () => {
     return (
         <ScrollView style={[styles.container,general.modal ? {backgroundColor: 'rgba(100,100,100,0.5)'} : '']}> 
             {
-                upcoming.map( (event,i) => {
+                upcomingEvents.map( (event,i) => {
                     return <EventCard key={i} screen={'upcoming'} payload={event} />
                 })
             }

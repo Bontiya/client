@@ -1,5 +1,6 @@
 import {  combineReducers } from 'redux';
 import { ISLOGIN, GENERAL_ONLOAD, ERRORS, SUCCESS, LOGOUT, MODAL } from '../actionTypes';
+import event from "./eventReducer";
 
 const initalState = {
     isLogged: null,
@@ -48,5 +49,6 @@ function general(state = initalState, action) {
 }
 
 export default combineReducers({
-    general
+    general,
+    event
 })

@@ -8,11 +8,9 @@ import {
     StatusBar, 
     Picker, 
     Image,
-    TouchableOpacity,
     TouchableWithoutFeedback,
-    AsyncStorage
+    AsyncStorage,
 } from 'react-native'
-import { TapGestureHandler } from 'react-native-gesture-handler'
 import {  useDispatch, useSelector } from 'react-redux';
 import { registerAction, loginAction } from '../store/actions/authAction';
 import { ERRORS, ISLOGIN } from '../store/actionTypes';
@@ -33,14 +31,15 @@ const loginReg = () => {
     const general = useSelector(state => state.general);
 
     const [ form, setForm ] =  useState('signin')
-    const [ email, setEmail ] = useState('testing@gmail.com')
-    const [ name, setName ] = useState('testing')
-    const [ password, setPassword ] =  useState('testing')
+    const [ email, setEmail ] = useState('tester@gmail.com')
+    const [ name, setName ] = useState('tester')
+    const [ password, setPassword ] =  useState('tester')
     const [ gender, setGender ] = useState('male')
 
 
     useEffect(() => {
         Promise.all([
+            AsyncStorage.getItem('userId'),
             AsyncStorage.getItem('name'),
             AsyncStorage.getItem('email'),
             AsyncStorage.getItem('token')
@@ -49,27 +48,26 @@ const loginReg = () => {
               disptach({
                   type: ISLOGIN,
                   data: {
-                      name: result[0],
-                      email : result[1],
-                      token: result[2]
+                      userId: result[0],
+                      name: result[1],
+                      email : result[2],
+                      token: result[3]
                   }
               })
           }
         })
+        .catch(console.log)
     }, [])
 
     const switchFormHandler = (e,payload) => {
-        console.log(payload)
         setForm(payload)
     }
 
     const login = () => {
-        const form = { email, name, password, gender }
+        const form = { email, password }
         disptach(loginAction(form))
         setEmail('')
-        setName('')
         setPassword('')
-        setGender('male')
     }
     const register = () => {
         const form = { email, name, password, gender }

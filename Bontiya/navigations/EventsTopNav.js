@@ -3,6 +3,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import PastEvents from '../screens/PastEvents'
 import Upcoming from '../screens/Upcoming'
 import Header from '../components/Header'
+import FormScreen from '../screens/FormScreen'
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -30,6 +31,7 @@ function EventTopNav() {
         >
             <Tab.Screen name="Upcoming" component={Upcoming} />
             <Tab.Screen name="Past Events" component={PastEvents} />
+            <Tab.Screen name="Form" component={FormScreen} />
         </Tab.Navigator>
     </>
   );

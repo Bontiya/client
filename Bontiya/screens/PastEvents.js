@@ -1,76 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useSelector } from "react-redux";
+import usePastEvent from "../hooks/usePastEvent";
 import { View, ScrollView, Text, StyleSheet } from 'react-native'
 import EventCard from '../components/EventCard'
 
 const past = () => {
+    usePastEvent()
+    const { event:eventSelector } = useSelector(state => state)
+    const { pastEvents, pastEventsOnload } = eventSelector
 
-    const [ upcoming, setUpcoming ] = useState([
-        {
-            date: new Date().toLocaleString(),
-            name: 'Event Name',
-            description: 'This is the event description.',
-            status: 'Done',
-            members: [
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'}
-            ]
-        },
-        {
-            date: new Date().toLocaleString(),
-            name: 'Event Name',
-            description: 'This is the event description.',
-            status: 'Done',
-            members: [
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-            ]
-        },
-        {
-            date: new Date().toLocaleString(),
-            name: 'Event Name',
-            description: 'This is the event description.',
-            status: 'Done',
-            members: [
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-            ]
-        },
-        {
-            date: new Date().toLocaleString(),
-            name: 'Event Name',
-            description: 'This is the event description.',
-            status: 'Done',
-            members: [
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-            ]
-        },
-        {
-            date: new Date().toLocaleString(),
-            name: 'Event Name',
-            description: 'This is the event description.',
-            status: 'Done',
-            members: [
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-                {avatar: 'https://img.icons8.com/wired/2x/small-smile.png'},
-            ]
-        }
-    ])
-
-    if(upcoming.length<1) {
+    if (pastEventsOnload) {
         return (
             <View style={styles.container}>
                 <Text>Loading...</Text>
@@ -78,10 +17,18 @@ const past = () => {
         )
     }
 
+    if(!pastEvents.length) {
+        return (
+            <View style={styles.container}>
+                <Text>Events not yet available</Text>
+            </View>
+        )
+    }
+
     return (
         <ScrollView style={styles.container}> 
             {
-                upcoming.map( (event,i) => {
+                pastEvents.map( (event,i) => {
                     return <EventCard key={i} screen={'past'} payload={event} />
                 })
             }

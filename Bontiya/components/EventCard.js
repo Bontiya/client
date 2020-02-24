@@ -17,10 +17,10 @@ const EventCard = (props) => {
     const [ date, setDate ] = useState([])
     const [ seenMembers, setSeenMembers ] = useState([])
     const [ length, setLength ] = useState(null)
-    // const [ status, setStatus ] = useState('')
+    const [ status, setStatus ] =  useState(null)
     useEffect( () => {
-        setDate(props.payload.date.split(' '))
-        // setStatus(props.payload.status)
+        setDate(new Date(props.payload.time).toLocaleString().split(' '))
+        setStatus(props.payload.status)
         if( props.payload.members.length > 4) {
             let temp = [...props.payload.members]
             setSeenMembers(temp.splice(0,4))
@@ -117,8 +117,8 @@ const EventCard = (props) => {
                 <View style={styles.members}>
                     <>
                         {
-                            seenMembers.map( (member,i) => {
-                                return <Image key={i} style={styles.image} source={{uri: member.avatar}} />
+                            seenMembers.map( ({user},i) => {
+                                return <Image key={user._id} style={styles.image} source={{uri: user.avatar}} />
                             })
                         }
                         {
