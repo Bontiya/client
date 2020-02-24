@@ -55,14 +55,11 @@ function Form() {
     hideTimePicker();
   }
 
-    const hideTimePicker = () => {
-        setTimePickerVisibility(false);
-    };
+  const showTimePicker = () => {
+    setTime('')
+    setTimePickerVisibility(true);
+};
 
-    const handleConfirmTime = time => {
-        setTime(time)
-        hideTimePicker();
-    };
 
     const submitKey = () => {
         console.log('aa')

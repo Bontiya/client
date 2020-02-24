@@ -94,7 +94,7 @@ export const toggleModal = (payload) => (dispatch, state) => {
     })
 }
 
-export const inviteMember = (payload) => (dispatch, state) => {
+export const inviteMember = (payload) => async (dispatch, state) => {
     try {
         await axios({
             method: 'post',
