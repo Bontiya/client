@@ -1,5 +1,5 @@
 import axios from "axios";
-import { event, ERRORS, MODAL } from "../actionTypes";
+import { event, ERRORS, GET_GOOGLE_VISIONS_RESULT } from "../actionTypes";
 import { apiUrl } from '../urlTypes';
 import { AsyncStorage } from 'react-native';
 
@@ -24,10 +24,12 @@ export const getUpcomingEvent = () => async (dispatch, state) => {
             type: event.GET_UPCOMING_EVENTS,
             data: []
         })
-        dispatch({
-            type: ERRORS,
-            data: response.data.errors
-        })
+        if (response) {
+            dispatch({
+                type: ERRORS,
+                data: response.data.errors
+            })
+        }
     }
 }
 
@@ -53,10 +55,12 @@ export const getPastEvent = () => async (dispatch, state) => {
             type: event.GET_PAST_EVENTS,
             data: []
         })
-        dispatch({
-            type: ERRORS,
-            data: response.data.errors
-        })
+        if (response) {
+            dispatch({
+                type: ERRORS,
+                data: response.data.errors
+            })
+        }
     }
 }
 
@@ -103,6 +107,32 @@ export const inviteMember = (payload) => (dispatch, state) => {
         })
     } 
     catch ({ response }) {
+  
+        dispatch({
+            type: ERRORS,
+            data: response.data.errors
+        })
+    }
+}
+
+export const googleVision = (base) => async (dispatch, state) => {
+    try {
+        const { token } = state().general.isLogged
+        const { data } = await axios.post(`${apiUrl}/visions/detect`, {
+            data: {
+                baseImg: base
+            },
+            headers: {
+                authorization: token
+            }
+        })
+        dispatch({
+            type: GET_GOOGLE_VISIONS_RESULT,
+            data
+        })
+        console.log(data, '!!!!!!!!!!!!!!!!!!!!!!!!')
+      } catch ({ response }) {
+        console.log(response)
         dispatch({
             type: ERRORS,
             data: response.data.errors

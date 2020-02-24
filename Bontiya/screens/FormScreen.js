@@ -46,15 +46,14 @@ function Form() {
         setDatePickerVisibility(false);
     };
 
-    const handleConfirm = date => {
-        setDate(date)
-        hideDatePicker();
-    };
-
-    const showTimePicker = () => {
-        setTime('')
-        setTimePickerVisibility(true);
-    };
+  const hideTimePicker = () => {
+    setTimePickerVisibility(false);
+  };
+ 
+  const handleConfirmTime = time => {
+    setTime(time)
+    hideTimePicker();
+  }
 
     const hideTimePicker = () => {
         setTimePickerVisibility(false);
