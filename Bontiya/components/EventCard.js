@@ -32,7 +32,7 @@ const EventCard = (props) => {
 
     return (
         <View style={[styles.container]}>
-            <AddMemberModal />
+            <AddMemberModal eventId={props.payload._id} />
             <View style={styles.eventInfo}>
                 <View style={styles.dateContainer}>
                     <Text 
@@ -71,7 +71,7 @@ const EventCard = (props) => {
                         {date[1]}
                     </Text>
                 </View>
-                <View style={{marginLeft:10}}>
+                <View style={{marginLeft:10, width: 0.6 * DEVICE_WIDTH}}>
                     <Text 
                         style={
                             [
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         flexDirection: 'row',
         width: 0.8 * DEVICE_WIDTH,
-        alignSelf: "center"
+        alignSelf: "center",
     },
     dateContainer: {
         flexDirection: 'column',
@@ -223,15 +223,14 @@ const styles = StyleSheet.create({
         marginLeft: 5
     },
     addBtn: {
-        right: 0.03 * DEVICE_WIDTH,
         paddingVertical: 6,
         paddingHorizontal: 12,
         marginTop: 0.01 * DEVICE_HEIGHT,
         borderRadius: 99,
         backgroundColor: '#B9E5EB',
-        marginLeft: 0.27 * DEVICE_WIDTH,
         marginTop: -0.005 * DEVICE_HEIGHT,
-        elevation: 4
+        elevation: 4,
+        right: 0
     },  
     plus : {
         fontSize: 18,
