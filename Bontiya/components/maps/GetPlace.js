@@ -11,14 +11,13 @@ import {
 } from '../../store/actions/mapsAction';
 import {
     Searchbar,
-    List
 } from 'react-native-paper';
 import ListItemPlace from "./ListItemPlace";
 
 const GetPlace = () => {
     const [textSearch, setTextSearch] = useState("");
     const getPlace = useSelector(state => state.getPlace);
-    const getLangLong = useSelector(state => state.getLatLong);
+    // const getLangLong = useSelector(state => state.getLatLong);
     const dispatch = useDispatch();
 
     const onChangeTextInput = (text) => {
@@ -33,7 +32,9 @@ const GetPlace = () => {
     };
 
     const onPlaceSelect = (placeId) => {
-        dispatch(searchLatLong(placeId))
+        dispatch(searchLatLong(placeId));
+        setTextSearch("");
+        onChangeTextInput("")
     };
 
     return (
