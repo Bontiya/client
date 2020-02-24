@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Dimensions, Image, ScrollView } from 'react-native' 
+import AddMemberModal from '../components/AddMemberModal'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { useDispatch, useSelector } from 'react-redux'
+import { toggleModal } from '../store/actions/eventAction'
 
 const DEVICE_WIDTH = Dimensions.get('window').width
+const DEVICE_HEIGHT = Dimensions.get('window').height
 
 const EventCard = (props) => {
+
+    const dispatch = useDispatch()
+
+    const general = useSelector( state => state.general )
 
     const [ date, setDate ] = useState([])
     const [ seenMembers, setSeenMembers ] = useState([])
@@ -20,13 +29,10 @@ const EventCard = (props) => {
             setSeenMembers(props.payload.members)
         }
     },[])
-    // console.log(seenMembers[0].avatar, '=============')
-    useEffect( () => {
-        // console.log(seenMembers)
-    },[seenMembers])
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container]}>
+            <AddMemberModal />
             <View style={styles.eventInfo}>
                 <View style={styles.dateContainer}>
                     <Text 
@@ -92,6 +98,20 @@ const EventCard = (props) => {
                         {props.payload.description}
                     </Text>
                 </View>
+                {
+                    props.screen === 'upcoming'
+                    ? 
+                    <TouchableOpacity
+                    style={
+                        styles.addBtn
+                    }
+                    onPress={() => {
+                        dispatch(toggleModal(true))
+                    }}>
+                        <Text style={styles.plus}>+</Text>
+                    </TouchableOpacity>
+                    : null
+                }
             </View>
             <View style={styles.membersContainer}>
                 <View style={styles.members}>
@@ -154,7 +174,7 @@ const styles = StyleSheet.create({
         height:120,
         width: 0.9 * DEVICE_WIDTH,
         alignSelf: "center",
-        marginTop: 30,
+        marginTop: 10,
         borderRadius: 10,
         backgroundColor: "#fff",
         elevation: 3,
@@ -201,6 +221,21 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         borderRadius: 20,
         marginLeft: 5
+    },
+    addBtn: {
+        right: 0.03 * DEVICE_WIDTH,
+        paddingVertical: 6,
+        paddingHorizontal: 12,
+        marginTop: 0.01 * DEVICE_HEIGHT,
+        borderRadius: 99,
+        backgroundColor: '#B9E5EB',
+        marginLeft: 0.27 * DEVICE_WIDTH,
+        marginTop: -0.005 * DEVICE_HEIGHT,
+        elevation: 4
+    },  
+    plus : {
+        fontSize: 18,
+        fontWeight: 'bold',
     }
 })
 
