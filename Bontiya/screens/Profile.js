@@ -11,7 +11,7 @@ const DEVICE_WIDTH = Dimensions.get('window').width
 
 
 const profile = () => {
-
+    
     const dispatch = useDispatch()
 
     const [ data ] = useState({

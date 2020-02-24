@@ -9,9 +9,11 @@ const Upcoming = () => {
     const { event:eventSelector } = useSelector(state => state)
     const { upcomingEvents, upcomingEventsOnload } = eventSelector
 
+    const general = useSelector( state => state.general )
+
     if(upcomingEventsOnload) {
         return (
-            <View style={styles.container}>
+            <View style={[styles.container]}>
                 <Text>Loading...</Text>
             </View>
         )
@@ -26,13 +28,13 @@ const Upcoming = () => {
     }
 
     return (
-        <ScrollView style={styles.container}> 
+        <ScrollView style={[styles.container,general.modal ? {backgroundColor: 'rgba(100,100,100,0.5)'} : '']}> 
             {
                 upcomingEvents.map( (event,i) => {
-                    return <EventCard key={i} payload={event} />
+                    return <EventCard key={i} screen={'upcoming'} payload={event} />
                 })
             }
-            <View style={{marginBottom:30}}></View>
+            <View style={{marginBottom:10}}></View>
         </ScrollView>
     )
 }

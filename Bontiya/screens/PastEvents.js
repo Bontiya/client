@@ -29,10 +29,10 @@ const past = () => {
         <ScrollView style={styles.container}> 
             {
                 pastEvents.map( (event,i) => {
-                    return <EventCard key={i} payload={event} />
+                    return <EventCard key={i} screen={'past'} payload={event} />
                 })
             }
-            <View style={{marginBottom:30}}></View>
+            <View style={{marginBottom:10}}></View>
         </ScrollView>
     )
 }

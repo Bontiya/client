@@ -1,8 +1,8 @@
 import React from 'react'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import EventsTopNav from './EventsTopNav'
-import Profile from '../screens/Profile'
 import LogReg from '../screens/LoginReg'
+import Profile from '../screens/Profile'
 import { useSelector } from 'react-redux';
 
 const Tab = createMaterialBottomTabNavigator();
@@ -15,7 +15,7 @@ function RootNavigation() {
   return (
     <Tab.Navigator 
       barStyle={{
-        backgroundColor: '#fff',
+        backgroundColor: '#5676CF',
       }}
     >
       <Tab.Screen name="Events" component={EventsTopNav} />

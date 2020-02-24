@@ -1,5 +1,5 @@
 import axios from "axios";
-import { event, ERRORS } from "../actionTypes";
+import { event, ERRORS, MODAL } from "../actionTypes";
 import { apiUrl } from '../urlTypes';
 import { AsyncStorage } from 'react-native';
 
@@ -19,16 +19,16 @@ export const getUpcomingEvent = () => async (dispatch, state) => {
             data
         })
 
-    } catch ({response}) {
-        console.log(response, 'ERROR GET_UPCOMING_EVENTS')
+    } catch (err) {
+        console.log(err,"INI ERR")
         dispatch({
             type: event.GET_UPCOMING_EVENTS,
             data: []
         })
-        dispatch({
-            type: ERRORS,
-            data: response.data.errors
-        })
+        // dispatch({
+        //     type: ERRORS,
+        //     data: response.data.errors
+        // })
     }
 }
 
@@ -49,15 +49,16 @@ export const getPastEvent = () => async (dispatch, state) => {
             data
         })
 
-    } catch ({ response }) {
+    } catch (err) {
+        console.log(err,'INI ERR PAST')
         dispatch({
             type: event.GET_PAST_EVENTS,
             data: []
         })
-        dispatch({
-            type: ERRORS,
-            data: response.data.errors
-        })
+        // dispatch({
+        //     type: ERRORS,
+        //     data: response.data.errors
+        // })
     }
 }
 
@@ -82,3 +83,11 @@ export const createEvent = (event) => async (dispatch, state) => {
       })
     }
   }
+
+export const toggleModal = (payload) => (dispatch, state) => {
+    console.log(payload)
+    dispatch({
+        type: MODAL,
+        data: payload
+    })
+}
