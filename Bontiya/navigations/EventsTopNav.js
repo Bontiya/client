@@ -19,7 +19,7 @@ function EventTopNav() {
                 },
                 activeTintColor: '#FFF',
                 indicatorStyle: {
-                    width: 180,
+                    width: 110,
                     marginLeft: 12,
                     backgroundColor: '#FFF'
                 },

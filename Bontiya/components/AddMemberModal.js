@@ -66,8 +66,9 @@ const addMemberModal = () => {
             />
             <FlatList 
               data={temp}
-              renderItem={({item}) => <SearchMemberList payload={item} />}
+              renderItem={({item}) => <SearchMemberList eventId={props.eventId} payload={item} />}
               keyExtractor={ item => item.id}
+              style={{elevation:4}}
             />
           </View>
         </Modal>

@@ -19,16 +19,15 @@ export const getUpcomingEvent = () => async (dispatch, state) => {
             data
         })
 
-    } catch (err) {
-        console.log(err,"INI ERR")
+    } catch ({ response }) {
         dispatch({
             type: event.GET_UPCOMING_EVENTS,
             data: []
         })
-        // dispatch({
-        //     type: ERRORS,
-        //     data: response.data.errors
-        // })
+        dispatch({
+            type: ERRORS,
+            data: response.data.errors
+        })
     }
 }
 
@@ -49,16 +48,15 @@ export const getPastEvent = () => async (dispatch, state) => {
             data
         })
 
-    } catch (err) {
-        console.log(err,'INI ERR PAST')
+    } catch ({ response }) {
         dispatch({
             type: event.GET_PAST_EVENTS,
             data: []
         })
-        // dispatch({
-        //     type: ERRORS,
-        //     data: response.data.errors
-        // })
+        dispatch({
+            type: ERRORS,
+            data: response.data.errors
+        })
     }
 }
 
@@ -90,4 +88,24 @@ export const toggleModal = (payload) => (dispatch, state) => {
         type: MODAL,
         data: payload
     })
+}
+
+export const inviteMember = (payload) => (dispatch, state) => {
+    try {
+        await axios({
+            method: 'post',
+            url: `${apiUrl}/events/${payload.eventId}/members`,
+            data: {
+                userId: payload.userId,
+                role: 'guest'
+            },
+            headers: { Authorization : await AsyncStorage.getItem('token') }
+        })
+    } 
+    catch ({ response }) {
+        dispatch({
+            type: ERRORS,
+            data: response.data.errors
+        })
+    }
 }
