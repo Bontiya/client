@@ -1,6 +1,7 @@
 import axios from "axios";
 import { event, ERRORS } from "../actionTypes";
 import { apiUrl } from '../urlTypes';
+import { AsyncStorage } from 'react-native';
 
 export const getUpcomingEvent = () => async (dispatch, state) => {
     try {
@@ -59,3 +60,25 @@ export const getPastEvent = () => async (dispatch, state) => {
         })
     }
 }
+
+export const createEvent = (event) => async (dispatch, state) => {
+    try {
+      const { name, location, time, key, description, locationHost } = event
+      const { data } = await axios({
+        method: 'post',
+        url: `${apiUrl}/events`,
+        data: { name, location, time, key, description, locationHost },
+        headers: { Authorization: await AsyncStorage.getItem('token') }
+      })
+      // handle loading
+    } catch ({ response }) {
+      dispatch({
+          type: ISLOGIN,
+          data: null
+      })
+      dispatch({
+          type: ERRORS,
+          data: response.data.errors
+      })
+    }
+  }
