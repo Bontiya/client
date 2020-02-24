@@ -1,20 +1,11 @@
 import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
 } from 'react-native';
 
 import {
-  Header,
-  LearnMoreLinks,
   Colors,
-  DebugInstructions,
-  ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
 import { Provider } from 'react-redux';
@@ -22,6 +13,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import store from './store'
 import RootNavigation from './navigations/index'
 import MapsPage from "./components/maps/MapsPage";
+
 
 const App: () => React$Node = () => {
 

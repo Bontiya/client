@@ -34,6 +34,7 @@ const Upcoming = () => {
             </View>
         )
     }
+    // console.log(upcomingEvents)
     if (!upcomingEvents.length) {
         return (
             <View style={styles.container}>

@@ -18,16 +18,18 @@ export const getUpcomingEvent = () => async (dispatch, state) => {
             type: event.GET_UPCOMING_EVENTS,
             data
         })
-    } catch ({ response }) {
+
+    } catch (error) {
+        const { response } = error
         dispatch({
             type: event.GET_UPCOMING_EVENTS,
             data: []
         })
-        if (response) {
+        if (response?.data) {
             dispatch({
                 type: ERRORS,
                 data: response.data.errors
-            })
+            })   
         }
     }
 }
@@ -49,7 +51,8 @@ export const getPastEvent = () => async (dispatch, state) => {
             data
         })
 
-    } catch ({ response }) {
+    } catch (error) {
+        const { response } = error
         dispatch({
             type: event.GET_PAST_EVENTS,
             data: []

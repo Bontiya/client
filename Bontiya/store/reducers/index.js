@@ -10,9 +10,11 @@ import {
 import {
     user
 } from './userReducer'
+import member from "./memberReducer";
 
 const initalState = {
     isLogged: null,
+    socket: null,
     generalOnload: false,
     errors: null,
     success: null,
@@ -25,7 +27,8 @@ function general(state = initalState, action) {
             return {
                 ...state,
                 generalOnload: false,
-                isLogged: action.data
+                isLogged: action.data,
+                socket: action.socket
             }
         case GENERAL_ONLOAD:
             return {
@@ -45,7 +48,9 @@ function general(state = initalState, action) {
         case LOGOUT: 
             return {
                 ...state,
-                isLogged: null
+                isLogged: null,
+                errors: null,
+                socket: null
             }
         case MODAL:
             return {
@@ -64,5 +69,6 @@ export default combineReducers({
     getReverseGeoLocation,
     getPlace,
     getLatLong,
-    user
+    user,
+    member
 })

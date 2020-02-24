@@ -12,7 +12,7 @@ import {
     AsyncStorage,
 } from 'react-native'
 import {  useDispatch, useSelector } from 'react-redux';
-import { registerAction, loginAction } from '../store/actions/authAction';
+import { registerAction, loginAction, checkIsLogged } from '../store/actions/authAction';
 import { ERRORS, ISLOGIN } from '../store/actionTypes';
 
 import Google from '../assets/googleIcon.png'
@@ -38,27 +38,7 @@ const loginReg = () => {
 
 
     useEffect(() => {
-        Promise.all([
-            AsyncStorage.getItem('userId'),
-            AsyncStorage.getItem('name'),
-            AsyncStorage.getItem('email'),
-            AsyncStorage.getItem('token'),
-            AsyncStorage.getItem('tokentokenFirebase')
-        ]).then(result => {
-          if ((result[0] && result[1]) && result[2]) {
-              disptach({
-                  type: ISLOGIN,
-                  data: {
-                      _id: result[0],
-                      name: result[1],
-                      email : result[2],
-                      token: result[3],
-                      tokentokenFirebase: result[4]
-                  }
-              })
-          }
-        })
-        .catch(console.log)
+        disptach(checkIsLogged())
     }, [])
 
     const switchFormHandler = (e,payload) => {

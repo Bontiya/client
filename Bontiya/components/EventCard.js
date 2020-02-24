@@ -30,6 +30,10 @@ const EventCard = (props) => {
             setSeenMembers(props.payload.members)
         }
     },[])
+    // console.log(seenMembers[0].avatar, '=============')
+    useEffect( () => {
+        // console.log(seenMembers)
+    },[seenMembers])
 
     return (
         <TouchableOpacity
