@@ -46,10 +46,6 @@ function Form() {
   const handleConfirmTime = time => {
     setTime(time)
     hideTimePicker();
-  };
-
-  const submitKey = () => {
-    console.log('aa')
   }
 
   const openLocationModal = (value) => {

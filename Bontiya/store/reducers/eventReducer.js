@@ -1,4 +1,4 @@
-import { event } from "../actionTypes";
+import { event, GET_GOOGLE_VISIONS_RESULT } from "../actionTypes";
 const initialState = {
     upcomingEvents: [],
     pastEvents: [],
@@ -6,7 +6,8 @@ const initialState = {
     upcomingEventsOnload: false,
     pastEventsOnload: false,
     eventOnload: false,
-    addingEventOnload: false
+    addingEventOnload: false,
+    gVisResult: ''
 }
 
 function eventReducer(state = initialState, action) {  
@@ -32,6 +33,11 @@ function eventReducer(state = initialState, action) {
             return {
                 ...state,
                 pastEventsOnload: true
+            }
+        case GET_GOOGLE_VISIONS_RESULT:
+            return {
+                ...state,
+                gVisResult: action.data
             }
         default:
             return state
