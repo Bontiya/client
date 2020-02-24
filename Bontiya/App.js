@@ -14,7 +14,6 @@ import store from './store'
 import RootNavigation from './navigations/index'
 import MapsPage from "./components/maps/MapsPage";
 
-
 const App: () => React$Node = () => {
 
   return (

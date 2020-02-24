@@ -66,7 +66,7 @@ export const checkIsLogged = () =>  (dispatch, state) => {
         AsyncStorage.getItem('name'),
         AsyncStorage.getItem('email'),
         AsyncStorage.getItem('token'),
-        AsyncStorage.getItem('tokentokenFirebase')
+        AsyncStorage.getItem('tokenFirebase')
     ]).then(result => {
       if ((result[0] && result[1]) && result[2]) {
             dispatch({
@@ -76,7 +76,7 @@ export const checkIsLogged = () =>  (dispatch, state) => {
                     name: result[1],
                     email : result[2],
                     token: result[3],
-                    tokentokenFirebase: result[4]
+                    tokenDeviceFirebase: result[4]
                 },
                 socket: _connetSocket()
             })

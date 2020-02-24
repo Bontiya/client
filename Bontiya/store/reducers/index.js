@@ -1,6 +1,7 @@
 import {  combineReducers } from 'redux';
 import { ISLOGIN, GENERAL_ONLOAD, ERRORS, SUCCESS, LOGOUT, MODAL } from '../actionTypes';
 import event from "./eventReducer";
+import member from "./memberReducer";
 import {
     getMapCoordDirections,
     getReverseGeoLocation,

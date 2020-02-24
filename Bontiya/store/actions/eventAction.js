@@ -113,6 +113,12 @@ export const inviteMember = (payload) => async (dispatch, state) => {
             type: ERRORS,
             data: response.data.errors
         })
+        if (response?.data) {
+            dispatch({
+                type: ERRORS,
+                data: response.data.errors
+            })   
+        }
     }
 }
 
