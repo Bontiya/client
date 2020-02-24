@@ -24,7 +24,7 @@ const searchMemberList = (props) => {
             title={props.payload.name}
             description="User"
             left={ () => <Image style={{width: 50, height: 50,borderWidth: 1}} source={{uri: props.payload.avatar}}/> }
-            onPress={}
+            onPress={inviteMember}
         />
     </>
     )
