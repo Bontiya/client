@@ -1,6 +1,12 @@
 import {  combineReducers } from 'redux';
 import event from "./eventReducer";
 import { ISLOGIN, GENERAL_ONLOAD, ERRORS, SUCCESS, LOGOUT } from '../actionTypes';
+import {
+    getMapCoordDirections,
+    getReverseGeoLocation,
+    getPlace,
+    getLatLong
+} from "./mapsReducer";
 
 const initalState = {
     isLogged: null,
@@ -44,5 +50,9 @@ function general(state = initalState, action) {
 
 export default combineReducers({
     general,
-    event
+    event,
+    getMapCoordDirections,
+    getReverseGeoLocation,
+    getPlace,
+    getLatLong
 })
