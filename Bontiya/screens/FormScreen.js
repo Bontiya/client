@@ -7,6 +7,7 @@ import {createEvent} from '../store/actions/eventAction'
 import LocationModal from '../components/LocationModal'
 import KeyModal from '../components/KeyModal'
 import {getDirections} from "../store/actions/mapsAction";
+import Maps from "../components/maps/Maps";
 
 function Form() {
     const [eventName, setEventName] = useState('')
@@ -184,7 +185,8 @@ function Form() {
                     </TouchableOpacity>
                 </View>
                 {
-                    locPreviewRender()
+                    //maps preview
+                    // <Maps style={{width: 10, height: 10}} />
                 }
 
                 <View style={styles.form_row}>
