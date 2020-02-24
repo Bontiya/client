@@ -10,7 +10,7 @@ const EventCard = (props) => {
     const [ length, setLength ] = useState(null)
     const [ status, setStatus ] =  useState(null)
     useEffect( () => {
-        setDate(props.payload.time.split(' '))
+        setDate(new Date(props.payload.time).toLocaleString().split(' '))
         setStatus(props.payload.status)
         if( props.payload.members.length > 4) {
             let temp = [...props.payload.members]
@@ -20,7 +20,7 @@ const EventCard = (props) => {
             setSeenMembers(props.payload.members)
         }
     },[])
-    console.log(seenMembers[0].avatar, '=============')
+    // console.log(seenMembers[0].avatar, '=============')
     useEffect( () => {
         // console.log(seenMembers)
     },[seenMembers])
