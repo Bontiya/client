@@ -16,13 +16,15 @@ function EventTopNav() {
                     fontFamily: 'Signika',
                     fontWeight: 'bold',
                 },
-                activeTintColor: '#444286',
+                activeTintColor: '#FFF',
                 indicatorStyle: {
                     width: 180,
-                    marginLeft: 12
+                    marginLeft: 12,
+                    backgroundColor: '#FFF'
                 },
                 style: {
-                    elevation: 0
+                    elevation: 0,
+                    backgroundColor: '#5676CF'
                 }
             }}
         >
