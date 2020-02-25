@@ -1,7 +1,8 @@
 import { member } from "../actionTypes";
 const initialState = {
     statusInvitedPending: [],
-    statusInvitedPendingOnload: false
+    statusInvitedPendingOnload: false,
+    timeEstimation: 0
 }
 
 function memberReducer(state = initialState, action) {
@@ -16,6 +17,11 @@ function memberReducer(state = initialState, action) {
             return {
                 ...state,
                 statusInvitedPendingOnload: true
+            }
+        case member.GET_TIME_EST:
+            return {
+                ...state,
+                timeEstimation: action.data
             }
         default:
             return state
