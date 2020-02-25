@@ -10,8 +10,6 @@ import {
   ScrollView } from 'react-native'
 import { Icon } from 'react-native-elements'
 import SendIntentAndroid from 'react-native-send-intent'
-import { useTimer } from 'react-timer-hook'
-import { RNCamera } from 'react-native-camera'
 import CameraModal from '../components/CameraModal'
 import MembersModal from '../components/MembersModal'
 import MapsPreview from "../components/maps/MapsPreview";
@@ -42,7 +40,7 @@ function DetailScreen(props) {
         setReadyToGo(true)
       }
     }
-    console.log(getMyLatLong(), getEventLatLong(), timeEstimation, '<<<<<')
+    // console.log(getMyLatLong(), getEventLatLong(), timeEstimation, '<<<<<')
     dispatch(getTimeEstimation(getMyLatLong(), getEventLatLong()))
   }, [timeEstimation, event])
 
@@ -81,6 +79,14 @@ function DetailScreen(props) {
   function updateMembers(newMembers) {
     // console.log(newMembers, '@@@@@@@@@2')
     setListMembers(event.members)
+  }
+
+  function getMyLatLong() {
+    return `${getMyMember().location.lat},${getMyMember().location.lon}`
+  }
+
+  function getEventLatLong() {
+    return `${location.lat},${location.lon}`
   }
 
   return (
