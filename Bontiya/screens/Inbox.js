@@ -4,12 +4,14 @@ import {
     StyleSheet,
     ScrollView,
     Dimensions,
-    Text
+    Text,
+    View
 } from 'react-native';
 import useGetStatusInvitedPending from "../hooks/useGetStatusInvitedPending";
 import Header from '../components/Header'
 import InboxCard from "../components/InboxCard";
 import AlertError from "../components/AlertError";
+import Loading from "../components/Loading";
 const DEVICE_WIDTH = Dimensions.get('window').width
 
 export default function Inbox() {
@@ -26,18 +28,26 @@ export default function Inbox() {
         <Header />
         {
             member.statusInvitedPendingOnload
-                ? (<Text>Loading...</Text>)
-                : !member.statusInvitedPending.length
-                    ? (<Text>Inbox not yet available</Text>)
-                    : (
-                        <ScrollView style={styles.container}>
-                            {
-                                member.statusInvitedPending.map(item => {
-                                    return <InboxCard item={item}  key={item._id} />
-                                })
-                            }
-                        </ScrollView>
-                    )
+                ? ( <Loading /> )
+                    : !member.statusInvitedPending.length
+                        ? (
+                            <View style={{ 
+                                flex: 1, 
+                                justifyContent: 'center', 
+                                alignItems: 'center',
+                            }}>
+                                <Text>Hi, you don't have an inbox!!</Text>
+                            </View>
+                        )
+                        : (
+                            <ScrollView style={styles.container}>
+                                {
+                                    member.statusInvitedPending.map(item => {
+                                        return <InboxCard item={item}  key={item._id} />
+                                    })
+                                }
+                            </ScrollView>
+                        )
         }
         </>
     )
@@ -47,7 +57,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingBottom: 30,
-        marginTop: 30
+        marginTop: 10
     },
     card: {
         height:110,

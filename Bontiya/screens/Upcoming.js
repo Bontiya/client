@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from "react-redux";
 import useUpcomingEvent from "../hooks/useUpcomingEvent";
 import { View, ScrollView, Text, StyleSheet } from 'react-native'
+import Loading from "../components/Loading";
 import EventCard from '../components/EventCard'
 import { getAllUser } from '../store/actions/userAction'
 import { useDispatch } from 'react-redux'
@@ -21,38 +22,33 @@ const Upcoming = () => {
 
     const general = useSelector( state => state.general )
 
-    const showModalAddMember = (payload) => {
-        console.log(payload)
-        setEventIdTemp(payload)
-        dispatch(toggleModal(true))
-    }
-
-    if(upcomingEventsOnload) {
-        return (
-            <View style={[styles.container]}>
-                <Text>Loading...</Text>
-            </View>
-        )
-    }
-    // console.log(upcomingEvents)
-    if (!upcomingEvents.length) {
-        return (
-            <View style={styles.container}>
-                <Text>Events not yet available</Text>
-            </View>
-        )
-    }
-
     return (
-        <ScrollView style={[styles.container,general.modal ? {backgroundColor: 'rgba(100,100,100,0.5)'} : '']}> 
-            {
-                upcomingEvents.map( (event,i) => {
-                    return <EventCard key={i} screen={'upcoming'} payload={event} modalShow={showModalAddMember} />
-                })
-            }
-            <AddMemberModal eventId={eventIdTemp} />
-            <View style={{marginBottom:10}}></View>
-        </ScrollView>
+        <>
+        {
+            upcomingEventsOnload 
+                ? <Loading />
+                : !upcomingEvents.length
+                    ? (
+                        <View style={{ 
+                            flex: 1, 
+                            justifyContent: 'center', 
+                            alignItems: 'center',
+                        }}>
+                            <Text>Hi, you don't have an event!</Text>
+                        </View>
+                    )
+                    : (
+                        <ScrollView style={[styles.container,general.modal ? {backgroundColor: 'rgba(100,100,100,0.5)'} : '']}> 
+                            {
+                                upcomingEvents.map( (event,i) => {
+                                    return <EventCard key={i} screen={'upcoming'} payload={event} />
+                                })
+                            }
+                            <View style={{marginBottom:10}}></View>
+                        </ScrollView>
+                    )
+        }
+        </>
     )
 }
 

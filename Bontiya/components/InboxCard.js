@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
         height:110,
         width: 0.9 * DEVICE_WIDTH,
         alignSelf: "center",
-        marginBottom: 30,
+        marginBottom: 10,
         borderRadius: 10,
         backgroundColor: "#fff",
         elevation: 3,
@@ -113,7 +113,8 @@ const styles = StyleSheet.create({
         padding: 2
     },
     image: {
-        height: '100%'
+        height: '100%',
+        width: 70
     },
     descContainer: {
         width: '80%',
