@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from "react-redux";
 import useUpcomingEvent from "../hooks/useUpcomingEvent";
 import { View, ScrollView, Text, StyleSheet } from 'react-native'
 import Loading from "../components/Loading";
 import EventCard from '../components/EventCard'
 import { getAllUser } from '../store/actions/userAction'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import AddMemberModal from '../components/AddMemberModal'
 import { toggleModal } from '../store/actions/eventAction'
 const Upcoming = () => {
@@ -30,9 +29,6 @@ const Upcoming = () => {
         dispatch(toggleModal(true))
     }
 
-
-    const general = useSelector( state => state.general )
-
     return (
         <>
         {
@@ -55,7 +51,7 @@ const Upcoming = () => {
                                     return <EventCard key={i} screen={'upcoming'} payload={event}  modalShow={showModalAddMember}  />
                                 })
                             }
-                            <AddMemberModal eventId={eventIdTemp} />
+                            <AddMemberModal eventId={eventIdTemp} members={members} />
                             <View style={{marginBottom:10}}></View>
                         </ScrollView>
                     )
