@@ -110,18 +110,13 @@ export const inviteMember = (payload) => async (dispatch, state) => {
             headers: { Authorization : await AsyncStorage.getItem('token') }
         })
     } 
-    catch ({ response }) {
-  
-        dispatch({
-            type: ERRORS,
-            data: response.data.errors
-        })
-        if (response?.data) {
-            dispatch({
-                type: ERRORS,
-                data: response.data.errors
-            })   
-        }
+    catch (err) {
+        console.log(err)
+        console.log('eee')
+        // dispatch({
+        //     type: ERRORS,
+        //     data: response.data.errors
+        // })
     }
 }
 

@@ -114,11 +114,7 @@ const EventCard = (props) => {
                         styles.addBtn
                     }
                     onPress={() => {
-<<<<<<< HEAD
-                        props.modalShow(props.payload._id)
-=======
                         props.modalShow(props.payload._id,props.payload.members)
->>>>>>> push-notification
                     }}>
                         <Text style={styles.plus}>+</Text>
                     </TouchableWithoutFeedback>
