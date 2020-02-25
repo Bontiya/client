@@ -22,6 +22,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import store from './store'
 import RootNavigation from './navigations/index'
 // import LogReg from './screens/LoginReg'
+import MapsPage from "./components/maps/MapsPage";
 
 const App: () => React$Node = () => {
 
