@@ -8,9 +8,11 @@ const DEVICE_WIDTH = Dimensions.get('window').width
 
 const searchMemberList = (props) => {
 
+    console.log(props,'INI EVENT ID LAJFKLDJFSD:KFJ:SDJ:FJ:')
+
     const dispatch = useDispatch()
 
-    const inviteMember = () => {
+    const handleInviteMember = () => {
         dispatch(inviteMember({
             userId: props.payload._id,
             eventId: props.eventId
@@ -24,7 +26,7 @@ const searchMemberList = (props) => {
             title={props.payload.name}
             description="User"
             left={ () => <Image style={{width: 50, height: 50,borderWidth: 1}} source={{uri: props.payload.avatar}}/> }
-            onPress={inviteMember}
+            onPress={handleInviteMember}
         />
     </>
     )

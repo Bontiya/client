@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableHighlight, Dimensions, FlatList } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleModal } from '../store/actions/eventAction'
@@ -8,35 +8,29 @@ import SearchMemberList from '../components/SearchMemberList'
 const DEVICE_WIDTH = Dimensions.get('window').width
 const DEVICE_HEIGHT = Dimensions.get('window').height
 
-const addMemberModal = () => {
+const addMemberModal = (props) => {
 
-    const general = useSelector(state => state.general)
+  console.log(props.eventId,"INI EVENT ID")
+
     const dispatch = useDispatch()
 
+    const general = useSelector(state => state.general)
+    const user = useSelector(state => state.user)
+
     const [ keyword, setKeyword ] = useState('')
-    const [ data ] = useState([
-      {id:'1',name:'Richard',avatar:'https://img.icons8.com/wired/2x/small-smile.png'},
-      {id:'2',name:'Khonan',avatar:'https://img.icons8.com/wired/2x/small-smile.png'},
-      {id:'3',name:'Dedi',avatar:'https://img.icons8.com/wired/2x/small-smile.png'},
-      {id:'4',name:'Dzaky',avatar:'https://img.icons8.com/wired/2x/small-smile.png'},
-      {id:'5',name:'Ilham',avatar:'https://img.icons8.com/wired/2x/small-smile.png'},
-      {id:'6',name:'Michael',avatar:'https://img.icons8.com/wired/2x/small-smile.png'},
-      {id:'7',name:'Ilha',avatar:'https://img.icons8.com/wired/2x/small-smile.png'},
-      {id:'8',name:'Ilm',avatar:'https://img.icons8.com/wired/2x/small-smile.png'},
-      {id:'9',name:'Ilam',avatar:'https://img.icons8.com/wired/2x/small-smile.png'},
-      {id:'10',name:'Iham',avatar:'https://img.icons8.com/wired/2x/small-smile.png'},
-      {id:'11',name:'lham',avatar:'https://img.icons8.com/wired/2x/small-smile.png'},
-      {id:'12',name:'lh\am',avatar:'https://img.icons8.com/wired/2x/small-smile.png'},
-      {id:'13',name:'Iam',avatar:'https://img.icons8.com/wired/2x/small-smile.png'},
-      {id:'14',name:'Im',avatar:'https://img.icons8.com/wired/2x/small-smile.png'},
-      {id:'15',name:'ham',avatar:'https://img.icons8.com/wired/2x/small-smile.png'},
-    ])
     const [ temp, setTemp ] =  useState([])
 
     const filterData = (payload) => {
-      console.log(payload)
-      if( payload == '') setTemp([])
-      setTemp([...data].filter( each => each.name.includes(payload)))
+      if( payload ) setTemp([...user.users].filter( user => user.name.includes(payload)))
+      else setTemp([])
+    }
+
+    if(!user.users) {
+      return (
+        <View>
+          <Text>Loading users...</Text>
+        </View>
+      )
     }
 
     return (
@@ -67,7 +61,7 @@ const addMemberModal = () => {
             <FlatList 
               data={temp}
               renderItem={({item}) => <SearchMemberList eventId={props.eventId} payload={item} />}
-              keyExtractor={ item => item.id}
+              keyExtractor={ item => item._id}
               style={{elevation:4}}
             />
           </View>

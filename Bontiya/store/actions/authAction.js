@@ -2,6 +2,7 @@ import axios from 'axios';
 import { ISLOGIN, GENERAL_ONLOAD, SUCCESS, ERRORS, LOGOUT } from '../actionTypes';
 import { apiUrl } from '../urlTypes';
 import { AsyncStorage } from 'react-native';
+import { firebase } from '@react-native-firebase/messaging'
 
 console.disableYellowBox = true;
 
@@ -14,10 +15,8 @@ export const registerAction = (form) => async dispatch => {
         await AsyncStorage.setItem('email', user.email)
         await AsyncStorage.setItem('token', user.token)
 
-        dispatch({
-            type: ISLOGIN,
-            data: user
-        })
+        await updateTokenFirebase(user.token,dispatch,user)
+
     } catch ({response}) {
         dispatch({
             type: ISLOGIN,
@@ -39,10 +38,8 @@ export const loginAction = (form) => async dispatch => {
         await AsyncStorage.setItem('email', user.email)
         await AsyncStorage.setItem('token', user.token)
 
-        dispatch({
-            type: ISLOGIN,
-            data: user
-        })
+        await updateTokenFirebase(user.token,dispatch,user)
+
     } catch ({ response }) {
         dispatch({
             type: ISLOGIN,
@@ -63,4 +60,31 @@ export const logout = () => (dispatch, state) => {
     AsyncStorage.removeItem('name')
     AsyncStorage.removeItem('email')
     AsyncStorage.removeItem('token')
+}
+
+const updateTokenFirebase = async (token,dispatch,user) => {
+    try {
+        const tokenFirebase = await firebase.messaging().getToken()
+        await AsyncStorage.setItem('tokenFirebase', tokenFirebase)
+        const { data } = axios({
+            method: 'post',
+            url: `${apiUrl}/auth/token-firebase`,
+            headers: { authorization: token },
+            data: {
+                tokenDeviceFirebase: tokenFirebase
+            }
+        })
+        dispatch({
+            type: ISLOGIN,
+            data: {...user,tokenFirebase}
+        })
+    }
+    catch (err) {
+        console.log(err)
+        const { response } = err
+        // dispatch({
+        //     type: ERRORS,
+        //     data: response.data.errors
+        // })
+    }
 }

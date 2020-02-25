@@ -7,6 +7,9 @@ import {
     getPlace,
     getLatLong
 } from "./mapsReducer";
+import {
+    user
+} from './userReducer'
 
 const initalState = {
     isLogged: null,
@@ -60,5 +63,6 @@ export default combineReducers({
     getMapCoordDirections,
     getReverseGeoLocation,
     getPlace,
-    getLatLong
+    getLatLong,
+    user
 })
