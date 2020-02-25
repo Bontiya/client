@@ -16,6 +16,7 @@ import {
     reverseGeolocation,
     searchPlace,
 } from '../../store/actions/mapsAction';
+import GetLocation from 'react-native-get-location'
 
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = (width / height);
@@ -46,6 +47,11 @@ const Maps = () => {
         }
     );
 
+    // console.log(getReverseGeoLocation, "reverse");
+    // console.log(getMapCoordDirections.data, "route");
+    // console.log(currentLocation.name, getLangLong.data.name);
+    // console.log(eventLocation.coordinates.latitude);
+
     if (getLangLong.data !== null) {
         if (getLangLong.data.id !== locId) {
             setEventLocation({
@@ -59,7 +65,6 @@ const Maps = () => {
                     longitudeDelta: LONGITUDE_DELTA
                 }
             });
-            // console.log(currentLocation.name, "name");
             dispatch(getDirections(currentLocation.name, getLangLong.data.name));
             setLocId(getLangLong.data.id)
         }
@@ -88,8 +93,8 @@ const Maps = () => {
     ];
 
     const isSetLocName = () => {
-        if (getReverseGeoLocation.data !== null && locNameStatus === true) {
-            // dispatch(getDirections(getReverseGeoLocation.data[0], eventLocation.title));
+        if (getReverseGeoLocation.data !== null) {
+            dispatch(getDirections(getReverseGeoLocation.data[0], eventLocation.title));
 
             setCurrentLocation({
                 name: getReverseGeoLocation.data[0],
@@ -100,27 +105,47 @@ const Maps = () => {
                     longitudeDelta: LONGITUDE_DELTA
                 }
             });
-
-            setLocNameStatus(false);
         }
     };
 
     const findCoordinates = () => {
-        Geolocation.getCurrentPosition(position => {
-                setCurrentLocation({
-                    name: "",
-                    coordinates: {
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                        latitudeDelta: LATITUDE_DELTA,
-                        longitudeDelta: LONGITUDE_DELTA
-                    }
-                });
-                dispatch(reverseGeolocation(position.coords.latitude, position.coords.longitude));
-            },
-            error => console.log({error}),
-            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-        );
+        GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 20000,
+        }).then(location => {
+            setCurrentLocation({
+                name: "",
+                coordinates: {
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                    latitudeDelta: LATITUDE_DELTA,
+                    longitudeDelta: LONGITUDE_DELTA
+                }
+            });
+            dispatch(reverseGeolocation(location.latitude, location.longitude));
+            isSetLocName();
+        }).catch(error => {
+            const {code, message} = error;
+            console.warn(code, message);
+        })
+
+        // Geolocation.getCurrentPosition(position => {
+        //     console.log(position);
+        //         setCurrentLocation({
+        //             name: "",
+        //             coordinates: {
+        //                 latitude: position.coords.latitude,
+        //                 longitude: position.coords.longitude,
+        //                 latitudeDelta: LATITUDE_DELTA,
+        //                 longitudeDelta: LONGITUDE_DELTA
+        //             }
+        //         });
+        //         dispatch(reverseGeolocation(position.coords.latitude, position.coords.longitude));
+        //     },
+        //     error => console.log({error}),
+        //     {enableHighAccuracy: false, timeout: 60000, maximumAge: 0}
+        //     // {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+        // );
     };
 
     // const watchPosition = () => {
@@ -142,33 +167,30 @@ const Maps = () => {
     //     );
     // };
 
-    const onPressMap = (position) => {
-
-        console.log(getReverseGeoLocation.data.join(" "))
-
-        const {coordinate} = position.nativeEvent;
-        dispatch(reverseGeolocation(coordinate.latitude, coordinate.longitude));
-        if (getReverseGeoLocation.data[0] !== undefined) {
-            dispatch(searchPlace(getReverseGeoLocation.data.join(" ")))
-            setEventLocation({
-                id: "getLangLong.data.id",
-                title: getReverseGeoLocation.data[1],
-                description: getReverseGeoLocation.data[1],
-                coordinates: {
-                    latitude: coordinate.latitude,
-                    longitude: coordinate.longitude,
-                    latitudeDelta: LATITUDE_DELTA,
-                    longitudeDelta: LONGITUDE_DELTA
-                }
-            });
-        }
-    };
+    // const onPressMap = (position) => {
+    //     const {coordinate} = position.nativeEvent;
+    //     dispatch(reverseGeolocation(coordinate.latitude, coordinate.longitude));
+    //     if (getReverseGeoLocation.data[0] !== undefined) {
+    //         dispatch(searchPlace(getReverseGeoLocation.data.join(" ")));
+    //         setEventLocation({
+    //             id: "getLangLong.data.id",
+    //             title: "getReverseGeoLocation.data[1]",
+    //             description: "getReverseGeoLocation.data[1]",
+    //             coordinates: {
+    //                 latitude: coordinate.latitude,
+    //                 longitude: coordinate.longitude,
+    //                 latitudeDelta: LATITUDE_DELTA,
+    //                 longitudeDelta: LONGITUDE_DELTA
+    //             }
+    //         });
+    //     }
+    // };
 
     useEffect(() => {
         findCoordinates();
-    }, [isSetLocName()]);
+    }, []);
 
-    useEffect(() => () => Geolocation.clearWatch(watchId), []);
+    // useEffect(() => () => Geolocation.clearWatch(watchId), []);
 
     return (
         <>
@@ -183,13 +205,17 @@ const Maps = () => {
                         region={
                             currentLocation.coordinates
                         }
-                        onPress={onPressMap}
+                        // onPress={onPressMap}
                     >
-                        <Marker.Animated
-                            coordinate={
-                                currentLocation.coordinates
-                            }
-                        />
+                        {
+                            currentLocation.coordinates !== undefined
+                                ? <Marker.Animated
+                                    coordinate={
+                                        currentLocation.coordinates
+                                    }
+                                />
+                                : <></>
+                        }
 
                         {
                             eventLocation.coordinates.latitude !== ""
@@ -203,15 +229,15 @@ const Maps = () => {
                                 : <></>
                         }
 
-                        {
-                            memberLocation.map(marker => (
-                                <Marker.Animated
-                                    coordinate={marker.coordinates}
-                                    title={marker.title}
-                                    description={marker.description}
-                                />
-                            ))
-                        }
+                        {/*{*/}
+                        {/*    memberLocation.map(marker => (*/}
+                        {/*        <Marker.Animated*/}
+                        {/*            coordinate={marker.coordinates}*/}
+                        {/*            title={marker.title}*/}
+                        {/*            description={marker.description}*/}
+                        {/*        />*/}
+                        {/*    ))*/}
+                        {/*}*/}
                         {
 
                             getMapCoordDirections.data !== null
