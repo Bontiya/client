@@ -18,7 +18,6 @@ export const getUpcomingEvent = () => async (dispatch, state) => {
             type: event.GET_UPCOMING_EVENTS,
             data
         })
-
     } catch ({ response }) {
         dispatch({
             type: event.GET_UPCOMING_EVENTS,
@@ -83,26 +82,26 @@ export const createEvent = (event) => async (dispatch, state) => {
   }
 
 export const toggleModal = (payload) => (dispatch, state) => {
-    console.log(payload)
     dispatch({
         type: MODAL,
         data: payload
     })
 }
 
-export const inviteMember = (payload) => (dispatch, state) => {
+export const inviteMember = (payload) => async (dispatch, state) => {
     try {
         await axios({
             method: 'post',
             url: `${apiUrl}/events/${payload.eventId}/members`,
-            data: {
+            data: [{
                 userId: payload.userId,
                 role: 'guest'
-            },
+            }],
             headers: { Authorization : await AsyncStorage.getItem('token') }
         })
     } 
     catch ({ response }) {
+        console.log('error sini')
         dispatch({
             type: ERRORS,
             data: response.data.errors

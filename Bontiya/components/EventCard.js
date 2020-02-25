@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Dimensions, Image, ScrollView } from 'react-native' 
-import AddMemberModal from '../components/AddMemberModal'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+// import AddMemberModal from '../components/AddMemberModal'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleModal } from '../store/actions/eventAction'
 
@@ -11,8 +11,6 @@ const DEVICE_HEIGHT = Dimensions.get('window').height
 const EventCard = (props) => {
 
     const dispatch = useDispatch()
-
-    const general = useSelector( state => state.general )
 
     const [ date, setDate ] = useState([])
     const [ seenMembers, setSeenMembers ] = useState([])
@@ -32,7 +30,6 @@ const EventCard = (props) => {
 
     return (
         <View style={[styles.container]}>
-            <AddMemberModal eventId={props.payload._id} />
             <View style={styles.eventInfo}>
                 <View style={styles.dateContainer}>
                     <Text 
@@ -101,16 +98,17 @@ const EventCard = (props) => {
                 {
                     props.screen === 'upcoming'
                     ? 
-                    <TouchableOpacity
+                    <TouchableWithoutFeedback
                     style={
                         styles.addBtn
                     }
                     onPress={() => {
-                        dispatch(toggleModal(true))
+                        props.modalShow(props.payload._id)
+                        
                     }}>
                         <Text style={styles.plus}>+</Text>
-                    </TouchableOpacity>
-                    : null
+                    </TouchableWithoutFeedback>
+                    : <></>
                 }
             </View>
             <View style={styles.membersContainer}>

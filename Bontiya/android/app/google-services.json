@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "351150365481",
+    "firebase_url": "https://pushnotification-f4b04.firebaseio.com",
+    "project_id": "pushnotification-f4b04",
+    "storage_bucket": "pushnotification-f4b04.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351150365481:android:ad9c66449cb4c5fb0bb538",
+        "android_client_info": {
+          "package_name": "com.bontiya"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "351150365481-irhlkvda1clpc033048boraslnumdid0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQvkO6Cvtmf8KcPdiTpWe69dlhFku0ApY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "351150365481-irhlkvda1clpc033048boraslnumdid0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

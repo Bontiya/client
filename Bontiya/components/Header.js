@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Image, StyleSheet, Dimensions } from 'react-native'
-import logo from '../assets/logo.png'
+import logo from '../assets/logo-fix.png'
 
 const DEVICE_WIDTH = Dimensions.get('window').width
 const DEVICE_HEIGHT = Dimensions.get('window').height
@@ -15,9 +15,10 @@ const header = () => {
 
 const styles = StyleSheet.create({
     header: {
-        height: 50,
+        height: 30,
         flexDirection: 'column',
         justifyContent:"center",
+        alignItems: "center",
         backgroundColor:'#5676CF',
     },
     logo: {

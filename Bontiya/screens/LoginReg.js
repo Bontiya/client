@@ -42,16 +42,18 @@ const loginReg = () => {
             AsyncStorage.getItem('userId'),
             AsyncStorage.getItem('name'),
             AsyncStorage.getItem('email'),
-            AsyncStorage.getItem('token')
+            AsyncStorage.getItem('token'),
+            AsyncStorage.getItem('tokentokenFirebase')
         ]).then(result => {
           if ((result[0] && result[1]) && result[2]) {
               disptach({
                   type: ISLOGIN,
                   data: {
-                      userId: result[0],
+                      _id: result[0],
                       name: result[1],
                       email : result[2],
-                      token: result[3]
+                      token: result[3],
+                      tokentokenFirebase: result[4]
                   }
               })
           }
@@ -71,7 +73,6 @@ const loginReg = () => {
     }
     const register = () => {
         const form = { email, name, password, gender }
-        console.log(form)
         disptach(registerAction(form))
         setEmail('')
         setName('')

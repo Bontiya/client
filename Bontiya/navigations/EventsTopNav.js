@@ -16,6 +16,7 @@ function EventTopNav() {
                 labelStyle: {
                     fontFamily: 'Signika',
                     fontWeight: 'bold',
+                    marginBottom: 10,
                 },
                 activeTintColor: '#FFF',
                 indicatorStyle: {
@@ -25,7 +26,9 @@ function EventTopNav() {
                 },
                 style: {
                     elevation: 0,
-                    backgroundColor: '#5676CF'
+                    backgroundColor: '#5676CF',
+                    height: 30,
+                    justifyContent: 'center',
                 }
             }}
         >
