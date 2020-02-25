@@ -11,6 +11,7 @@ import { toggleModal } from '../store/actions/eventAction'
 const Upcoming = () => {
     const dispatch = useDispatch()
     const [eventIdTemp, setEventIdTemp] = useState(null)
+    const [members, setMembers] = useState(null)
     useUpcomingEvent()
 
     useEffect( () => {
@@ -20,8 +21,12 @@ const Upcoming = () => {
     const { event:eventSelector } = useSelector(state => state)
     const { upcomingEvents, upcomingEventsOnload } = eventSelector
 
-    const showModalAddMember = (payload) => {
+    const general = useSelector( state => state.general )
+
+    const showModalAddMember = (payload,members) => {
+        console.log(payload)
         setEventIdTemp(payload)
+        setMembers(members)
         dispatch(toggleModal(true))
     }
 

@@ -13,8 +13,23 @@ import { NavigationContainer } from '@react-navigation/native'
 import store from './store'
 import RootNavigation from './navigations/index'
 import MapsPage from "./components/maps/MapsPage";
+import messaging from '@react-native-firebase/messaging'
 
 const App: () => React$Node = () => {
+
+  useEffect( async () => {
+    if (!firebase.messaging().isRegisteredForRemoteNotifications) {
+      await firebase.messaging().registerForRemoteNotifications();
+    }
+  
+    messaging().setBackgroundMessageHandler( async remoteMessage => {
+      console.log('this is background message', remoteMessage.data)
+    })
+  
+    messaging().onMessage( async remoteMessage => {
+      console.log('this is foreground message', remoteMessage.data)
+    })
+  })
 
   return (
     <Provider store={store}>

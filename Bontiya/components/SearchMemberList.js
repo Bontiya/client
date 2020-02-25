@@ -9,13 +9,15 @@ const DEVICE_WIDTH = Dimensions.get('window').width
 const searchMemberList = (props) => {
 
     console.log(props,'INI EVENT ID LAJFKLDJFSD:KFJ:SDJ:FJ:')
+    console.log(props.members,"ini members yagn props")
 
     const dispatch = useDispatch()
 
     const handleInviteMember = () => {
         dispatch(inviteMember({
             userId: props.payload._id,
-            eventId: props.eventId
+            eventId: props.eventId,
+            members: props.members
         }))
     }
 

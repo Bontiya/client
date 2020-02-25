@@ -10,9 +10,8 @@ const DEVICE_HEIGHT = Dimensions.get('window').height
 
 const addMemberModal = (props) => {
 
-  console.log(props.eventId,"INI EVENT ID")
-
     const dispatch = useDispatch()
+    console.log(props.members,'INI MEMBERS')
 
     const general = useSelector(state => state.general)
     const user = useSelector(state => state.user)
@@ -60,7 +59,7 @@ const addMemberModal = (props) => {
             />
             <FlatList 
               data={temp}
-              renderItem={({item}) => <SearchMemberList eventId={props.eventId} payload={item} />}
+              renderItem={({item}) => <SearchMemberList members={props.members} eventId={props.eventId} payload={item} />}
               keyExtractor={ item => item._id}
               style={{elevation:4}}
             />
