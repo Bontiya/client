@@ -12,14 +12,14 @@ import {
 import { Icon } from 'react-native-elements'
 import { RNCamera } from 'react-native-camera'
 import { googleVision } from '../store/actions/eventAction'
+import { changeStatusKey } from '../store/actions/eventAction'
 
-function CameraModal({visible, setVisible }) {
+function CameraModal({visible, setVisible, spell, member_id }) {
   const [backCam, setBackCam] = useState(true)
   const [showAnalyze, setShowAnalyze] = useState(false)
   const [photoUri, setPhotoUri] = useState('')
-  const [isReady, setIsReady] = useState(false)
   const dispatch = useDispatch()
-  const { gVisResult } = useSelector(state => state.event)
+  const { gVisResult, isReady } = useSelector(state => state.event)
 
   useEffect(() => {
     if (gVisResult) {
@@ -37,10 +37,9 @@ function CameraModal({visible, setVisible }) {
   };
 
   function readyChecker() {
-    if (JSON.stringify(gVisResult).includes('bottle')) {
-      setIsReady(true)
-    } else {
-      setIsReady(false)
+    if (JSON.stringify(gVisResult).includes(spell)) {
+      console.log(member_id, '%%%%%%%%%%%%')
+      dispatch(changeStatusKey(member_id))
     }
   }
 
@@ -79,7 +78,7 @@ function CameraModal({visible, setVisible }) {
                   type='material-icons'
                   size={60}
                 />
-                <Text style={{alignSelf: 'center', fontSize: 15, fontWeight: 'bold'}}>Please take a picture of a 'bottle'</Text>
+                <Text style={{alignSelf: 'center', fontSize: 15, fontWeight: 'bold'}}>Please take a picture of a {spell}</Text>
                 <TouchableOpacity
                   style={styles.btn}
                   onPress={() => setShowAnalyze(false)}
@@ -110,7 +109,7 @@ function CameraModal({visible, setVisible }) {
     }
     return (
       <View>
-        <Text style={{fontSize: 15, fontWeight: 'bold'}}>Please Take a Picture of a Car</Text>
+        <Text style={{fontSize: 15, fontWeight: 'bold'}}>Please Take a Picture of a {spell} </Text>
         <RNCamera
           style={styles.preview}
           type={backCam ? RNCamera.Constants.Type.back : RNCamera.Constants.Type.front}

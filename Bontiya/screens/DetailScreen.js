@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { 
   View, 
   Text, 
@@ -14,8 +14,11 @@ import { useTimer } from 'react-timer-hook'
 import { RNCamera } from 'react-native-camera'
 import CameraModal from '../components/CameraModal'
 import MembersModal from '../components/MembersModal'
+import { useSelector } from 'react-redux'
+import IconFA from 'react-native-vector-icons/FontAwesome';
 
-function DetailScreen() {
+function DetailScreen(props) {
+  const { name: eventName,  description, time, location, members, key } = props.route.params.data
   const [membersModal, setMembersModal] = useState(false)
   const [cameraModal, setCameraModal] = useState(false)
   const {
@@ -30,75 +33,119 @@ function DetailScreen() {
   } = useTimer({ 
     expiryTimestamp: new Date().setSeconds(new Date().getSeconds() + 600)
   })
+  const { _id } = useSelector(state => state.general.isLogged)
+  // const { readyToGo } = useSelector(state => state.event)
+  const [readyToGo, setReadyToGo] = useState(false)
+  
+  useEffect(() => {
+    if (!_id) {
+      console.log('Please log in')
+    }
+    let memberObj = members.filter(member => member.user._id === _id)
+    if (memberObj[0].statusKey) {
+      setReadyToGo(true)
+    }
+  }, [_id])
+
+  function dateFormatter() {
+    let formattedDate = new Date(time).toLocaleString().split(' ')
+    // return formattedDate
+    return `${formattedDate[0]} ${formattedDate[2]}, ${formattedDate[1]}`
+  }
+
+  function timeFormatter() {
+    return new Date(time).toLocaleString().split(' ')[3].slice(0, 5)
+  }
+
+  function calendarInput() {
+    return `${new Date(time).getFullYear()}-${new Date(time).getMonth() + 1}-${new Date(time).getDate()} ${new Date(time).toLocaleString().split(' ')[3].slice(0, 5)}`
+  }
+
+  function getMyMemberId() {
+    let memberObj = members.filter(member => member.user._id === _id)
+    if (memberObj[0]) {
+      return memberObj[0]._id
+    }
+  }
 
   return (
     <View style={styles.container}>
-      <View style={styles.upper}>
-        
-        <View>
-          <Text style={styles.title}>Event Name</Text>
-          <View style={styles.upper_detail}>
-            <View style={styles.icon_wrapper}>
-              <Icon
-                name='location'
-                type='octicon'
-                color='white'
-                size={15}
-              />
-            </View>
-            <Text style={styles.upper_text}>February 28, 2020</Text>
-          </View>
-          <View style={styles.upper_detail}>
-            <View style={styles.icon_wrapper}>
-              <Icon
-                name='calendar'
-                type='octicon'
-                color='white'
-                size={15}
-              />
-            </View>
-            <Text style={styles.upper_text}>Hacktiv8 Indonesia</Text>
-          </View>
-          <View style={styles.upper_detail}>
-            <View style={styles.icon_wrapper}>
-              <Icon
-                name='alarm'
-                type='ion-icons'
-                color='white'
-                size={15}
-              />
-            </View>
-            <Text style={styles.upper_text}>19.30</Text>
-          </View>
-        </View>
-
-        <View style={{width: 140, height: 100}}>
-          <Image style={{width: '100%', height: '100%', resizeMode: 'contain'}} source={require('../assets/time.png')} />
-        </View>
-
-      </View>
-
       <ScrollView style={styles.lower}>
+
+        <View style={styles.upper}>
+          
+          <View>
+            <Text style={styles.title}>{eventName}</Text>
+            <View style={styles.upper_detail}>
+              <View style={styles.icon_wrapper}>
+                <IconFA
+                  name='map-marker'
+                  color='white'
+                  size={15}
+                  style={{alignSelf: 'center'}}
+                />
+              </View>
+              <Text style={styles.upper_text}>{location.name}</Text>
+            </View>
+            <View style={styles.upper_detail}>
+              <View style={[styles.icon_wrapper]}>
+                <IconFA
+                  name='calendar'
+                  color='white'
+                  size={15}
+                  style={{alignSelf: 'center'}}
+                />
+              </View>
+              <Text style={styles.upper_text}>{dateFormatter()}</Text>
+            </View>
+            <View style={styles.upper_detail}>
+              <View style={[styles.icon_wrapper]}>
+                <Icon
+                  name='alarm'
+                  color='white'
+                  size={15}
+                />
+              </View>
+              <Text style={styles.upper_text}>{timeFormatter()}</Text>
+            </View>
+          </View>
+
+          <View style={{width: 140, height: 100}}>
+            <Image style={{width: '100%', height: '100%', resizeMode: 'contain'}} source={require('../assets/time.png')} />
+          </View>
+
+        </View>
+
+        <View style={[styles.card, {height: 100, padding: 10}]}>
+          <Text style={{fontWeight: 'bold'}}>What's this event about?</Text>
+          <Text style={{padding: 10}}>{description}</Text>
+          {/* <Text>{Object.keys(props.route.params.data.members[0])}</Text> */}
+        </View>
           <CameraModal
             visible={cameraModal}
             setVisible={setCameraModal}
+            spell={key}
+            member_id={getMyMemberId()}
           />
-
           <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-            <View style={[styles.card, {width: 150, marginRight: 10, padding: 20, justifyContent:'space-between'}]}>
-            <Text style={{fontSize: 18, fontWeight: 'bold'}}>Confirm Readiness</Text>
+            <View style={[styles.card, {width: 145, marginRight: 10, padding: 20, justifyContent:'space-between'}]}>
+            <Text style={{fontSize: 18, fontWeight: 'bold'}}>{ readyToGo ? 'You are set!' : 'Confirm Readiness'}</Text>
             <TouchableOpacity
               onPress={() => {
-                setCameraModal(true)
+                readyToGo ? setCameraModal(false) : setCameraModal(true)
               }}
             >
               <View style={{width: '100%'}}>
-                <Image style={{width: '100%', height: 100,  resizeMode: 'contain'}} source={require('../assets/cam.png')} />
+                {
+                  readyToGo
+                  ? <Image style={{width: '100%', height: 100,  resizeMode: 'contain'}} source={require('../assets/ok.png')} />
+                  : <Image style={{width: '100%', height: 100,  resizeMode: 'contain'}} source={require('../assets/cam.png')} />
+                }
               </View>
             </TouchableOpacity>
             </View>
           
-            <View style={[styles.card, {width: 150, padding: 20, justifyContent:'space-between'}]}>
+            <View style={[styles.card, {width: 145, padding: 20, justifyContent:'space-between'}]}>
               <Text style={{fontSize: 18, fontWeight: 'bold'}}>Time Estimation</Text>
               <View style={{flexDirection: 'row'}}>
                 <View style={{justifyContent: 'center'}}>
@@ -120,16 +167,16 @@ function DetailScreen() {
                 style={styles.btn}
                 onPress={() => {
                   SendIntentAndroid.addCalendarEvent({
-                    title: "Go To The Park",
-                    description: "It's fun to play at the park.",
-                    startDate: "2020-03-25 10:00",
-                    endDate: "2020-03-25 11:00",
+                    title: eventName,
+                    description,
+                    startDate: calendarInput(),
+                    endDate: calendarInput(),
                     recurrence: "weekly",
                     location: "The Park",
                   });
                 }}
                 >
-                <Text style={{color: '#fff'}}>Set Alarm</Text>
+                <Text style={{color: '#fff'}}>Set Reminder</Text>
               </TouchableOpacity>
             </View>
 
@@ -144,17 +191,65 @@ function DetailScreen() {
 
         <TouchableOpacity
           onPress={() => setMembersModal(true)} 
-          style={[styles.card, styles.members]}>
-          <MembersModal visible={membersModal} setVisible={setMembersModal} />
-          <Text style={{fontSize: 18}}>Members</Text>
-          <Text>Nama</Text>
-          <Text>Nama</Text>
-          <Text>Nama</Text>
-          <Text>Nama</Text>
-          <Text>Nama</Text>
-          <Text>Nama</Text>
-          <Text>Nama</Text>
-          <Text>Nama</Text>
+          style={[styles.card, styles.members, {padding: 15, backgroundColor: '#F5F7FF'}]}>
+          <MembersModal visible={membersModal} setVisible={setMembersModal} members={members}/>
+          <Text style={{fontSize: 18, fontWeight: 'bold', marginBottom: 5}}>Members</Text>
+          <View style={{flexDirection: 'row', height: 150}}>
+            <View style={{width: 100, flex: 1}}>
+              <Image style={{width: '100%', height: '100%', resizeMode: 'contain'}} source={require('../assets/peoplee.png')} />
+            </View>
+            <View style={{paddingHorizontal: 15, flex: 1}}>
+              <View style={{flexDirection: 'row', marginBottom: 5}}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <IconFA
+                    name='circle'
+                    color='green'
+                    size={10}
+                  />
+                  <Text style={{fontSize: 10}}>Ready</Text>
+                </View>
+                <View style={{flexDirection: 'row', alignItems: 'center',  marginLeft: 10}}>
+                  <IconFA
+                    name='circle'
+                    color='red'
+                    size={10}
+                  />
+                  <Text style={{fontSize: 10}}>Not Ready</Text>
+                </View>
+              </View>
+            {
+              members.map((member, i) => {
+                if (i < 4) {
+                  return (
+                    <View style={{width: '100%', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
+                      {
+                        member.statusKey
+                        ? (
+                          <IconFA
+                            name='circle'
+                            color='green'
+                            size={10}
+                          />
+                        )
+                        : (
+                          <IconFA
+                            name='circle'
+                            color='red'
+                            size={10}
+                          />
+                        )
+                      }
+                      <Text style={{textAlign: 'right', marginLeft: 5, marginBottom: 5}} key={i}>{member.user.name}</Text>
+                    </View>
+                  )
+                }
+                if (i === members.length - 1 && i > 4) {
+                  return <Text style={{fontSize: 10, alignSelf: 'flex-end'}}>See {i - 4} more members</Text>
+                }
+              })
+            }
+            </View>
+          </View>
         </TouchableOpacity>
       </ScrollView>      
     </View>
@@ -166,6 +261,7 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#EAEDF2',
     height: '100%',
+    marginTop: -10
   },
   title: {
     color: '#343B48',
@@ -191,6 +287,7 @@ const styles = StyleSheet.create({
     borderBottomStartRadius: 20,
     flexDirection: 'row',
     justifyContent:'space-between',
+    marginBottom: 20
   },
   upper_detail: {
     flexDirection: 'row'
@@ -210,7 +307,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#4A80E3',
     borderRadius: 5,
     marginBottom:10,
-    padding: 15
+    padding: 10
   },
   lower: {
     paddingTop: 10
