@@ -14,29 +14,21 @@ import { useTimer } from 'react-timer-hook'
 import { RNCamera } from 'react-native-camera'
 import CameraModal from '../components/CameraModal'
 import MembersModal from '../components/MembersModal'
-import { useSelector } from 'react-redux'
-import IconFA from 'react-native-vector-icons/FontAwesome';
-import MapsPreview from "../components/maps/MapsPreview";
+import { useSelector, useDispatch } from 'react-redux'
+import IconFA from 'react-native-vector-icons/FontAwesome'
+import { getTimeEstimation } from '../store/actions/memberAction'
+import MyTimer from '../components/Timer'
 
 function DetailScreen(props) {
   const { name: eventName,  description, time, location, members, key } = props.route.params.data
   const [membersModal, setMembersModal] = useState(false)
   const [cameraModal, setCameraModal] = useState(false)
-  const {
-    seconds,
-    minutes,
-    hours,
-    days,
-    start,
-    pause,
-    resume,
-    restart,
-  } = useTimer({ 
-    expiryTimestamp: new Date().setSeconds(new Date().getSeconds() + 600)
-  })
+  
   const { _id } = useSelector(state => state.general.isLogged)
   // const { readyToGo } = useSelector(state => state.event)
   const [readyToGo, setReadyToGo] = useState(false)
+  const { timeEstimation } = useSelector(state => state.member)
+  const dispatch = useDispatch()
   
   useEffect(() => {
     if (!_id) {
@@ -46,7 +38,8 @@ function DetailScreen(props) {
     if (memberObj[0].statusKey) {
       setReadyToGo(true)
     }
-  }, [_id])
+    dispatch(getTimeEstimation(getMyLatLong(), getEventLatLong()))
+  }, [_id, timeEstimation])
 
   function dateFormatter() {
     let formattedDate = new Date(time).toLocaleString().split(' ')
@@ -62,11 +55,19 @@ function DetailScreen(props) {
     return `${new Date(time).getFullYear()}-${new Date(time).getMonth() + 1}-${new Date(time).getDate()} ${new Date(time).toLocaleString().split(' ')[3].slice(0, 5)}`
   }
 
-  function getMyMemberId() {
+  function getMyMember() {
     let memberObj = members.filter(member => member.user._id === _id)
     if (memberObj[0]) {
-      return memberObj[0]._id
+      return memberObj[0]
     }
+  }
+
+  function getMyLatLong() {
+    return `${getMyMember().location.lat},${getMyMember().location.lon}`
+  }
+
+  function getEventLatLong() {
+    return `${location.lat},${location.lon}`
   }
 
   return (
@@ -120,13 +121,13 @@ function DetailScreen(props) {
         <View style={[styles.card, {height: 100, padding: 10}]}>
           <Text style={{fontWeight: 'bold'}}>What's this event about?</Text>
           <Text style={{padding: 10}}>{description}</Text>
-          {/* <Text>{Object.keys(props.route.params.data.members[0])}</Text> */}
+          <Text>{timeEstimation}</Text>
         </View>
           <CameraModal
             visible={cameraModal}
             setVisible={setCameraModal}
             spell={key}
-            member_id={getMyMemberId()}
+            member_id={getMyMember()._id}
           />
           <View style={{flexDirection: 'row', alignSelf: 'center'}}>
             <View style={[styles.card, {width: 145, marginRight: 10, padding: 20, justifyContent:'space-between'}]}>
@@ -148,22 +149,11 @@ function DetailScreen(props) {
           
             <View style={[styles.card, {width: 145, padding: 20, justifyContent:'space-between'}]}>
               <Text style={{fontSize: 18, fontWeight: 'bold'}}>Time Estimation</Text>
-              <View style={{flexDirection: 'row'}}>
-                <View style={{justifyContent: 'center'}}>
-                  <Text style={styles.hour}>{hours}</Text>
-                  <Text style={{fontSize: 8}}>Hours</Text>
-                </View>
-                <Text style={styles.hour}> : </Text>
-                <View style={{justifyContent: 'center'}}>
-                  <Text style={styles.hour}>{minutes}</Text>
-                  <Text style={{fontSize: 8}}>Minutes</Text>
-                </View>
-                <Text style={styles.hour}> : </Text>
-                <View style={{justifyContent: 'center'}}>
-                  <Text style={styles.hour}>{seconds}</Text>
-                  <Text style={{fontSize: 8}}>Seconds</Text>
-                </View>
-              </View>
+              {
+                timeEstimation
+                ? <MyTimer timeInput={timeEstimation} time={time} />
+                : <Text>Couldn't determine time estimation</Text>
+              }
               <TouchableOpacity
                 style={styles.btn}
                 onPress={() => {

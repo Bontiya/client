@@ -43,7 +43,27 @@ export const updateStatusInvited = (form, memberId) => async (dispatch, state) =
         });
         dispatch(getStatusInvitedPending())
     } catch (error) {
-        console.log(error)
+        const { response } = error
+        if (response?.data) {
+            dispatch({
+                type: ERRORS,
+                data: response.data.errors
+            })
+        }   
+    }
+}
+
+export const getTimeEstimation = (myLoc, eventLoc) => async (dispatch, state) =>  {
+    try {
+        const { data } = await axios({
+            method: 'get',
+            url: `${apiUrl}/locations/duration?origins=${myLoc}&destination=${eventLoc}`
+        });
+        dispatch({
+            type: member.GET_TIME_EST,
+            data: data.duration.seconds
+        })
+    } catch (error) {
         const { response } = error
         if (response?.data) {
             dispatch({
