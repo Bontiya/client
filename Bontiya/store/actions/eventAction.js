@@ -1,5 +1,5 @@
 import axios from "axios";
-import { event, ERRORS, GET_GOOGLE_VISIONS_RESULT, CHANGE_STATUS_KEY } from "../actionTypes";
+import { event, ERRORS, GET_GOOGLE_VISIONS_RESULT, CHANGE_STATUS_KEY, MODAL } from "../actionTypes";
 import { apiUrl } from '../urlTypes';
 import { AsyncStorage } from 'react-native';
 
@@ -18,16 +18,18 @@ export const getUpcomingEvent = () => async (dispatch, state) => {
             type: event.GET_UPCOMING_EVENTS,
             data
         })
-    } catch ({ response }) {
+
+    } catch (error) {
+        const { response } = error
         dispatch({
             type: event.GET_UPCOMING_EVENTS,
             data: []
         })
-        if (response) {
+        if (response?.data) {
             dispatch({
                 type: ERRORS,
                 data: response.data.errors
-            })
+            })   
         }
     }
 }
@@ -49,7 +51,8 @@ export const getPastEvent = () => async (dispatch, state) => {
             data
         })
 
-    } catch ({ response }) {
+    } catch (error) {
+        const { response } = error
         dispatch({
             type: event.GET_PAST_EVENTS,
             data: []
@@ -110,6 +113,12 @@ export const inviteMember = (payload) => async (dispatch, state) => {
             type: ERRORS,
             data: response.data.errors
         })
+        if (response?.data) {
+            dispatch({
+                type: ERRORS,
+                data: response.data.errors
+            })   
+        }
     }
 }
 
