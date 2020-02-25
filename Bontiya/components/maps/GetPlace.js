@@ -19,6 +19,8 @@ const GetPlace = () => {
     const getPlace = useSelector(state => state.getPlace);
     const dispatch = useDispatch();
 
+    console.log(getPlace.data);
+
     const onChangeTextInput = (text) => {
         setTextSearch(text);
         if (text.length < 3) {

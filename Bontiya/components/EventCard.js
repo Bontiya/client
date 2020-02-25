@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Dimensions, Image, ScrollView } from 'react-native' 
-// import AddMemberModal from '../components/AddMemberModal'
+import { View, Text, StyleSheet, Dimensions, Image, ScrollView, TouchableOpacity } from 'react-native'
+import AddMemberModal from '../components/AddMemberModal'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleModal } from '../store/actions/eventAction'
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     addBtn: {
         paddingVertical: 6,
         paddingHorizontal: 12,
-        marginTop: 0.01 * DEVICE_HEIGHT,
+        // marginTop: 0.01 * DEVICE_HEIGHT,
         borderRadius: 99,
         backgroundColor: '#B9E5EB',
         marginTop: -0.005 * DEVICE_HEIGHT,

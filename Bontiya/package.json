@@ -25,6 +25,7 @@
     "react-native-camera": "^3.18.0",
     "react-native-elements": "^1.2.7",
     "react-native-gesture-handler": "^1.6.0",
+    "react-native-get-location": "^1.4.2",
     "react-native-maps": "0.26.1",
     "react-native-modal-datetime-picker": "^8.4.0",
     "react-native-paper": "^3.6.0",
