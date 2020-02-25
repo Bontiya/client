@@ -7,7 +7,7 @@ import LogReg from '../screens/LoginReg'
 import Profile from '../screens/Profile'
 import Inbox from '../screens/Inbox';
 import { getStatusInvitedPending } from "../store/actions/memberAction";
-
+import pushNotif from "../helpers/pushNotif";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -21,6 +21,8 @@ function RootNavigation() {
   if (general.isLogged) {
     const { socket, isLogged } = general
     socket.on(`${isLogged._id} StatusInvitedPending`, resp => {
+      console.log('how many listening')
+      pushNotif('Bontiya', 'hey, someone have inited you!!')
       dispatch(getStatusInvitedPending())
     })
   }
