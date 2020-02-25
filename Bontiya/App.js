@@ -30,10 +30,9 @@ const App: () => React$Node = () => {
 
   return (
     <Provider store={store}>
-      {/*<NavigationContainer>*/}
-      {/*  <RootNavigation />*/}
-      {/*</NavigationContainer>*/}
-      <MapsPage/>
+      <NavigationContainer>
+        <RootNavigation />
+      </NavigationContainer>
     </Provider>
   );
 };
