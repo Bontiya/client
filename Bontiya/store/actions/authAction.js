@@ -99,6 +99,7 @@ export const _connetSocket = () => {
 const updateTokenFirebase = async (token,dispatch,user) => {
     try {
         const tokenFirebase = await firebase.messaging().getToken()
+        console.log(tokenFirebase)
         await AsyncStorage.setItem('tokenFirebase', tokenFirebase)
         axios({
             method: 'post',
