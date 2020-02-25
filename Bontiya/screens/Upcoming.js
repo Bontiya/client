@@ -10,6 +10,7 @@ import { toggleModal } from '../store/actions/eventAction'
 const Upcoming = () => {
     const dispatch = useDispatch()
     const [eventIdTemp, setEventIdTemp] = useState(null)
+    const [members, setMembers] = useState(null)
     useUpcomingEvent()
 
     useEffect( () => {
@@ -21,9 +22,10 @@ const Upcoming = () => {
 
     const general = useSelector( state => state.general )
 
-    const showModalAddMember = (payload) => {
+    const showModalAddMember = (payload,members) => {
         console.log(payload)
         setEventIdTemp(payload)
+        setMembers(members)
         dispatch(toggleModal(true))
     }
 
@@ -49,7 +51,7 @@ const Upcoming = () => {
                     return <EventCard key={i} screen={'upcoming'} payload={event} modalShow={showModalAddMember} />
                 })
             }
-            <AddMemberModal eventId={eventIdTemp} />
+            <AddMemberModal eventId={eventIdTemp} members={members} />
             <View style={{marginBottom:10}}></View>
         </ScrollView>
     )

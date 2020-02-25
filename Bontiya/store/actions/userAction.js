@@ -10,7 +10,6 @@ export const getAllUser = () => async (dispatch, state) => {
             url: `${apiUrl}/users`,
             headers: { Authorization: await AsyncStorage.getItem('token') }
         })
-        console.log(data)
         dispatch({
             type: GET_ALL_USER,
             data

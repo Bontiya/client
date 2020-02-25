@@ -1,5 +1,5 @@
 import axios from "axios";
-import { event, ERRORS, GET_GOOGLE_VISIONS_RESULT, CHANGE_STATUS_KEY } from "../actionTypes";
+import { event, ERRORS, GET_GOOGLE_VISIONS_RESULT, CHANGE_STATUS_KEY, MODAL } from "../actionTypes";
 import { apiUrl } from '../urlTypes';
 import { AsyncStorage } from 'react-native';
 
@@ -94,12 +94,15 @@ export const toggleModal = (payload) => (dispatch, state) => {
 
 export const inviteMember = (payload) => async (dispatch, state) => {
     try {
+        const membersFirebaseToken = await getMemberTokens(payload.members)
+        console.log(membersFirebaseToken)
         await axios({
             method: 'post',
             url: `${apiUrl}/events/${payload.eventId}/members`,
             data: [{
                 userId: payload.userId,
-                role: 'guest'
+                role: 'guest',
+                membersFirebaseToken
             }],
             headers: { Authorization : await AsyncStorage.getItem('token') }
         })
@@ -162,4 +165,13 @@ export const changeStatusKey = (memberId) => async (dispatch, state) => {
         //     data: response.data.errors
         // })
     }
+}
+
+const getMemberTokens = async (members) => {
+    let firebaseTokens = []
+    for( let member of members ) {
+        if( member.user.tokenDeviceFirebase ) firebaseTokens.push( member.user.tokenDeviceFirebase )
+    }
+    console.log(firebaseTokens,'FIREBASETOKENS')
+    return firebaseTokens
 }
