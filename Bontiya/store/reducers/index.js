@@ -11,7 +11,6 @@ import {
 import {
     user
 } from './userReducer'
-import member from "./memberReducer";
 
 const initalState = {
     isLogged: null,

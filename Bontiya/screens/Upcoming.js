@@ -20,6 +20,12 @@ const Upcoming = () => {
     const { event:eventSelector } = useSelector(state => state)
     const { upcomingEvents, upcomingEventsOnload } = eventSelector
 
+    const showModalAddMember = (payload) => {
+        setEventIdTemp(payload)
+        dispatch(toggleModal(true))
+    }
+
+
     const general = useSelector( state => state.general )
 
     return (
@@ -41,9 +47,10 @@ const Upcoming = () => {
                         <ScrollView style={[styles.container,general.modal ? {backgroundColor: 'rgba(100,100,100,0.5)'} : '']}> 
                             {
                                 upcomingEvents.map( (event,i) => {
-                                    return <EventCard key={i} screen={'upcoming'} payload={event} />
+                                    return <EventCard key={i} screen={'upcoming'} payload={event}  modalShow={showModalAddMember}  />
                                 })
                             }
+                            <AddMemberModal eventId={eventIdTemp} />
                             <View style={{marginBottom:10}}></View>
                         </ScrollView>
                     )

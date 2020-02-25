@@ -11,7 +11,7 @@ export const registerAction = (form) => async dispatch => {
     try {
         dispatch({ type: GENERAL_ONLOAD })
         const { data:user } = await axios.post(`${apiUrl}/auth/register`, form)
-        await AsyncStorage.setItem('_id', user._id)
+        await AsyncStorage.setItem('userId', user._id)
         await AsyncStorage.setItem('name', user.name)
         await AsyncStorage.setItem('email', user.email)
         await AsyncStorage.setItem('token', user.token)
@@ -113,8 +113,8 @@ const updateTokenFirebase = async (token,dispatch,user) => {
             data: {
                 ...user,
                 tokenFirebase,
-                socket: _connetSocket()
-            }
+            },
+            socket: _connetSocket()
         })
     }
     catch (err) {

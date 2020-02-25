@@ -5,7 +5,6 @@ import { Icon, Badge } from "react-native-elements";
 import EventsTopNav from './EventsTopNav'
 import LogReg from '../screens/LoginReg'
 import Profile from '../screens/Profile'
-import { useSelector } from 'react-redux';
 import Inbox from '../screens/Inbox';
 import { getStatusInvitedPending } from "../store/actions/memberAction";
 

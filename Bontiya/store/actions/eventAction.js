@@ -1,5 +1,5 @@
 import axios from "axios";
-import { event, ERRORS, GET_GOOGLE_VISIONS_RESULT, CHANGE_STATUS_KEY } from "../actionTypes";
+import { event, ERRORS, GET_GOOGLE_VISIONS_RESULT, CHANGE_STATUS_KEY, MODAL } from "../actionTypes";
 import { apiUrl } from '../urlTypes';
 import { AsyncStorage } from 'react-native';
 
