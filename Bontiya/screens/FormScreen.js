@@ -7,6 +7,7 @@ import {createEvent} from '../store/actions/eventAction'
 import LocationModal from '../components/LocationModal'
 import KeyModal from '../components/KeyModal'
 import {getDirections} from "../store/actions/mapsAction";
+import Maps from "../components/maps/Maps";
 
 function Form() {
     const [eventName, setEventName] = useState('')
@@ -46,24 +47,20 @@ function Form() {
         setDatePickerVisibility(false);
     };
 
-    const handleConfirm = date => {
-        setDate(date)
-        hideDatePicker();
-    };
+  const hideTimePicker = () => {
+    setTimePickerVisibility(false);
+  };
+ 
+  const handleConfirmTime = time => {
+    setTime(time)
+    hideTimePicker();
+  }
 
-    const showTimePicker = () => {
-        setTime('')
-        setTimePickerVisibility(true);
-    };
+  const showTimePicker = () => {
+    setTime('')
+    setTimePickerVisibility(true);
+};
 
-    const hideTimePicker = () => {
-        setTimePickerVisibility(false);
-    };
-
-    const handleConfirmTime = time => {
-        setTime(time)
-        hideTimePicker();
-    };
 
     const submitKey = () => {
         console.log('aa')
@@ -183,13 +180,10 @@ function Form() {
                             marginBottom: 0
                         }]}>
                         <Text style={styles.picker_form}>
-                            {eventLocation.title}
+                            {eventLocation.title || "Location"}
                         </Text>
                     </TouchableOpacity>
                 </View>
-                {
-                    locPreviewRender()
-                }
 
                 <View style={styles.form_row}>
                     <View style={styles.icon_wrapper}>

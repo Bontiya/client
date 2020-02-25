@@ -13,7 +13,8 @@ import {
 } from 'react-redux';
 import {
     getDirections,
-    reverseGeolocation
+    reverseGeolocation,
+    searchPlace,
 } from '../../store/actions/mapsAction';
 
 const {width, height} = Dimensions.get('window');
@@ -29,42 +30,39 @@ const Maps = () => {
     const getMapCoordDirections = useSelector(state => state.getMapCoordDirections);
     const getReverseGeoLocation = useSelector(state => state.getReverseGeoLocation);
     const getLangLong = useSelector(state => state.getLatLong);
+    const [watchId, setWatchId] = useState("");
     const dispatch = useDispatch();
-    let eventLocation = {};
-
-    if (getMapCoordDirections.data !== null) {
-        console.log(getMapCoordDirections.data.errors === undefined);
-    }
+    const [eventLocation, setEventLocation] = useState(
+        {
+            id: "",
+            title: "",
+            description: "",
+            coordinates: {
+                latitude: "",
+                longitude: "",
+                latitudeDelta: LATITUDE_DELTA,
+                longitudeDelta: LONGITUDE_DELTA
+            }
+        }
+    );
 
     if (getLangLong.data !== null) {
-        eventLocation = {
-            id: getLangLong.data.id,
-            title: getLangLong.data.name,
-            description: getLangLong.data.description,
-            coordinates: {
-                latitude: getLangLong.data.lat,
-                longitude: getLangLong.data.lon,
-                latitudeDelta: LATITUDE_DELTA,
-                longitudeDelta: LONGITUDE_DELTA
-            }
-        };
-
         if (getLangLong.data.id !== locId) {
-            dispatch(getDirections(getReverseGeoLocation.data[1], getLangLong.data.name));
+            setEventLocation({
+                id: getLangLong.data.id,
+                title: getLangLong.data.name,
+                description: getLangLong.data.description,
+                coordinates: {
+                    latitude: getLangLong.data.lat,
+                    longitude: getLangLong.data.lon,
+                    latitudeDelta: LATITUDE_DELTA,
+                    longitudeDelta: LONGITUDE_DELTA
+                }
+            });
+            // console.log(currentLocation.name, "name");
+            dispatch(getDirections(currentLocation.name, getLangLong.data.name));
             setLocId(getLangLong.data.id)
         }
-    } else {
-        eventLocation = {
-            id: "1234",
-            title: "Hacktiv8",
-            description: "Hacktiv8",
-            coordinates: {
-                latitude: -6.2607134,
-                longitude: 106.7794275,
-                latitudeDelta: LATITUDE_DELTA,
-                longitudeDelta: LONGITUDE_DELTA
-            }
-        };
     }
 
     const memberLocation = [
@@ -89,33 +87,88 @@ const Maps = () => {
         },
     ];
 
+    const isSetLocName = () => {
+        if (getReverseGeoLocation.data !== null && locNameStatus === true) {
+            // dispatch(getDirections(getReverseGeoLocation.data[0], eventLocation.title));
+
+            setCurrentLocation({
+                name: getReverseGeoLocation.data[0],
+                coordinates: {
+                    latitude: currentLocation.coordinates.latitude,
+                    longitude: currentLocation.coordinates.longitude,
+                    latitudeDelta: LATITUDE_DELTA,
+                    longitudeDelta: LONGITUDE_DELTA
+                }
+            });
+
+            setLocNameStatus(false);
+        }
+    };
+
     const findCoordinates = () => {
         Geolocation.getCurrentPosition(position => {
                 setCurrentLocation({
+                    name: "",
                     coordinates: {
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude,
                         latitudeDelta: LATITUDE_DELTA,
                         longitudeDelta: LONGITUDE_DELTA
                     }
-                })
+                });
+                dispatch(reverseGeolocation(position.coords.latitude, position.coords.longitude));
             },
             error => console.log({error}),
             {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
         );
     };
 
-    const isSetLocName = () => {
-        if (getReverseGeoLocation.data !== null && locNameStatus === true) {
-            dispatch(getDirections(getReverseGeoLocation.data[1], eventLocation.title));
-            setLocNameStatus(false);
+    // const watchPosition = () => {
+    //     let watchId = Geolocation.watchPosition(position => {
+    //             setCurrentLocation({
+    //                 name: "",
+    //                 coordinates: {
+    //                     latitude: position.coords.latitude,
+    //                     longitude: position.coords.longitude,
+    //                     latitudeDelta: LATITUDE_DELTA,
+    //                     longitudeDelta: LONGITUDE_DELTA
+    //                 }
+    //             });
+    //             dispatch(reverseGeolocation(position.coords.latitude, position.coords.longitude));
+    //             setWatchId(watchId)
+    //         },
+    //         error => console.log({error}),
+    //         {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    //     );
+    // };
+
+    const onPressMap = (position) => {
+
+        console.log(getReverseGeoLocation.data.join(" "))
+
+        const {coordinate} = position.nativeEvent;
+        dispatch(reverseGeolocation(coordinate.latitude, coordinate.longitude));
+        if (getReverseGeoLocation.data[0] !== undefined) {
+            dispatch(searchPlace(getReverseGeoLocation.data.join(" ")))
+            setEventLocation({
+                id: "getLangLong.data.id",
+                title: getReverseGeoLocation.data[1],
+                description: getReverseGeoLocation.data[1],
+                coordinates: {
+                    latitude: coordinate.latitude,
+                    longitude: coordinate.longitude,
+                    latitudeDelta: LATITUDE_DELTA,
+                    longitudeDelta: LONGITUDE_DELTA
+                }
+            });
         }
     };
 
     useEffect(() => {
         findCoordinates();
-        dispatch(reverseGeolocation(-6.2372422, 106.7803338));
     }, [isSetLocName()]);
+
+    useEffect(() => () => Geolocation.clearWatch(watchId), []);
 
     return (
         <>
@@ -128,28 +181,31 @@ const Maps = () => {
                         followUserLocation={true}
                         zoomEnabled={true}
                         region={
-                            eventLocation.coordinates
+                            currentLocation.coordinates
                         }
+                        onPress={onPressMap}
                     >
-                        <Marker
+                        <Marker.Animated
                             coordinate={
                                 currentLocation.coordinates
                             }
-                            title={eventLocation.title}
-                            description={eventLocation.description}
-                        />
-
-                        <Marker
-                            coordinate={
-                                eventLocation.coordinates
-                            }
-                            title={eventLocation.title}
-                            description={eventLocation.description}
                         />
 
                         {
+                            eventLocation.coordinates.latitude !== ""
+                                ? <Marker.Animated
+                                    coordinate={
+                                        eventLocation.coordinates
+                                    }
+                                    title={eventLocation.title}
+                                    description={eventLocation.description}
+                                />
+                                : <></>
+                        }
+
+                        {
                             memberLocation.map(marker => (
-                                <Marker
+                                <Marker.Animated
                                     coordinate={marker.coordinates}
                                     title={marker.title}
                                     description={marker.description}

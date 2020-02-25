@@ -21,34 +21,9 @@ import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native'
 import store from './store'
 import RootNavigation from './navigations/index'
-// import LogReg from './screens/LoginReg'
-// import { firebase } from '@react-native-firebase/messaging'
+import MapsPage from "./components/maps/MapsPage";
 
 const App: () => React$Node = () => {
-
-  // const messaging = firebase.messaging()
-
-  // useEffect( async () => {
-  //   if (!firebase.messaging().isRegisteredForRemoteNotifications) {
-  //     await firebase.messaging().registerForRemoteNotifications();
-  //   }
-  //   const token = await messaging.getToken()
-  //   console.log('TOKEN : ',token)
-
-  //   messaging.setBackgroundMessageHandler( async remoteMessage => {
-  //     console.log('remote message : ', remoteMessage)
-  //   })
-  //   const isRegisteredForRemoteNotifications = firebase.messaging().isRegisteredForRemoteNotifications
-  //   console.log(isRegisteredForRemoteNotifications,"INI IS REGE")
-    
-  //   messaging.sendMessage({
-  //     data: {
-        
-  //     }
-  //   })
-  // },[])
-
-  const [ isLogin, setIsLogin ] = useState(true)
 
   return (
     <Provider store={store}>
