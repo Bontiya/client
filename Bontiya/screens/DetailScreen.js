@@ -17,7 +17,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import IconFA from 'react-native-vector-icons/FontAwesome'
 import { getTimeEstimation } from '../store/actions/memberAction'
 import MyTimer from '../components/Timer'
-import MapsPreview from '../components/maps/MapsPreview'
 import { getEventDetail } from '../store/actions/eventAction'
 
 function DetailScreen(props) {
