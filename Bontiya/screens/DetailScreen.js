@@ -14,7 +14,6 @@ import CameraModal from '../components/CameraModal'
 import MembersModal from '../components/MembersModal'
 import IconFA from 'react-native-vector-icons/FontAwesome';
 import MapsPreview from "../components/maps/MapsPreview";
-import { useSelector, useDispatch } from 'react-redux'
 import { getTimeEstimation } from '../store/actions/memberAction'
 import MyTimer from '../components/Timer'
 
