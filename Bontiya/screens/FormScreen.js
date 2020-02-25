@@ -180,14 +180,10 @@ function Form() {
                             marginBottom: 0
                         }]}>
                         <Text style={styles.picker_form}>
-                            {eventLocation.title}
+                            {eventLocation.title || "Location"}
                         </Text>
                     </TouchableOpacity>
                 </View>
-                {
-                    //maps preview
-                    // <Maps style={{width: 10, height: 10}} />
-                }
 
                 <View style={styles.form_row}>
                     <View style={styles.icon_wrapper}>

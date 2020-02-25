@@ -17,7 +17,6 @@ import ListItemPlace from "./ListItemPlace";
 const GetPlace = () => {
     const [textSearch, setTextSearch] = useState("");
     const getPlace = useSelector(state => state.getPlace);
-    // const getLangLong = useSelector(state => state.getLatLong);
     const dispatch = useDispatch();
 
     const onChangeTextInput = (text) => {
