@@ -1,4 +1,4 @@
-import { event, GET_GOOGLE_VISIONS_RESULT } from "../actionTypes";
+import { event, GET_GOOGLE_VISIONS_RESULT, CHANGE_STATUS_KEY } from "../actionTypes";
 const initialState = {
     upcomingEvents: [],
     pastEvents: [],
@@ -7,7 +7,8 @@ const initialState = {
     pastEventsOnload: false,
     eventOnload: false,
     addingEventOnload: false,
-    gVisResult: ''
+    gVisResult: '',
+    isReady: false
 }
 
 function eventReducer(state = initialState, action) {  
@@ -38,6 +39,11 @@ function eventReducer(state = initialState, action) {
             return {
                 ...state,
                 gVisResult: action.data
+            }
+        case CHANGE_STATUS_KEY:
+            return {
+                ...state,
+                isReady: true
             }
         default:
             return state

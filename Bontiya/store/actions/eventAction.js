@@ -1,5 +1,5 @@
 import axios from "axios";
-import { event, ERRORS, GET_GOOGLE_VISIONS_RESULT } from "../actionTypes";
+import { event, ERRORS, GET_GOOGLE_VISIONS_RESULT, CHANGE_STATUS_KEY } from "../actionTypes";
 import { apiUrl } from '../urlTypes';
 import { AsyncStorage } from 'react-native';
 
@@ -124,16 +124,42 @@ export const googleVision = (base) => async (dispatch, state) => {
                 authorization: token
             }
         })
+        console.log(data, '{{{{{')
         dispatch({
             type: GET_GOOGLE_VISIONS_RESULT,
             data
         })
-        console.log(data, '!!!!!!!!!!!!!!!!!!!!!!!!')
+        console.log(data, 'XXXXXXXXXXXXXXXx')
       } catch ({ response }) {
         console.log(response)
         dispatch({
             type: ERRORS,
             data: response.data.errors
         })
+    }
+}
+
+export const changeStatusKey = (memberId) => async (dispatch, state) => {
+    try {
+        const { token, _id } = state().general.isLogged
+        console.log(token, _id, '++++')
+        const { data } = await axios({
+            method: 'patch',
+            url: `${apiUrl}/events/members/${memberId}/status-key`,
+            headers: {
+                authorization: token
+            }
+        })
+        dispatch({
+            type: CHANGE_STATUS_KEY,
+            data
+        })
+        console.log(data, '!!!!!!!!!!!!!!!!!!!!!!!!')
+      } catch (err) {
+        console.log(err, '*****')
+        // dispatch({
+        //     type: ERRORS,
+        //     data: response.data.errors
+        // })
     }
 }

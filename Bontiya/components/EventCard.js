@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, Dimensions, Image, ScrollView } from 'react-nat
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleModal } from '../store/actions/eventAction'
+import { useNavigation } from '@react-navigation/native'
 
 const DEVICE_WIDTH = Dimensions.get('window').width
 const DEVICE_HEIGHT = Dimensions.get('window').height
@@ -16,6 +17,8 @@ const EventCard = (props) => {
     const [ seenMembers, setSeenMembers ] = useState([])
     const [ length, setLength ] = useState(null)
     const [ status, setStatus ] =  useState(null)
+    const navigation = useNavigation()
+
     useEffect( () => {
         setDate(new Date(props.payload.time).toLocaleString().split(' '))
         setStatus(props.payload.status)
@@ -29,7 +32,13 @@ const EventCard = (props) => {
     },[])
 
     return (
-        <View style={[styles.container]}>
+        <TouchableOpacity
+            style={[styles.container]}
+            onPress={() => {
+                navigation.navigate('Event Detail', { data: props.payload })
+            }}
+        >
+            <AddMemberModal eventId={props.payload._id} />
             <View style={styles.eventInfo}>
                 <View style={styles.dateContainer}>
                     <Text 
@@ -163,7 +172,7 @@ const EventCard = (props) => {
                     }]}>{props.payload.status}</Text>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 
