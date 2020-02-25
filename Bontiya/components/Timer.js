@@ -47,24 +47,6 @@ function MyTimer({ timeInput, time }) {
         <Text style={{fontSize: 8}}>Minutes</Text>
       </View>
     </View>
-<<<<<<< HEAD
-=======
-    {/* <TouchableOpacity
-      style={styles.btn}
-      // onPress={() => {
-      //   SendIntentAndroid.addCalendarEvent({
-      //     title: eventName,
-      //     description,
-      //     startDate: calendarInput(),
-      //     endDate: calendarInput(),
-      //     recurrence: "weekly",
-      //     location: "The Park",
-      //   });
-      // }}
-      >
-      <Text style={{color: '#fff'}}>{calendarInput()}</Text>
-    </TouchableOpacity> */}
->>>>>>> separate timer
     </>
   )
 }
