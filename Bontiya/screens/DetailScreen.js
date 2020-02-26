@@ -38,7 +38,6 @@ function DetailScreen(props) {
     if (memberObj[0].statusKey) {
       setReadyToGo(true)
     }
-    console.log(getMyLatLong(), getEventLatLong(), timeEstimation, '<<<<<')
     dispatch(getTimeEstimation(getMyLatLong(), getEventLatLong()))
   }, [_id, timeEstimation])
 
