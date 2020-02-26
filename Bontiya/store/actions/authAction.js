@@ -87,7 +87,7 @@ export const checkIsLogged = () =>  (dispatch, state) => {
 }
 
 export const _connetSocket = () => {
-    const socket = io('http://localhost:3000', {
+    const socket = io(apiUrl, {
       transports: ['websocket'],
       jsonp: false
     })

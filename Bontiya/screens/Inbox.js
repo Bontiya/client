@@ -15,7 +15,7 @@ import InboxCard from "../components/InboxCard";
 import AlertError from "../components/AlertError";
 import Loading from "../components/Loading";
 import MailBox from '../assets/mailbox.jpg'
-
+import { getStatusInvitedPending } from "../store/actions/memberAction";
 const DEVICE_WIDTH = Dimensions.get('window').width
 
 export default function Inbox() {
@@ -24,7 +24,7 @@ export default function Inbox() {
     const { member, general }  = useSelector(state => state)
 
     const onRefresh = useCallback(() => {  
-        dispatch(getPastEvent())
+        dispatch(getStatusInvitedPending())
       }, [member.statusInvitedPendingOnload])
 
     if (general.errors) {
