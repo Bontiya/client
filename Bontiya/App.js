@@ -12,9 +12,18 @@ import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native'
 import store from './store'
 import RootNavigation from './navigations/index'
+import SplashScreen from './screens/SplashScreen'
 
 const App: () => React$Node = () => {
-  
+  const [splash, setSplash] = useState(true)
+  useEffect(() => {
+    setTimeout(() => {
+      setSplash(false)
+    }, 2500)
+  }, [])
+  if (splash) {
+    return <SplashScreen />
+  }
   return (
     <Provider store={store}>
       <NavigationContainer>
