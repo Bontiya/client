@@ -13,19 +13,24 @@ import { Icon } from 'react-native-elements'
 import { RNCamera } from 'react-native-camera'
 import { googleVision } from '../store/actions/eventAction'
 import { changeStatusKey } from '../store/actions/eventAction'
+import { getEventDetail } from '../store/actions/eventAction'
+import Loading from '../components/Loading'
 
-function CameraModal({visible, setVisible, spell, member_id, startReadyToGo }) {
+function CameraModal({visible, setVisible, spell, member_id, setReadyToGo, eventId, updateMembers }) {
   const [backCam, setBackCam] = useState(true)
   const [showAnalyze, setShowAnalyze] = useState(false)
   const [photoUri, setPhotoUri] = useState('')
   const dispatch = useDispatch()
-  const { gVisResult, isReady } = useSelector(state => state.event)
+  const { gVisResult, isReady, eventDetail } = useSelector(state => state.event)
 
   useEffect(() => {
     if (gVisResult) {
       readyChecker()
     }
-  }, [gVisResult])
+    if ((eventDetail._id === eventId) && visible) {
+      updateMembers(eventDetail.members)
+    }
+  }, [gVisResult, eventDetail.members])
   
   async function takePicture(camera) {
     const options = { quality: 0.1, base64: true };
@@ -34,13 +39,16 @@ function CameraModal({visible, setVisible, spell, member_id, startReadyToGo }) {
     setPhotoUri(data.uri)
     dispatch(googleVision(data.base64))
     setShowAnalyze(true)
-    setReadToGot(true)
+    setReadyToGo(true)
   };
 
   function readyChecker() {
-    if (JSON.stringify(gVisResult).includes(spell)) {
-      console.log(member_id, '%%%%%%%%%%%%')
+    if (JSON.stringify(gVisResult).toLowerCase().includes(spell)) {
       dispatch(changeStatusKey(member_id))
+        .then((a) => {
+          console.log(a, '!!!!')
+          updateMembers(eventDetail.members)
+        })
     }
   }
 
@@ -59,7 +67,7 @@ function CameraModal({visible, setVisible, spell, member_id, startReadyToGo }) {
             
           </View>
           {
-            isReady
+            isReady && gVisResult
             ? (
               <>
                 <Icon 
@@ -71,23 +79,25 @@ function CameraModal({visible, setVisible, spell, member_id, startReadyToGo }) {
                 <Text style={{alignSelf: 'center', fontSize: 15, fontWeight: 'bold'}}>You are ready</Text>
               </>
             )
-            : (
-              <>
-                <Icon 
-                  name='close'
-                  color='red'
-                  type='material-icons'
-                  size={60}
-                />
-                <Text style={{alignSelf: 'center', fontSize: 15, fontWeight: 'bold'}}>Please take a picture of a {spell}</Text>
-                <TouchableOpacity
-                  style={styles.btn}
-                  onPress={() => setShowAnalyze(false)}
-                >
-                  <Text style={{color: '#fff'}}>Retake Photo</Text>
-                </TouchableOpacity>
-              </>
-            )
+            : gVisResult
+              ? (
+                <>
+                  <Icon 
+                    name='close'
+                    color='red'
+                    type='material-icons'
+                    size={60}
+                  />
+                  <Text style={{alignSelf: 'center', fontSize: 15, fontWeight: 'bold'}}>Please take a picture of a {spell}</Text>
+                  <TouchableOpacity
+                    style={styles.btn}
+                    onPress={() => setShowAnalyze(false)}
+                  >
+                    <Text style={{color: '#fff'}}>Retake Photo</Text>
+                  </TouchableOpacity>
+                </>
+              )
+              : <Loading />
           }
           <TouchableOpacity 
             style={{position: 'absolute', bottom: 0, marginBottom: 10, alignSelf: 'center'}}

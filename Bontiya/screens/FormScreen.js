@@ -115,8 +115,8 @@ function Form() {
             description,
             locationHost: {
                 name: currentLocation.name,
-                lat: currentLocation.coordinates.latitude,
-                lon: currentLocation.coordinates.longitude
+                lat: '-6.23406' || currentLocation.coordinates.latitude,
+                lon: '106.824' || currentLocation.coordinates.longitude
             },
         }
         dispatch(createEvent(event))

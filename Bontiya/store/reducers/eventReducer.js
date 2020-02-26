@@ -8,7 +8,9 @@ const initialState = {
     eventOnload: false,
     addingEventOnload: false,
     gVisResult: '',
-    isReady: false
+    isReady: false,
+    eventDetail: {},
+    eventDetailOnLoad: false
 }
 
 function eventReducer(state = initialState, action) {  
@@ -44,6 +46,17 @@ function eventReducer(state = initialState, action) {
             return {
                 ...state,
                 isReady: true
+            }
+        case event.GET_EVENT_DETAIL:
+            return {
+                ...state,
+                eventDetail: action.data,
+                eventOnload: false
+            }
+        case event.GET_EVENT_ONLOAD:
+            return {
+                ...state,
+                eventDetailOnLoad: true
             }
         default:
             return state
