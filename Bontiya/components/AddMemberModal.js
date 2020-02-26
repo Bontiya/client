@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, Modal, TouchableHighlight, Dimensions, FlatList } from 'react-native'
+import { View, Text, StyleSheet, Modal, TouchableHighlight, Dimensions, FlatList, Image } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleModal } from '../store/actions/eventAction'
 import { Searchbar } from 'react-native-paper'
 import SearchMemberList from '../components/SearchMemberList'
+import AddUser from '../assets/adduser.jpg'
 
 const DEVICE_WIDTH = Dimensions.get('window').width
 const DEVICE_HEIGHT = Dimensions.get('window').height
@@ -11,7 +12,8 @@ const DEVICE_HEIGHT = Dimensions.get('window').height
 const addMemberModal = (props) => {
 
     const dispatch = useDispatch()
-    console.log(props.members,'INI MEMBERS')
+
+    const event = useSelector( state => state.event )
 
     const general = useSelector(state => state.general)
     const user = useSelector(state => state.user)
@@ -23,6 +25,16 @@ const addMemberModal = (props) => {
       if( payload ) setTemp([...user.users].filter( user => user.name.includes(payload)))
       else setTemp([])
     }
+
+    useEffect( () => {
+      setKeyword('')
+      setTemp([])
+    },[event.errorToast])
+
+    useEffect( () => {
+      setKeyword('')
+      setTemp([])
+    },[event.successToast])
 
     if(!user.users) {
       return (
@@ -63,6 +75,7 @@ const addMemberModal = (props) => {
               keyExtractor={ item => item._id}
               style={{elevation:4}}
             />
+            <Image source={AddUser} style={{width:300,height:300,alignSelf:"center",position:"absolute",bottom:50}} />
           </View>
         </Modal>
     )

@@ -1,9 +1,10 @@
 import React from 'react'
 import { useSelector } from "react-redux";
 import usePastEvent from "../hooks/usePastEvent";
-import { View, ScrollView, Text, StyleSheet } from 'react-native'
+import { View, ScrollView, Text, StyleSheet, Image } from 'react-native'
 import Loading from "../components/Loading";
 import EventCard from '../components/EventCard'
+import Calendar from '../assets/upcomingEvent.jpg'
 
 const past = () => {
     usePastEvent()
@@ -19,10 +20,11 @@ const past = () => {
                     ? (
                         <View style={{ 
                             flex: 1, 
-                            justifyContent: 'center', 
+                            justifyContent: 'center', backgroundColor: '#FFF',
                             alignItems: 'center',
                         }}>
-                            <Text>Hi, you don't have an event!</Text>
+                            <Image source={Calendar} resizeMode="contain" style={{width:370,height:400}} />
+                            <Text style={{fontSize: 24,fontWeight: 'bold',color: '#323678'}}>Hi, you don't have past event!</Text>
                         </View>
                     )
                     : (

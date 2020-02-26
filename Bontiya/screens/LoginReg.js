@@ -20,6 +20,7 @@ import Password from '../assets/password.png'
 import NameTag from '../assets/nametag.png'
 import Email from '../assets/email.png'
 import AlertError from '../components/AlertError';
+import Logo from '../assets/logo-fix.png'
 
 
 const DEVICE_WIDTH = Dimensions.get('window').width
@@ -31,9 +32,9 @@ const loginReg = () => {
     const general = useSelector(state => state.general);
 
     const [ form, setForm ] =  useState('signin')
-    const [ email, setEmail ] = useState('dedi@test.com')
-    const [ name, setName ] = useState('tester')
-    const [ password, setPassword ] =  useState('12345')
+    const [ email, setEmail ] = useState('')
+    const [ name, setName ] = useState('')
+    const [ password, setPassword ] =  useState('')
     const [ gender, setGender ] = useState('male')
 
 
@@ -70,6 +71,7 @@ const loginReg = () => {
                         : null
                 }
                 <View style={styles.titleContainer}>
+                    <Image source={Logo} resizeMode="contain" style={{width: 0.5 * DEVICE_WIDTH, height: 0.1 * DEVICE_HEIGHT, alignSelf:"center", marginBottom: 0.08 * DEVICE_HEIGHT}} />
                     {
                         form === 'signin'
                             ? <Text style={styles.formTitle}>Sign In</Text>
@@ -185,31 +187,19 @@ const loginReg = () => {
                     {
                         form==='signin'
                         ? <TouchableWithoutFeedback onPress={login}>
-                              <View style={styles.submitButton}>
+                              <View style={[styles.submitButton,{
+                                  marginTop:156,padding:19.5
+                              }]}>
                                   <Text style={{color: '#fff'}}>Signin</Text>
                               </View>
                           </TouchableWithoutFeedback>
                         : <TouchableWithoutFeedback onPress={register}>
-                              <View style={styles.submitButton}>
+                              <View style={[styles.submitButton,{
+                                  padding:20
+                              }]}>
                                   <Text style={{color: '#fff'}}>Signup</Text>
                               </View>
                           </TouchableWithoutFeedback>
-                    }
-                    {
-                        form == 'signin'
-                            ? <Text style={{
-                                alignSelf: "center",
-                                opacity:0.5,
-                                marginVertical: 30
-                            }}>
-                                Or use
-                            </Text>
-                            : null
-                    }
-                    {
-                        form == 'signin'
-                        ? <Image source={Google} style={styles.image} /> 
-                        : null
                     }
                 </View>
             </View>
@@ -226,11 +216,11 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         fontSize:32,
         fontWeight: 'bold',
-        color: '#394652'
+        color: '#FFF'
     },
     titleContainer: {
         height: 0.4 * DEVICE_HEIGHT,
-        backgroundColor: '#F8F8F8',
+        backgroundColor: '#5676CF',
         flex: 1,
         justifyContent:"flex-end",
         paddingHorizontal: 40

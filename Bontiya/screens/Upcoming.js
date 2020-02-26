@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import useUpcomingEvent from "../hooks/useUpcomingEvent";
-import { View, ScrollView, Text, StyleSheet } from 'react-native'
+import { View, ScrollView, Text, StyleSheet, Image } from 'react-native'
 import Loading from "../components/Loading";
 import EventCard from '../components/EventCard'
 import { getAllUser } from '../store/actions/userAction'
 import { useDispatch, useSelector } from 'react-redux'
 import AddMemberModal from '../components/AddMemberModal'
 import { toggleModal } from '../store/actions/eventAction'
+import Calendar from '../assets/upcomingEvent.jpg'
+
 const Upcoming = () => {
     const dispatch = useDispatch()
     const [eventIdTemp, setEventIdTemp] = useState(null)
@@ -41,7 +43,9 @@ const Upcoming = () => {
                             justifyContent: 'center', 
                             alignItems: 'center',
                         }}>
-                            <Text>Hi, you don't have an event!</Text>
+                            <Image source={Calendar} style={{width:370,height:400}} resizeMode="contain" />
+                            <Text style={{fontSize: 24,fontWeight: 'bold',color: '#323678'}}>Hi, you don't have an event!</Text>
+                            <Text style={{fontSize: 24,fontWeight: 'bold',color: '#323678'}}>Create new event?</Text>
                         </View>
                     )
                     : (

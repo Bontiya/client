@@ -29,7 +29,8 @@ function UpcomingStack() {
             fontWeight: 'bold',
             color: 'white'
           },
-          headerStatusBarHeight: 0
+          headerStatusBarHeight: 0,
+          headerShown: false
         }}
       />
     </Stack.Navigator> 

@@ -17,6 +17,7 @@ const EventCard = (props) => {
     const [ date, setDate ] = useState([])
     const [ seenMembers, setSeenMembers ] = useState([])
     const [ length, setLength ] = useState(null)
+    const [ host, setHost ] =  useState(false)
     const [ status, setStatus ] =  useState(null)
     const navigation = useNavigation()
 
@@ -31,10 +32,16 @@ const EventCard = (props) => {
             setSeenMembers(props.payload.members)
         }
     },[])
-    // console.log(seenMembers[0].avatar, '=============')
+
     useEffect( () => {
-        // console.log(seenMembers)
-    },[seenMembers])
+        handleHost()
+    }, [])
+
+    const handleHost = async () => {
+        if(props.payload.members) setHost(props.payload.members[0].user._id === await AsyncStorage.getItem('userId'))
+        // let index = props.payload.members.findIndex( async member => member.user._id === await AsyncStorage.getItem('userId'))
+        // if(props.payload.members[index].role === 'host') setHost(true)
+    }
 
     return (
         <TouchableOpacity

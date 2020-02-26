@@ -10,7 +10,9 @@ const initialState = {
     gVisResult: '',
     isReady: false,
     eventDetail: {},
-    eventDetailOnLoad: false
+    eventDetailOnLoad: false,
+    errorToast: false,
+    successToast: false,
 }
 
 function eventReducer(state = initialState, action) {  
@@ -46,6 +48,26 @@ function eventReducer(state = initialState, action) {
             return {
                 ...state,
                 isReady: true
+            }
+        case event.SUCCESS_TOAST:
+                return {
+                    ...state,
+                    successToast: true,
+                }
+        case event.DEFAULT_SUCCESS_TOAST:
+            return {
+                ...state,
+                successToast: false
+            }
+        case event.ERROR_TOAST:
+            return {
+                ...state,
+                errorToast: true
+            }
+        case event.DEFAULT_ERROR_TOAST:
+            return {
+                ...state,
+                errorToast: false
             }
         case event.GET_EVENT_DETAIL:
             return {

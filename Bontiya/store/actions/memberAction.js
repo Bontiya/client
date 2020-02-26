@@ -24,7 +24,7 @@ export const getStatusInvitedPending = () => async (dispatch, state) => {
             type: member.GET_STATUS_INVITED_PENDING,
             data: []
         })
-        if (response?.data) {
+        if (response.data) {
             dispatch({
                 type: ERRORS,
                 data: response.data.errors
@@ -44,7 +44,7 @@ export const updateStatusInvited = (form, memberId) => async (dispatch, state) =
         dispatch(getStatusInvitedPending())
     } catch (error) {
         const { response } = error
-        if (response?.data) {
+        if (response.data) {
             dispatch({
                 type: ERRORS,
                 data: response.data.errors
