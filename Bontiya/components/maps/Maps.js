@@ -99,18 +99,6 @@ const Maps = () => {
             enableHighAccuracy: true,
             timeout: 20000,
         }).then(location => {
-            // dispatch(reverseGeolocation(location.latitude, location.longitude));
-            // setCurrentLocation({
-            //     name: "",
-            //     description: "",
-            //     coordinates: {
-            //         latitude: location.latitude,
-            //         longitude: location.longitude,
-            //         latitudeDelta: LATITUDE_DELTA,
-            //         longitudeDelta: LONGITUDE_DELTA
-            //     }
-            // })
-
             dispatch(
                 updateCurrentLocation({
                     name: "",
