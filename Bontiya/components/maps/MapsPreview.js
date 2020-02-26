@@ -60,7 +60,10 @@ const MapsPreview = (props) => {
 
                 {
                     eventMember.map(marker => (
-                        marker.location !== undefined && marker.location !== null
+                        marker.location !== undefined
+                        && marker.location !== null
+                        && marker.location.lat !== null
+                        && marker.location.lat !== undefined
                             ? <Marker.Animated
                                 coordinate={{
                                     latitude: marker.location.lat,
@@ -77,7 +80,10 @@ const MapsPreview = (props) => {
 
                 {
                     eventMember.map(marker => (
-                        marker.location !== undefined && marker.location !== null
+                        marker.location !== undefined
+                        && marker.location !== null
+                        && marker.location.lat !== null
+                        && marker.location.lat !== undefined
                             ? <MapViewDirections
                                 origin={{
                                     latitude: marker.location.lat,

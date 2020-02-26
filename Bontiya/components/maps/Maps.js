@@ -46,8 +46,6 @@ const Maps = () => {
         }
     );
 
-    console.log(getCurrentLocationPos.data, ": current location data");
-
     if (getLangLong.data !== null) {
         if (getLangLong.data.id !== locId) {
             setEventLocation({
