@@ -1,22 +1,20 @@
 import React, {useState, useEffect} from 'react';
-import MapView, {Marker, Polyline} from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 import {
     Dimensions,
     StyleSheet,
     ActivityIndicator,
-    View
 } from "react-native";
-import Geolocation from '@react-native-community/geolocation';
 import {
     useDispatch,
     useSelector,
 } from 'react-redux';
 import {
-    getDirections,
     reverseGeolocation,
     searchPlace,
 } from '../../store/actions/mapsAction';
 import GetLocation from 'react-native-get-location'
+import MapViewDirections from 'react-native-maps-directions';
 
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = (width / height);
@@ -25,13 +23,11 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 
 const Maps = () => {
+    const getReverseGeoLocation = useSelector(state => state.getReverseGeoLocation);
     const [currentLocation, setCurrentLocation] = useState({});
     const [locId, setLocId] = useState("");
-    const [locNameStatus, setLocNameStatus] = useState(true);
     const getMapCoordDirections = useSelector(state => state.getMapCoordDirections);
-    const getReverseGeoLocation = useSelector(state => state.getReverseGeoLocation);
     const getLangLong = useSelector(state => state.getLatLong);
-    const [watchId, setWatchId] = useState("");
     const dispatch = useDispatch();
     const [eventLocation, setEventLocation] = useState(
         {
@@ -47,11 +43,6 @@ const Maps = () => {
         }
     );
 
-    // console.log(getReverseGeoLocation, "reverse");
-    // console.log(getMapCoordDirections.data, "route");
-    // console.log(currentLocation.name, getLangLong.data.name);
-    // console.log(eventLocation.coordinates.latitude);
-
     if (getLangLong.data !== null) {
         if (getLangLong.data.id !== locId) {
             setEventLocation({
@@ -65,42 +56,19 @@ const Maps = () => {
                     longitudeDelta: LONGITUDE_DELTA
                 }
             });
-            dispatch(getDirections(currentLocation.name, getLangLong.data.name));
             setLocId(getLangLong.data.id)
         }
     }
 
-    const memberLocation = [
-        {
-            title: "Stasiun Kebayoran",
-            description: "Stasiun Kebayoran description",
-            coordinates: {
-                latitude: -6.2372422,
-                longitude: 106.7803338,
-                latitudeDelta: LATITUDE_DELTA,
-                longitudeDelta: LONGITUDE_DELTA
-            }
-        }, {
-            title: "Pondok Indah Mall",
-            description: "Pondok Indah Mall description",
-            coordinates: {
-                latitude: -6.2655318,
-                longitude: 106.7821503,
-                latitudeDelta: LATITUDE_DELTA,
-                longitudeDelta: LONGITUDE_DELTA
-            }
-        },
-    ];
-
-    const isSetLocName = () => {
-        if (getReverseGeoLocation.data !== null) {
-            dispatch(getDirections(getReverseGeoLocation.data[0], eventLocation.title));
-
+    const setCurrentLocationDetail = (lat, lon) => {
+        if (getReverseGeoLocation.data[0] !== undefined) {
+            console.log(getReverseGeoLocation.data[0]);
             setCurrentLocation({
                 name: getReverseGeoLocation.data[0],
+                description: getReverseGeoLocation.data.join(" "),
                 coordinates: {
-                    latitude: currentLocation.coordinates.latitude,
-                    longitude: currentLocation.coordinates.longitude,
+                    latitude: lat,
+                    longitude: lon,
                     latitudeDelta: LATITUDE_DELTA,
                     longitudeDelta: LONGITUDE_DELTA
                 }
@@ -113,59 +81,13 @@ const Maps = () => {
             enableHighAccuracy: true,
             timeout: 20000,
         }).then(location => {
-            setCurrentLocation({
-                name: "",
-                coordinates: {
-                    latitude: location.latitude,
-                    longitude: location.longitude,
-                    latitudeDelta: LATITUDE_DELTA,
-                    longitudeDelta: LONGITUDE_DELTA
-                }
-            });
             dispatch(reverseGeolocation(location.latitude, location.longitude));
-            isSetLocName();
+            setCurrentLocationDetail(location.latitude, location.longitude);
         }).catch(error => {
             const {code, message} = error;
             console.warn(code, message);
         })
-
-        // Geolocation.getCurrentPosition(position => {
-        //     console.log(position);
-        //         setCurrentLocation({
-        //             name: "",
-        //             coordinates: {
-        //                 latitude: position.coords.latitude,
-        //                 longitude: position.coords.longitude,
-        //                 latitudeDelta: LATITUDE_DELTA,
-        //                 longitudeDelta: LONGITUDE_DELTA
-        //             }
-        //         });
-        //         dispatch(reverseGeolocation(position.coords.latitude, position.coords.longitude));
-        //     },
-        //     error => console.log({error}),
-        //     {enableHighAccuracy: false, timeout: 60000, maximumAge: 0}
-        //     // {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-        // );
     };
-
-    // const watchPosition = () => {
-    //     let watchId = Geolocation.watchPosition(position => {
-    //             setCurrentLocation({
-    //                 name: "",
-    //                 coordinates: {
-    //                     latitude: position.coords.latitude,
-    //                     longitude: position.coords.longitude,
-    //                     latitudeDelta: LATITUDE_DELTA,
-    //                     longitudeDelta: LONGITUDE_DELTA
-    //                 }
-    //             });
-    //             dispatch(reverseGeolocation(position.coords.latitude, position.coords.longitude));
-    //             setWatchId(watchId)
-    //         },
-    //         error => console.log({error}),
-    //         {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    //     );
-    // };
 
     // const onPressMap = (position) => {
     //     const {coordinate} = position.nativeEvent;
@@ -173,9 +95,9 @@ const Maps = () => {
     //     if (getReverseGeoLocation.data[0] !== undefined) {
     //         dispatch(searchPlace(getReverseGeoLocation.data.join(" ")));
     //         setEventLocation({
-    //             id: "getLangLong.data.id",
-    //             title: "getReverseGeoLocation.data[1]",
-    //             description: "getReverseGeoLocation.data[1]",
+    //             id: getLangLong.data.id,
+    //             title: getReverseGeoLocation.data[0],
+    //             description: getReverseGeoLocation.data.join(" "),
     //             coordinates: {
     //                 latitude: coordinate.latitude,
     //                 longitude: coordinate.longitude,
@@ -189,8 +111,6 @@ const Maps = () => {
     useEffect(() => {
         findCoordinates();
     }, []);
-
-    // useEffect(() => () => Geolocation.clearWatch(watchId), []);
 
     return (
         <>
@@ -213,6 +133,9 @@ const Maps = () => {
                                     coordinate={
                                         currentLocation.coordinates
                                     }
+                                    title={currentLocation.name}
+                                    description={currentLocation.name}
+                                    pinColor={"blue"}
                                 />
                                 : <></>
                         }
@@ -229,27 +152,13 @@ const Maps = () => {
                                 : <></>
                         }
 
-                        {/*{*/}
-                        {/*    memberLocation.map(marker => (*/}
-                        {/*        <Marker.Animated*/}
-                        {/*            coordinate={marker.coordinates}*/}
-                        {/*            title={marker.title}*/}
-                        {/*            description={marker.description}*/}
-                        {/*        />*/}
-                        {/*    ))*/}
-                        {/*}*/}
-                        {
-
-                            getMapCoordDirections.data !== null
-                                ? getMapCoordDirections.data.errors === undefined
-                                ? <Polyline
-                                    coordinates={getMapCoordDirections.data}
-                                    strokeColor="blue"
-                                    strokeWidth={3}
-                                />
-                                : <></>
-                                : <></>
-                        }
+                        <MapViewDirections
+                            origin={currentLocation.coordinates}
+                            destination={eventLocation.coordinates}
+                            apikey="AIzaSyBfTdhXIpe03ZX8TofG_xC58Qy0k4qZrjs"
+                            strokeWidth={3}
+                            strokeColor="hotpink"
+                        />
                     </MapView>
             }
         </>

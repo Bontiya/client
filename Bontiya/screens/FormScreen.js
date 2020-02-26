@@ -1,13 +1,22 @@
 import React, {useState, useEffect} from 'react'
-import {View, Text, Button, StyleSheet, TextInput, TouchableOpacity, ScrollView, Image} from 'react-native'
+import {
+    View, Text, Button,
+    StyleSheet, TextInput, TouchableOpacity,
+    ScrollView, Image, Dimensions
+} from 'react-native'
 import {Icon} from 'react-native-elements'
 import DateTimePickerModal from "react-native-modal-datetime-picker"
 import {useDispatch, useSelector} from 'react-redux'
 import {createEvent} from '../store/actions/eventAction'
 import LocationModal from '../components/LocationModal'
 import KeyModal from '../components/KeyModal'
-import {getDirections} from "../store/actions/mapsAction";
-import Maps from "../components/maps/Maps";
+import GetLocation from 'react-native-get-location';
+import {reverseGeolocation} from "../store/actions/mapsAction";
+
+const {width, height} = Dimensions.get('window');
+const ASPECT_RATIO = (width / height);
+const LATITUDE_DELTA = 0.0922;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 function Form() {
     const [eventName, setEventName] = useState('')
@@ -22,7 +31,9 @@ function Form() {
     const [locationModal, setLocationModal] = useState(false)
     const [keyModal, setKeyModal] = useState(false)
     const getLangLong = useSelector(state => state.getLatLong);
+    const [currentLocation, setCurrentLocation] = useState({});
     let eventLocation = {};
+    const getReverseGeoLocation = useSelector(state => state.getReverseGeoLocation);
 
     if (getLangLong.data !== null) {
         eventLocation = {
@@ -34,8 +45,6 @@ function Form() {
                 longitude: getLangLong.data.lon
             }
         };
-
-        console.log(eventLocation)
     }
 
     const showDatePicker = () => {
@@ -47,19 +56,19 @@ function Form() {
         setDatePickerVisibility(false);
     };
 
-  const hideTimePicker = () => {
-    setTimePickerVisibility(false);
-  };
- 
-  const handleConfirmTime = time => {
-    setTime(time)
-    hideTimePicker();
-  }
+    const hideTimePicker = () => {
+        setTimePickerVisibility(false);
+    };
 
-  const showTimePicker = () => {
-    setTime('')
-    setTimePickerVisibility(true);
-};
+    const handleConfirmTime = time => {
+        setTime(time)
+        hideTimePicker();
+    }
+
+    const showTimePicker = () => {
+        setTime('')
+        setTimePickerVisibility(true);
+    };
 
 
     const submitKey = () => {
@@ -105,9 +114,9 @@ function Form() {
             key,
             description,
             locationHost: {
-                name: "PIM",
-                lat: 19.311122,
-                lon: -1.406250
+                name: currentLocation.name,
+                lat: currentLocation.coordinates.latitude,
+                lon: currentLocation.coordinates.longitude
             },
         }
         dispatch(createEvent(event))
@@ -119,6 +128,39 @@ function Form() {
         setDatePickerVisibility(false)
         setTimePickerVisibility(false)
     }
+
+    const setCurrentLocationDetail = (lat, lon) => {
+        if (getReverseGeoLocation.data[0] !== undefined) {
+            console.log(getReverseGeoLocation.data[0], "lokasi host");
+            setCurrentLocation({
+                name: getReverseGeoLocation.data[0],
+                description: getReverseGeoLocation.data.join(" "),
+                coordinates: {
+                    latitude: lat,
+                    longitude: lon,
+                    latitudeDelta: LATITUDE_DELTA,
+                    longitudeDelta: LONGITUDE_DELTA
+                }
+            });
+        }
+    };
+
+    const findCoordinates = () => {
+        GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 20000,
+        }).then(location => {
+            dispatch(reverseGeolocation(location.latitude, location.longitude));
+            setCurrentLocationDetail(location.latitude, location.longitude);
+        }).catch(error => {
+            const {code, message} = error;
+            console.warn(code, message);
+        })
+    };
+
+    useEffect(() => {
+        findCoordinates()
+    }, []);
 
 
     return (
