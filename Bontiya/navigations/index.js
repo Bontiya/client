@@ -48,7 +48,8 @@ function RootNavigation() {
     <Tab.Navigator 
       barStyle={{
         backgroundColor: '#5676CF',
-        zIndex: 0
+        zIndex: 0,
+        elevation: 0
       }}
     >
       <Tab.Screen
