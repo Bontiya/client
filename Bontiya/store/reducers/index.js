@@ -6,7 +6,8 @@ import {
     getMapCoordDirections,
     getReverseGeoLocation,
     getPlace,
-    getLatLong
+    getLatLong,
+    getCurrentLocationPos
 } from "./mapsReducer";
 import {
     user
@@ -15,6 +16,7 @@ import {
 const initalState = {
     isLogged: null,
     socket: null,
+    socketActive: false,
     generalOnload: false,
     errors: null,
     success: null,
@@ -52,6 +54,11 @@ function general(state = initalState, action) {
                 errors: null,
                 socket: null
             }
+        case 'SOCKET_ACTIVE':
+            return {
+                ...state,
+                socketActive: action.data
+            }
         case MODAL:
             return {
                 ...state,
@@ -69,6 +76,7 @@ export default combineReducers({
     getReverseGeoLocation,
     getPlace,
     getLatLong,
+    getCurrentLocationPos,
     user,
     member
 })

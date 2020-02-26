@@ -32,8 +32,9 @@ function Form() {
     const [keyModal, setKeyModal] = useState(false)
     const getLangLong = useSelector(state => state.getLatLong);
     const [currentLocation, setCurrentLocation] = useState({});
+    const getCurrentLocationPos = useSelector(state => state.getCurrentLocationPos);
     let eventLocation = {};
-    const getReverseGeoLocation = useSelector(state => state.getReverseGeoLocation);
+    // const getReverseGeoLocation = useSelector(state => state.getReverseGeoLocation);
 
     if (getLangLong.data !== null) {
         eventLocation = {
@@ -71,9 +72,9 @@ function Form() {
     };
 
 
-    const submitKey = () => {
-        console.log('aa')
-    }
+    // const submitKey = () => {
+    //     console.log('aa')
+    // }
 
     const openLocationModal = (value) => {
         setLocationModal(value)
@@ -113,12 +114,8 @@ function Form() {
             time: JSON.stringify(date).slice(1, 12) + JSON.stringify(time).slice(12, 25),
             key,
             description,
-            locationHost: {
-                name: currentLocation.name,
-                lat: '-6.23406' || currentLocation.coordinates.latitude,
-                lon: '106.824' || currentLocation.coordinates.longitude
-            },
-        }
+            locationHost: getCurrentLocationPos.data,
+        };
         dispatch(createEvent(event))
         setEventName('')
         setDescription('')
@@ -130,38 +127,40 @@ function Form() {
         setTimePickerVisibility(false)
     }
 
-    const setCurrentLocationDetail = (lat, lon) => {
-        if (getReverseGeoLocation.data[0] !== undefined) {
-            console.log(getReverseGeoLocation.data[0], "lokasi host");
-            setCurrentLocation({
-                name: getReverseGeoLocation.data[0],
-                description: getReverseGeoLocation.data.join(" "),
-                coordinates: {
-                    latitude: lat,
-                    longitude: lon,
-                    latitudeDelta: LATITUDE_DELTA,
-                    longitudeDelta: LONGITUDE_DELTA
-                }
-            });
-        }
-    };
+    // const setCurrentLocationDetail = (lat, lon) => {
+    //     if (getReverseGeoLocation !== undefined) {
+    //         if (getReverseGeoLocation.data[0] !== undefined &&
+    //             getReverseGeoLocation.data[0] !== null) {
+    //             setCurrentLocation({
+    //                 name: getReverseGeoLocation.data[0],
+    //                 description: getReverseGeoLocation.data.join(" "),
+    //                 coordinates: {
+    //                     latitude: lat,
+    //                     longitude: lon,
+    //                     latitudeDelta: LATITUDE_DELTA,
+    //                     longitudeDelta: LONGITUDE_DELTA
+    //                 }
+    //             });
+    //         }
+    //     }
+    // };
 
-    const findCoordinates = () => {
-        GetLocation.getCurrentPosition({
-            enableHighAccuracy: true,
-            timeout: 20000,
-        }).then(location => {
-            dispatch(reverseGeolocation(location.latitude, location.longitude));
-            setCurrentLocationDetail(location.latitude, location.longitude);
-        }).catch(error => {
-            const {code, message} = error;
-            console.warn(code, message);
-        })
-    };
+    // const findCoordinates = () => {
+    //     GetLocation.getCurrentPosition({
+    //         enableHighAccuracy: true,
+    //         timeout: 20000,
+    //     }).then(location => {
+    //         dispatch(reverseGeolocation(location.latitude, location.longitude));
+    //         setCurrentLocationDetail(location.latitude, location.longitude);
+    //     }).catch(error => {
+    //         const {code, message} = error;
+    //         // console.warn(code, message);
+    //     })
+    // };
 
-    useEffect(() => {
-        findCoordinates()
-    }, []);
+    // useEffect(() => {
+    //     // findCoordinates()
+    // }, []);
 
 
     return (

@@ -4,7 +4,7 @@ import { ISLOGIN, GENERAL_ONLOAD, ERRORS, LOGOUT } from '../actionTypes';
 import { apiUrl } from '../urlTypes';
 import { AsyncStorage } from 'react-native';
 import { firebase } from '@react-native-firebase/messaging'
-
+import { getStatusInvitedPending } from "./memberAction";
 console.disableYellowBox = true;
 
 export const registerAction = (form) => async dispatch => {
@@ -80,6 +80,7 @@ export const checkIsLogged = () =>  (dispatch, state) => {
                 },
                 socket: _connetSocket()
             })
+            dispatch(getStatusInvitedPending())
       }
     })
     .catch(console.log)
@@ -117,6 +118,7 @@ const updateTokenFirebase = async (token,dispatch,user) => {
             },
             socket: _connetSocket()
         })
+        dispatch(getStatusInvitedPending())
     }
     catch (err) {
         console.log(err)
@@ -133,6 +135,10 @@ export const logout = () => async (dispatch, state) => {
         state().general.socket.close()
         dispatch({
             type: LOGOUT
+        })
+        dispatch({
+            type: 'SOCKET_ACTIVE',
+            data: false
         })
         await AsyncStorage.removeItem('userId')
         await AsyncStorage.removeItem('name')
