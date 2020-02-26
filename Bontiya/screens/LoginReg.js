@@ -31,9 +31,9 @@ const loginReg = () => {
     const general = useSelector(state => state.general);
 
     const [ form, setForm ] =  useState('signin')
-    const [ email, setEmail ] = useState('tester@gmail.com')
+    const [ email, setEmail ] = useState('dedi@test.com')
     const [ name, setName ] = useState('tester')
-    const [ password, setPassword ] =  useState('tester')
+    const [ password, setPassword ] =  useState('12345')
     const [ gender, setGender ] = useState('male')
 
 

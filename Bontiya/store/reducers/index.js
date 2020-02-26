@@ -15,6 +15,7 @@ import {
 const initalState = {
     isLogged: null,
     socket: null,
+    socketActive: false,
     generalOnload: false,
     errors: null,
     success: null,
@@ -51,6 +52,11 @@ function general(state = initalState, action) {
                 isLogged: null,
                 errors: null,
                 socket: null
+            }
+        case 'SOCKET_ACTIVE':
+            return {
+                ...state,
+                socketActive: action.data
             }
         case MODAL:
             return {
