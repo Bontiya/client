@@ -16,6 +16,7 @@ import CameraModal from '../components/CameraModal'
 import MembersModal from '../components/MembersModal'
 import { useSelector } from 'react-redux'
 import IconFA from 'react-native-vector-icons/FontAwesome';
+import MapsPreview from "../components/maps/MapsPreview";
 
 function DetailScreen(props) {
   const { name: eventName,  description, time, location, members, key } = props.route.params.data
@@ -184,9 +185,10 @@ function DetailScreen(props) {
 
         <Text style={{paddingHorizontal: 30, paddingVertical: 10, fontSize: 18, fontWeight: 'bold'}}>Members Location</Text>
         <View style={styles.card}>
-          <Image source={require('../assets/map.png')}
-            style={{width: '100%', height: '100%', borderRadius: 10}}
-          />
+          {/*<Image source={require('../assets/map.png')}*/}
+          {/*  style={{width: '100%', height: '100%', borderRadius: 10}}*/}
+          {/*/>*/}
+          <MapsPreview location={location} member={members}/>
         </View>
 
         <TouchableOpacity
@@ -268,7 +270,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: 'white'
+    // color: 'white'
   },
   card: {
     width: 300,
@@ -294,7 +296,7 @@ const styles = StyleSheet.create({
   },
   upper_text: {
     fontSize: 12,
-    color: 15,
+    // color: 15,
     color: 'white'
   },
   icon_wrapper: {
