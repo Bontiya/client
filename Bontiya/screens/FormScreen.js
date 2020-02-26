@@ -125,6 +125,7 @@ function Form() {
         setLocation('')
         setDate('')
         setTime('')
+        setKey('')
         setDatePickerVisibility(false)
         setTimePickerVisibility(false)
     }

@@ -14,7 +14,7 @@ import { RNCamera } from 'react-native-camera'
 import { googleVision } from '../store/actions/eventAction'
 import { changeStatusKey } from '../store/actions/eventAction'
 
-function CameraModal({visible, setVisible, spell, member_id }) {
+function CameraModal({visible, setVisible, spell, member_id, startReadyToGo }) {
   const [backCam, setBackCam] = useState(true)
   const [showAnalyze, setShowAnalyze] = useState(false)
   const [photoUri, setPhotoUri] = useState('')
@@ -34,6 +34,7 @@ function CameraModal({visible, setVisible, spell, member_id }) {
     setPhotoUri(data.uri)
     dispatch(googleVision(data.base64))
     setShowAnalyze(true)
+    setReadToGot(true)
   };
 
   function readyChecker() {
