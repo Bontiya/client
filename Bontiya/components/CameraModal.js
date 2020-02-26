@@ -24,10 +24,11 @@ function CameraModal({visible, setVisible, spell, member_id, setReadyToGo, event
   const { gVisResult, isReady, eventDetail } = useSelector(state => state.event)
 
   useEffect(() => {
-    if (gVisResult) {
+    if (gVisResult && visible) {
       readyChecker()
+      dispatch(getEventDetail(eventId))
     }
-    if ((eventDetail._id === eventId) && visible) {
+    if ((eventDetail._id === eventId)) {
       updateMembers(eventDetail.members)
     }
   }, [gVisResult, eventDetail.members])
@@ -40,6 +41,7 @@ function CameraModal({visible, setVisible, spell, member_id, setReadyToGo, event
     dispatch(googleVision(data.base64))
     setShowAnalyze(true)
     setReadyToGo(true)
+    // dispatch(getEventDetail(eventId))
   };
 
   function readyChecker() {

@@ -90,7 +90,9 @@ function DetailScreen(props) {
 
   function updateMembers(newMembers) {
     // console.log(newMembers, '@@@@@@@@@2')
-    setListMembers(event.members)
+    if (event.members) {
+      setListMembers(event.members)
+    }
   }
 
   return (
@@ -236,6 +238,7 @@ function DetailScreen(props) {
                 </View>
               </View>
             {
+
               listMembers.map((member, i) => {
                 if (i < 4) {
                   return (

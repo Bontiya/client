@@ -178,6 +178,7 @@ const getMemberTokens = async (members) => {
 }
 
 export const getEventDetail = (eventId) => async (dispatch, state) => {
+    console.log('------------------------')
     try {
         dispatch({
             type: event.GET_EVENT_ONLOAD
