@@ -5,7 +5,8 @@ import {
     ScrollView,
     Dimensions,
     Text,
-    View
+    View,
+    Image
 } from 'react-native';
 import useGetStatusInvitedPending from "../hooks/useGetStatusInvitedPending";
 import Header from '../components/Header'
@@ -37,6 +38,7 @@ export default function Inbox() {
                                 flex: 1, 
                                 justifyContent: 'center', 
                                 alignItems: 'center',
+                                backgroundColor: '#FFF'
                             }}>
                                 <Image source={MailBox} resizeMode="contain"  style={{height: 350,width:500}}/>
                                 <Text style={{marginTop:10,fontSize:24,color:'#323678',fontWeight:'bold'}}>Hi, you don't have any invitation!!</Text>
