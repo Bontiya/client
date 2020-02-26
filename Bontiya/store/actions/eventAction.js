@@ -110,10 +110,22 @@ export const inviteMember = (payload) => async (dispatch, state) => {
             }],
             headers: { Authorization : await AsyncStorage.getItem('token') }
         })
+        dispatch({
+            type: event.SUCCESS_TOAST
+        })
+        dispatch({
+            type: event.DEFAULT_SUCCESS_TOAST
+        })
     } 
     catch (err) {
         console.log(err)
         console.log('eee')
+        dispatch({
+            type: event.ERROR_TOAST
+        })
+        dispatch({
+            type: event.DEFAULT_ERROR_TOAST
+        })
         // dispatch({
         //     type: ERRORS,
         //     data: response.data.errors
@@ -201,7 +213,7 @@ export const getEventDetail = (eventId) => async (dispatch, state) => {
             type: event.GET_EVENT_DETAIL,
             data: {}
         })
-        if (response?.data) {
+        if (response.data) {
             dispatch({
                 type: ERRORS,
                 data: response.data.errors

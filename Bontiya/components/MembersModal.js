@@ -2,6 +2,8 @@ import React from 'react'
 import { View, Text, Image, Modal, TouchableOpacity, StyleSheet, ScrollView } from 'react-native'
 import { Icon } from 'react-native-elements'
 import IconFA from 'react-native-vector-icons/FontAwesome';
+import Daun from '../assets/daun.png'
+import People from '../assets/people.jpg'
 
 function KeyModal({ visible, setVisible, members}) {
   return (
@@ -12,8 +14,8 @@ function KeyModal({ visible, setVisible, members}) {
       >
       <ScrollView style={styles.modal}>
         
-        <View style={{height: '100%'}}>
-          <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10}}>Members</Text>
+        <View style={{height: 773}}>
+          <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10, marginTop: 50}}>Members</Text>
           {
               members.map((member, i) => {
                 return (
@@ -43,9 +45,10 @@ function KeyModal({ visible, setVisible, members}) {
                 )
               })
             }
+          <Image source={People} resizeMode="contain" style={{width:300,height:400,position:"absolute",bottom: -70, alignSelf:"center"}} />
           <TouchableOpacity
             onPress={() => setVisible(false)}
-            style={{position: 'absolute', bottom: 0, marginBottom: 10, alignSelf: 'center'}}
+            style={{position: 'absolute', bottom: 0, marginBottom: 10, alignSelf: 'center',top:0,right: 0}}
             >
             <View style={{width: 40, backgroundColor: 'white', borderRadius: 20, elevation: 5}}>
               <Icon 

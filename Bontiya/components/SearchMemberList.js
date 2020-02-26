@@ -1,17 +1,16 @@
-import React from 'react'
-import { Dimensions, Image } from 'react-native'
+import React, { useEffect } from 'react'
+import { Dimensions, Image, ToastAndroid } from 'react-native'
 import { List } from 'react-native-paper'
 import { inviteMember } from '../store/actions/eventAction'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const DEVICE_WIDTH = Dimensions.get('window').width
 
 const searchMemberList = (props) => {
 
-    console.log(props,'INI EVENT ID LAJFKLDJFSD:KFJ:SDJ:FJ:')
-    console.log(props.members,"ini members yagn props")
-
     const dispatch = useDispatch()
+
+    const event = useSelector( state => state.event )
 
     const handleInviteMember = () => {
         dispatch(inviteMember({
@@ -20,6 +19,18 @@ const searchMemberList = (props) => {
             members: props.members
         }))
     }
+
+    useEffect( () => {
+        if(event.successToast) {
+            ToastAndroid.show(`User ${props.payload.name} invited`,ToastAndroid.SHORT)
+        }
+    }, [event.successToast])
+
+    useEffect( () => {
+        if(event.errorToast) {
+            ToastAndroid.show(`User ${props.payload.name} already invited`,ToastAndroid.SHORT)
+        }
+    }, [event.errorToast])
 
     return (
     <>

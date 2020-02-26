@@ -21,6 +21,25 @@ const profile = () => {
         rating: 3.3
     })
 
+    const quotes = [
+        `"Time is money."`,
+        `"Lost time is never found again."`,
+        `"Time is the most valuable thing a man can spend."`,
+        `"Time waits for no one."`,
+        `"In such seconds of decision entire futures are made."`,
+        `"A man who dares to waste one hour of time has not discovered the value of life."`,
+        `"If not now, when?"`,
+        `"Always make time for things that make you feel happy to be alive."`,
+        `"Time slips away like grains of sand never to return again."`
+    ]
+
+    const [ quote, setQuote ] = useState(null)
+
+    useEffect( () => {
+        let index = (Math.random() * 8) + 1
+        setQuote(quotes[Math.floor(index)])
+    },[])
+
     const signout = () => {
         dispatch(logout())
     }
@@ -44,9 +63,8 @@ const profile = () => {
                         ]
                     }
                 >
-                    <Text style={[styles.profileName,{marginTop:10}]}>Rating</Text>
-                    <Star payload={data.rating} />
-                    <Text style={[styles.profileName,{marginTop: 10,opacity:0.3}]}>{data.rating}</Text>
+                    <Text style={[styles.profileName,{marginTop:10}]}>Quote</Text>
+                    <Text style={[styles.profileName,{fontSize:16,fontStyle:'italic'}]}>{quote}</Text>
                 </View>
                 <TapGestureHandler onHandlerStateChange={signout}>
                     <View style={styles.logoutBtn}>

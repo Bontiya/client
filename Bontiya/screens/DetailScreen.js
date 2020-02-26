@@ -282,11 +282,12 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#EAEDF2',
     height: '100%',
-    marginTop: -10
+    marginTop: -10,
+    flex: 1
   },
   title: {
-    color: '#343B48',
-    fontSize: 20,
+    color: '#FFF',
+    fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
     // color: 'white'
@@ -302,7 +303,7 @@ const styles = StyleSheet.create({
   },
   
   upper: {
-    backgroundColor: '#4A80E3',
+    backgroundColor: '#5676CF',
     padding: 20,
     borderBottomEndRadius: 20,
     borderBottomStartRadius: 20,

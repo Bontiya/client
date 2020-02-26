@@ -12,6 +12,7 @@ import LocationModal from '../components/LocationModal'
 import KeyModal from '../components/KeyModal'
 import GetLocation from 'react-native-get-location';
 import {reverseGeolocation} from "../store/actions/mapsAction";
+import Planning from '../assets/planning.png'
 
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = (width / height);
@@ -179,6 +180,8 @@ function Form() {
             </View>
 
             <View style={styles.inner_container}>
+            <Image source={Planning} resizeMode="contain" style={{height:240,width:320,alignSelf:"center"}} />
+
                 <View style={styles.form_row}>
                     <View style={styles.icon_wrapper}>
                         <Icon
@@ -332,9 +335,9 @@ function Form() {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        backgroundColor: '#4A80E3',
+        backgroundColor: '#5676CF',
         paddingHorizontal: 10,
-        height: '100%'
+        flex: 1
     },
     title: {
         fontSize: 25,
@@ -371,11 +374,11 @@ const styles = StyleSheet.create({
     },
     inner_container: {
         backgroundColor: 'white',
-        padding: 10,
-        borderTopRightRadius: 20,
-        borderTopLeftRadius: 20,
         marginBottom: 10,
-        height: '100%',
+        paddingHorizontal: 10,
+        paddingBottom: 10,
+        borderRadius:20,
+        flex: 1
     },
     picker_form: {
         alignSelf: 'center',
