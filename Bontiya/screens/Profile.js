@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Image, Dimensions, AsyncStorage } from 'react-native'
 import { TapGestureHandler } from 'react-native-gesture-handler'
 import Header from '../components/Header'
