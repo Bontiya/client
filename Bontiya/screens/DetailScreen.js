@@ -54,7 +54,9 @@ function DetailScreen(props) {
   }
 
   function calendarInput() {
-    return `${new Date(time).getFullYear()}-${new Date(time).getMonth() + 1}-${new Date(time).getDate()} ${new Date(time).toLocaleString().split(' ')[3].slice(0, 5)}`
+    let finalSec = Math.ceil((new Date(time) - (timeEstimation * 1000)))
+    let finalTime = new Date(finalSec)
+    return `${new Date(finalTime).getFullYear()}-${new Date(finalTime).getMonth() + 1}-${new Date(finalTime).getDate()} ${new Date(finalTime).toLocaleString().split(' ')[3].slice(0, 5)}`
   }
 
   function getMyMember() {
@@ -78,21 +80,6 @@ function DetailScreen(props) {
   function updateMembers(newMembers) {
     // console.log(newMembers, '@@@@@@@@@2')
     setListMembers(event.members)
-  }
-
-  function getMyLatLong() {
-    return `${getMyMember().location.lat},${getMyMember().location.lon}`
-  }
-
-  function getEventLatLong() {
-    return `${location.lat},${location.lon}`
-  }
-
-  function updateMembers(newMembers) {
-    // console.log(newMembers, '@@@@@@@@@2')
-    if (event.members) {
-      setListMembers(event.members)
-    }
   }
 
   return (
@@ -191,7 +178,7 @@ function DetailScreen(props) {
                     startDate: calendarInput(),
                     endDate: calendarInput(),
                     recurrence: "weekly",
-                    location: "The Park",
+                    location: eventName,
                   });
                 }}
                 >

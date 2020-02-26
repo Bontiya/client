@@ -13,6 +13,7 @@ import KeyModal from '../components/KeyModal'
 import GetLocation from 'react-native-get-location';
 import {reverseGeolocation} from "../store/actions/mapsAction";
 import Planning from '../assets/planning.png'
+import { useNavigation } from '@react-navigation/native'
 
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = (width / height);
@@ -36,6 +37,7 @@ function Form() {
     const getCurrentLocationPos = useSelector(state => state.getCurrentLocationPos);
     let eventLocation = {};
     // const getReverseGeoLocation = useSelector(state => state.getReverseGeoLocation);
+    const navigation = useNavigation()
 
     if (getLangLong.data !== null) {
         eventLocation = {
@@ -133,6 +135,7 @@ function Form() {
         setKey('')
         setDatePickerVisibility(false)
         setTimePickerVisibility(false)
+        navigation.navigate('Upcoming')
     }
 
     // const setCurrentLocationDetail = (lat, lon) => {

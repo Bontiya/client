@@ -45,12 +45,8 @@ function CameraModal({visible, setVisible, spell, member_id, setReadyToGo, event
   };
 
   function readyChecker() {
-    if (JSON.stringify(gVisResult).toLowerCase().includes(spell)) {
+    if (JSON.stringify(gVisResult).toLowerCase().includes('shoe')) {
       dispatch(changeStatusKey(member_id))
-        .then((a) => {
-          console.log(a, '!!!!')
-          updateMembers(eventDetail.members)
-        })
     }
   }
 

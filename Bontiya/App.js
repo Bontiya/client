@@ -13,11 +13,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import store from './store'
 import RootNavigation from './navigations/index'
 
-import pushNotif from "./helpers/pushNotif";
-
 const App: () => React$Node = () => {
-
-  pushNotif()
   
   return (
     <Provider store={store}>

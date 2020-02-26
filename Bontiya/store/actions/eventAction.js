@@ -9,10 +9,13 @@ export const getUpcomingEvent = () => async (dispatch, state) => {
             type: event.GET_UPCOMING_EVENTS_ONLOAD
         })
         const { token } = state().general.isLogged
-        const { data } = await axios.get(`${apiUrl}/events?status=onGoing`, {
+        let { data } = await axios.get(`${apiUrl}/events?status=onGoing`, {
             headers: {
                 authorization: token
             }
+        })
+        data = data.sort(function(a, b){
+            return new Date(b.time) - new Date(a.time)
         })
         dispatch({
             type: event.GET_UPCOMING_EVENTS,
@@ -39,19 +42,18 @@ export const getPastEvent = () => async (dispatch, state) => {
         dispatch({
             type: event.GET_PAST_EVENTS_ONLOAD
         })
-        const { token } = state.general.isLogged
+        const { token } = state().general.isLogged
         const { data } = await axios.get(`${apiUrl}/events?status=done`, {
             headers: {
                 authorization: token
             }
         })
-
         dispatch({
             type: event.GET_PAST_EVENTS,
             data
         })
-
     } catch (error) {
+        console.log(error, '<<<<<<,')
         const { response } = error
         dispatch({
             type: event.GET_PAST_EVENTS,

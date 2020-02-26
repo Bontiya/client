@@ -26,7 +26,7 @@ function eventReducer(state = initialState, action) {
         case event.GET_PAST_EVENTS: 
             return {
                 ...state,
-                pastEvent: action.data,
+                pastEvents: action.data,
                 pastEventsOnload: false
             }
         case event.GET_UPCOMING_EVENTS_ONLOAD:

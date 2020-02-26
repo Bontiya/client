@@ -1,16 +1,22 @@
-import React from 'react'
-import { useSelector } from "react-redux";
+import React, { useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import usePastEvent from "../hooks/usePastEvent";
-import { View, ScrollView, Text, StyleSheet, Image } from 'react-native'
+import { View, ScrollView, Text, StyleSheet, RefreshControl } from 'react-native'
 import Loading from "../components/Loading";
 import EventCard from '../components/EventCard'
 import Calendar from '../assets/upcomingEvent.jpg'
+import { getPastEvent } from "../store/actions/eventAction";
 
 const past = () => {
     usePastEvent()
+    const dispatch = useDispatch()
     const { event:eventSelector } = useSelector(state => state)
     const { pastEvents, pastEventsOnload } = eventSelector
 
+    const onRefresh = useCallback(() => {  
+        dispatch(getPastEvent())
+      }, [pastEventsOnload]);
+    const general = useSelector( state => state.general )
     return (
         <>
             {
@@ -28,7 +34,10 @@ const past = () => {
                         </View>
                     )
                     : (
-                        <ScrollView style={styles.container}> 
+                        <ScrollView 
+                            style={styles.container}
+                            refreshControl={
+                                <RefreshControl refreshing={pastEventsOnload} onRefresh={onRefresh} />}> 
                             {
                                 pastEvents.map( (event,i) => {
                                     return <EventCard key={i} screen={'past'} payload={event} />
