@@ -64,6 +64,7 @@ export const getTimeEstimation = (myLoc, eventLoc) => async (dispatch, state) =>
             data: data.duration.seconds
         })
     } catch (error) {
+        console.log(error, 'timeEST')
         const { response } = error
         if (response?.data) {
             dispatch({

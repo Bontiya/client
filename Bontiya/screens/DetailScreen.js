@@ -27,7 +27,7 @@ function DetailScreen(props) {
   
   const { _id } = useSelector(state => state.general.isLogged)
   // const { readyToGo } = useSelector(state => state.event)
-  const [readyToGo, setReadyToGo] = useState(false)
+  const [readyToGo, setReadyToGo] = useState(getMyMember().statusKey)
   const { timeEstimation } = useSelector(state => state.member)
   const dispatch = useDispatch()
   
@@ -39,6 +39,7 @@ function DetailScreen(props) {
     if (memberObj[0].statusKey) {
       setReadyToGo(true)
     }
+    console.log(getMyLatLong(), getEventLatLong(), timeEstimation, '<<<<<')
     dispatch(getTimeEstimation(getMyLatLong(), getEventLatLong()))
   }, [_id, timeEstimation])
 
@@ -122,13 +123,14 @@ function DetailScreen(props) {
         <View style={[styles.card, {height: 100, padding: 10}]}>
           <Text style={{fontWeight: 'bold'}}>What's this event about?</Text>
           <Text style={{padding: 10}}>{description}</Text>
-          <Text>{timeEstimation}</Text>
+          {/* <Text>{timeEstimation}</Text> */}
         </View>
           <CameraModal
             visible={cameraModal}
             setVisible={setCameraModal}
             spell={key}
             member_id={getMyMember()._id}
+            setReadyToGo={setReadyToGo}
           />
           <View style={{flexDirection: 'row', alignSelf: 'center'}}>
             <View style={[styles.card, {width: 145, marginRight: 10, padding: 20, justifyContent:'space-between'}]}>
