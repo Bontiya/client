@@ -10,7 +10,8 @@ import {
     GET_PLACE_ERROR,
     GET_LATLONG_LOADING,
     GET_LATLONG,
-    GET_LATLONG_ERROR
+    GET_LATLONG_ERROR,
+    GET_CURRENT_LOCATION
 } from '../actionTypes';
 import {apiUrl} from '../urlTypes';
 
@@ -99,4 +100,11 @@ export const searchLatLong = (placeId) => async (dispatch, state) => {
             error: error
         })
     }
+};
+
+export const updateCurrentLocation = (currentLocation) => async (dispatch, state) => {
+    dispatch({
+        type: GET_CURRENT_LOCATION,
+        data : currentLocation
+    })
 };
