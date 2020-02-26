@@ -104,6 +104,9 @@ function Form() {
 
     // ***************** SUBMIT EVENT *************** //
     const submitEvent = () => {
+
+        console.log(getCurrentLocationPos.data);
+
         const event = {
             name: eventName,
             location: {
@@ -114,7 +117,11 @@ function Form() {
             time: JSON.stringify(date).slice(1, 12) + JSON.stringify(time).slice(12, 25),
             key,
             description,
-            locationHost: getCurrentLocationPos.data,
+            locationHost: {
+                name: getCurrentLocationPos.data.name,
+                lat: getCurrentLocationPos.data.coordinates.latitude,
+                lon: getCurrentLocationPos.data.coordinates.longitude
+            },
         };
         dispatch(createEvent(event))
         setEventName('')

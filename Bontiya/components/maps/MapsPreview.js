@@ -21,6 +21,8 @@ const MapsPreview = (props) => {
     const [eventLocation, setEventLocation] = useState({});
     const [eventMember, setEventMember] = useState([]);
 
+    console.log(props.member)
+
     const setEvenLocationPosition = (location) => {
         setEventLocation({
             name: location.name,
