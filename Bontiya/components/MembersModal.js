@@ -11,6 +11,7 @@ function KeyModal({ visible, setVisible, members}) {
       visible={visible}
       >
       <ScrollView style={styles.modal}>
+        
         <View style={{height: '100%'}}>
           <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10}}>Members</Text>
           {
@@ -18,6 +19,7 @@ function KeyModal({ visible, setVisible, members}) {
                 return (
                   <>
                   <View style={{padding: 10, width: '100%', flexDirection: 'row', alignItems: 'center'}}>
+                    
                     {
                       member.statusKey
                       ? (
@@ -37,26 +39,6 @@ function KeyModal({ visible, setVisible, members}) {
                     }
                     <Text style={{marginLeft: 5, marginBottom: 5}} key={i}>{member.user.name}</Text>
                   </View>
-                  <View style={{padding: 10, width: '100%', flexDirection: 'row', alignItems: 'center'}}>
-                  {
-                    member.statusKey
-                    ? (
-                      <IconFA
-                        name='circle'
-                        color='green'
-                        size={10}
-                      />
-                    )
-                    : (
-                      <IconFA
-                        name='circle'
-                        color='red'
-                        size={10}
-                      />
-                    )
-                  }
-                  <Text style={{marginLeft: 5, marginBottom: 5}} key={i}>{member.user.name}</Text>
-                </View>
                 </>
                 )
               })

@@ -10,43 +10,38 @@ import {
   ScrollView } from 'react-native'
 import { Icon } from 'react-native-elements'
 import SendIntentAndroid from 'react-native-send-intent'
-import { useTimer } from 'react-timer-hook'
-import { RNCamera } from 'react-native-camera'
 import CameraModal from '../components/CameraModal'
 import MembersModal from '../components/MembersModal'
-import { useSelector } from 'react-redux'
-import IconFA from 'react-native-vector-icons/FontAwesome';
-import MapsPreview from "../components/maps/MapsPreview";
+import { useSelector, useDispatch } from 'react-redux'
+import IconFA from 'react-native-vector-icons/FontAwesome'
+import { getTimeEstimation } from '../store/actions/memberAction'
+import MyTimer from '../components/Timer'
+import MapsPreview from '../components/maps/MapsPreview'
+import { getEventDetail } from '../store/actions/eventAction'
 
 function DetailScreen(props) {
-  const { name: eventName,  description, time, location, members, key } = props.route.params.data
+  let { _id: eventId, name: eventName,  description, time, location, members, key } = props.route.params.data
   const [membersModal, setMembersModal] = useState(false)
   const [cameraModal, setCameraModal] = useState(false)
-  const {
-    seconds,
-    minutes,
-    hours,
-    days,
-    start,
-    pause,
-    resume,
-    restart,
-  } = useTimer({ 
-    expiryTimestamp: new Date().setSeconds(new Date().getSeconds() + 600)
-  })
+  const dispatch = useDispatch()
   const { _id } = useSelector(state => state.general.isLogged)
   // const { readyToGo } = useSelector(state => state.event)
-  const [readyToGo, setReadyToGo] = useState(false)
+  const [readyToGo, setReadyToGo] = useState(getMyMember().statusKey)
+  const { timeEstimation } = useSelector(state => state.member)
+  const [listMembers, setListMembers] = useState(members)
+  const event = useSelector(state => state.event.eventDetail)
   
   useEffect(() => {
-    if (!_id) {
-      console.log('Please log in')
+    // dispatch(getEventDetail(eventId))
+    if (listMembers) {
+      let memberObj = listMembers.filter(member => member.user._id === _id)
+      if (memberObj[0].statusKey) {
+        setReadyToGo(true)
+      }
     }
-    let memberObj = members.filter(member => member.user._id === _id)
-    if (memberObj[0].statusKey) {
-      setReadyToGo(true)
-    }
-  }, [_id])
+    // console.log(getMyLatLong(), getEventLatLong(), timeEstimation, '<<<<<')
+    dispatch(getTimeEstimation(getMyLatLong(), getEventLatLong()))
+  }, [timeEstimation, event])
 
   function dateFormatter() {
     let formattedDate = new Date(time).toLocaleString().split(' ')
@@ -62,10 +57,41 @@ function DetailScreen(props) {
     return `${new Date(time).getFullYear()}-${new Date(time).getMonth() + 1}-${new Date(time).getDate()} ${new Date(time).toLocaleString().split(' ')[3].slice(0, 5)}`
   }
 
-  function getMyMemberId() {
-    let memberObj = members.filter(member => member.user._id === _id)
-    if (memberObj[0]) {
-      return memberObj[0]._id
+  function getMyMember() {
+    if (listMembers) {
+      let memberObj = listMembers.filter(member => member.user._id === _id)
+      if (memberObj[0]) {
+        return memberObj[0]
+      }
+    }
+    return {}
+  }
+
+  function getMyLatLong() {
+    return `${getMyMember().location.lat},${getMyMember().location.lon}`
+  }
+
+  function getEventLatLong() {
+    return `${location.lat},${location.lon}`
+  }
+
+  function updateMembers(newMembers) {
+    // console.log(newMembers, '@@@@@@@@@2')
+    setListMembers(event.members)
+  }
+
+  function getMyLatLong() {
+    return `${getMyMember().location.lat},${getMyMember().location.lon}`
+  }
+
+  function getEventLatLong() {
+    return `${location.lat},${location.lon}`
+  }
+
+  function updateMembers(newMembers) {
+    // console.log(newMembers, '@@@@@@@@@2')
+    if (event.members) {
+      setListMembers(event.members)
     }
   }
 
@@ -120,13 +146,16 @@ function DetailScreen(props) {
         <View style={[styles.card, {height: 100, padding: 10}]}>
           <Text style={{fontWeight: 'bold'}}>What's this event about?</Text>
           <Text style={{padding: 10}}>{description}</Text>
-          {/* <Text>{Object.keys(props.route.params.data.members[0])}</Text> */}
+          {/* <Text>{JSON.stringify(props.route.params.data._id)}</Text> */}
         </View>
           <CameraModal
             visible={cameraModal}
             setVisible={setCameraModal}
             spell={key}
-            member_id={getMyMemberId()}
+            member_id={getMyMember()._id}
+            setReadyToGo={setReadyToGo}
+            eventId={eventId}
+            updateMembers={updateMembers}
           />
           <View style={{flexDirection: 'row', alignSelf: 'center'}}>
             <View style={[styles.card, {width: 145, marginRight: 10, padding: 20, justifyContent:'space-between'}]}>
@@ -148,22 +177,11 @@ function DetailScreen(props) {
           
             <View style={[styles.card, {width: 145, padding: 20, justifyContent:'space-between'}]}>
               <Text style={{fontSize: 18, fontWeight: 'bold'}}>Time Estimation</Text>
-              <View style={{flexDirection: 'row'}}>
-                <View style={{justifyContent: 'center'}}>
-                  <Text style={styles.hour}>{hours}</Text>
-                  <Text style={{fontSize: 8}}>Hours</Text>
-                </View>
-                <Text style={styles.hour}> : </Text>
-                <View style={{justifyContent: 'center'}}>
-                  <Text style={styles.hour}>{minutes}</Text>
-                  <Text style={{fontSize: 8}}>Minutes</Text>
-                </View>
-                <Text style={styles.hour}> : </Text>
-                <View style={{justifyContent: 'center'}}>
-                  <Text style={styles.hour}>{seconds}</Text>
-                  <Text style={{fontSize: 8}}>Seconds</Text>
-                </View>
-              </View>
+              {
+                timeEstimation
+                ? <MyTimer timeInput={timeEstimation} time={time} />
+                : <Text>Couldn't determine time estimation</Text>
+              }
               <TouchableOpacity
                 style={styles.btn}
                 onPress={() => {
@@ -194,7 +212,7 @@ function DetailScreen(props) {
         <TouchableOpacity
           onPress={() => setMembersModal(true)} 
           style={[styles.card, styles.members, {padding: 15, backgroundColor: '#F5F7FF'}]}>
-          <MembersModal visible={membersModal} setVisible={setMembersModal} members={members}/>
+          <MembersModal visible={membersModal} setVisible={setMembersModal} members={listMembers}/>
           <Text style={{fontSize: 18, fontWeight: 'bold', marginBottom: 5}}>Members</Text>
           <View style={{flexDirection: 'row', height: 150}}>
             <View style={{width: 100, flex: 1}}>
@@ -220,7 +238,8 @@ function DetailScreen(props) {
                 </View>
               </View>
             {
-              members.map((member, i) => {
+
+              listMembers.map((member, i) => {
                 if (i < 4) {
                   return (
                     <View style={{width: '100%', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>

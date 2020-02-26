@@ -43,7 +43,7 @@ function KeyModal({ visible, setVisible, setKey }) {
               </View>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => chooseKey('shoes')}
+              onPress={() => chooseKey('shoe')}
             >
               <View style={styles.key_card}>
                 <Image style={{width: '100%', height: '100%', resizeMode: 'contain'}} source={require('../assets/shoes.png')}/>

@@ -76,6 +76,7 @@ export const createEvent = (event) => async (dispatch, state) => {
         headers: { Authorization: await AsyncStorage.getItem('token') }
       })
       // handle loading
+      dispatch(getUpcomingEvent())
     } catch ({ response }) {
       dispatch({
           type: ISLOGIN,
@@ -131,12 +132,10 @@ export const googleVision = (base) => async (dispatch, state) => {
                 authorization: token
             }
         })
-        console.log(data, '{{{{{')
         dispatch({
             type: GET_GOOGLE_VISIONS_RESULT,
             data
         })
-        console.log(data, 'XXXXXXXXXXXXXXXx')
       } catch ({ response }) {
         console.log(response)
         dispatch({
@@ -149,7 +148,6 @@ export const googleVision = (base) => async (dispatch, state) => {
 export const changeStatusKey = (memberId) => async (dispatch, state) => {
     try {
         const { token, _id } = state().general.isLogged
-        console.log(token, _id, '++++')
         const { data } = await axios({
             method: 'patch',
             url: `${apiUrl}/events/members/${memberId}/status-key`,
@@ -161,7 +159,6 @@ export const changeStatusKey = (memberId) => async (dispatch, state) => {
             type: CHANGE_STATUS_KEY,
             data
         })
-        console.log(data, '!!!!!!!!!!!!!!!!!!!!!!!!')
       } catch (err) {
         console.log(err, '*****')
         // dispatch({
@@ -178,4 +175,37 @@ const getMemberTokens = async (members) => {
     }
     console.log(firebaseTokens,'FIREBASETOKENS')
     return firebaseTokens
+}
+
+export const getEventDetail = (eventId) => async (dispatch, state) => {
+    console.log('------------------------')
+    try {
+        dispatch({
+            type: event.GET_EVENT_ONLOAD
+        })
+        const { token } = state().general.isLogged
+        const { data } = await axios.get(`${apiUrl}/events/${eventId}`, {
+            headers: {
+                authorization: token
+            }
+        })
+        console.log(data, '------------------------')
+        dispatch({
+            type: event.GET_EVENT_DETAIL,
+            data
+        })
+
+    } catch (error) {
+        const { response } = error
+        dispatch({
+            type: event.GET_EVENT_DETAIL,
+            data: {}
+        })
+        if (response?.data) {
+            dispatch({
+                type: ERRORS,
+                data: response.data.errors
+            })   
+        }
+    }
 }
