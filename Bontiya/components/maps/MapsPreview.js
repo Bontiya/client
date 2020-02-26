@@ -21,7 +21,7 @@ const MapsPreview = (props) => {
     const [eventLocation, setEventLocation] = useState({});
     const [eventMember, setEventMember] = useState([]);
 
-    console.log(props.member)
+    console.log(props.member[0], ": member")
 
     const setEvenLocationPosition = (location) => {
         setEventLocation({
@@ -59,7 +59,7 @@ const MapsPreview = (props) => {
                 />
 
                 {
-                    eventMember.map(marker => (
+                    eventMember.map((marker, index) => (
                         marker.location !== undefined
                         && marker.location !== null
                         && marker.location.lat !== null
@@ -69,14 +69,13 @@ const MapsPreview = (props) => {
                                     latitude: marker.location.lat,
                                     longitude: marker.location.lon
                                 }}
-                                title={marker.name}
-                                description={marker.location.name}
+                                title={props.member[index].user.name}
+                                description={props.member[index].user.email}
                                 pinColor={"blue"}
                             />
                             : <></>
                     ))
                 }
-
 
                 {
                     eventMember.map(marker => (
