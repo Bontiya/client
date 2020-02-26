@@ -12,9 +12,8 @@ import { Icon } from 'react-native-elements'
 import SendIntentAndroid from 'react-native-send-intent'
 import CameraModal from '../components/CameraModal'
 import MembersModal from '../components/MembersModal'
-import IconFA from 'react-native-vector-icons/FontAwesome';
-import MapsPreview from "../components/maps/MapsPreview";
 import { useSelector, useDispatch } from 'react-redux'
+import IconFA from 'react-native-vector-icons/FontAwesome'
 import { getTimeEstimation } from '../store/actions/memberAction'
 import MyTimer from '../components/Timer'
 import MapsPreview from '../components/maps/MapsPreview'
@@ -40,7 +39,6 @@ function DetailScreen(props) {
         setReadyToGo(true)
       }
     }
-    console.log(getMyLatLong(), getEventLatLong(), timeEstimation, '<<<<<')
     dispatch(getTimeEstimation(getMyLatLong(), getEventLatLong()))
   }, [timeEstimation, event])
 
