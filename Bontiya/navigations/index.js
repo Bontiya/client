@@ -7,7 +7,7 @@ import LogReg from '../screens/LoginReg'
 import Profile from '../screens/Profile'
 import Inbox from '../screens/Inbox';
 import { getStatusInvitedPending } from "../store/actions/memberAction";
-import { getUpcomingEvent } from "../store/actions/eventAction";
+import { getUpcomingEvent, getPastEvent } from "../store/actions/eventAction";
 import pushNotif from "../helpers/pushNotif"
 
 const Tab = createMaterialBottomTabNavigator();
@@ -22,6 +22,10 @@ function RootNavigation() {
   if (general.isLogged) {
     const { socket, isLogged, socketActive } = general
     if (!socketActive) {
+      socket.on(`${isLogged._id} updatedStatusEventToDone`, function(msg) {
+        pushNotif('Bontiya', 'yeay!, your event have done')
+        dispatch(getPastEvent())
+      })
       socket.on(`${isLogged._id} myAcceptedEvent`, res => {
         console.log(res)
         pushNotif('Bontiya', 'yeay!, accepted event success')
