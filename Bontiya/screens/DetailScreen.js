@@ -139,7 +139,7 @@ function DetailScreen(props) {
         <View style={[styles.card, {height: 100, padding: 10}]}>
           <Text style={{fontWeight: 'bold'}}>What's this event about?</Text>
           <Text style={{padding: 10}}>{description}</Text>
-          {/* <Text>{JSON.stringify(props.route.params.data._id)}</Text> */}
+          {/* <Text>{timeEstimation}</Text> */}
         </View>
           <CameraModal
             visible={cameraModal}
