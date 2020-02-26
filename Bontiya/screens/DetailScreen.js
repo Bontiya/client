@@ -19,29 +19,32 @@ import { useSelector, useDispatch } from 'react-redux'
 import IconFA from 'react-native-vector-icons/FontAwesome'
 import { getTimeEstimation } from '../store/actions/memberAction'
 import MyTimer from '../components/Timer'
+import MapsPreview from '../components/maps/MapsPreview'
+import { getEventDetail } from '../store/actions/eventAction'
 
 function DetailScreen(props) {
-  const { name: eventName,  description, time, location, members, key } = props.route.params.data
+  let { _id: eventId, name: eventName,  description, time, location, members, key } = props.route.params.data
   const [membersModal, setMembersModal] = useState(false)
   const [cameraModal, setCameraModal] = useState(false)
-  
+  const dispatch = useDispatch()
   const { _id } = useSelector(state => state.general.isLogged)
   // const { readyToGo } = useSelector(state => state.event)
   const [readyToGo, setReadyToGo] = useState(getMyMember().statusKey)
   const { timeEstimation } = useSelector(state => state.member)
-  const dispatch = useDispatch()
+  const [listMembers, setListMembers] = useState(members)
+  const event = useSelector(state => state.event.eventDetail)
   
   useEffect(() => {
-    if (!_id) {
-      console.log('Please log in')
-    }
-    let memberObj = members.filter(member => member.user._id === _id)
-    if (memberObj[0].statusKey) {
-      setReadyToGo(true)
+    // dispatch(getEventDetail(eventId))
+    if (listMembers) {
+      let memberObj = listMembers.filter(member => member.user._id === _id)
+      if (memberObj[0].statusKey) {
+        setReadyToGo(true)
+      }
     }
     console.log(getMyLatLong(), getEventLatLong(), timeEstimation, '<<<<<')
     dispatch(getTimeEstimation(getMyLatLong(), getEventLatLong()))
-  }, [_id, timeEstimation])
+  }, [timeEstimation, event])
 
   function dateFormatter() {
     let formattedDate = new Date(time).toLocaleString().split(' ')
@@ -58,10 +61,13 @@ function DetailScreen(props) {
   }
 
   function getMyMember() {
-    let memberObj = members.filter(member => member.user._id === _id)
-    if (memberObj[0]) {
-      return memberObj[0]
+    if (listMembers) {
+      let memberObj = listMembers.filter(member => member.user._id === _id)
+      if (memberObj[0]) {
+        return memberObj[0]
+      }
     }
+    return {}
   }
 
   function getMyLatLong() {
@@ -70,6 +76,11 @@ function DetailScreen(props) {
 
   function getEventLatLong() {
     return `${location.lat},${location.lon}`
+  }
+
+  function updateMembers(newMembers) {
+    // console.log(newMembers, '@@@@@@@@@2')
+    setListMembers(event.members)
   }
 
   return (
@@ -123,7 +134,7 @@ function DetailScreen(props) {
         <View style={[styles.card, {height: 100, padding: 10}]}>
           <Text style={{fontWeight: 'bold'}}>What's this event about?</Text>
           <Text style={{padding: 10}}>{description}</Text>
-          {/* <Text>{timeEstimation}</Text> */}
+          {/* <Text>{JSON.stringify(props.route.params.data._id)}</Text> */}
         </View>
           <CameraModal
             visible={cameraModal}
@@ -131,6 +142,8 @@ function DetailScreen(props) {
             spell={key}
             member_id={getMyMember()._id}
             setReadyToGo={setReadyToGo}
+            eventId={eventId}
+            updateMembers={updateMembers}
           />
           <View style={{flexDirection: 'row', alignSelf: 'center'}}>
             <View style={[styles.card, {width: 145, marginRight: 10, padding: 20, justifyContent:'space-between'}]}>
@@ -187,7 +200,7 @@ function DetailScreen(props) {
         <TouchableOpacity
           onPress={() => setMembersModal(true)} 
           style={[styles.card, styles.members, {padding: 15, backgroundColor: '#F5F7FF'}]}>
-          <MembersModal visible={membersModal} setVisible={setMembersModal} members={members}/>
+          <MembersModal visible={membersModal} setVisible={setMembersModal} members={listMembers}/>
           <Text style={{fontSize: 18, fontWeight: 'bold', marginBottom: 5}}>Members</Text>
           <View style={{flexDirection: 'row', height: 150}}>
             <View style={{width: 100, flex: 1}}>
@@ -213,7 +226,7 @@ function DetailScreen(props) {
                 </View>
               </View>
             {
-              members.map((member, i) => {
+              listMembers.map((member, i) => {
                 if (i < 4) {
                   return (
                     <View style={{width: '100%', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
