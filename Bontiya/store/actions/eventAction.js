@@ -25,7 +25,7 @@ export const getUpcomingEvent = () => async (dispatch, state) => {
             type: event.GET_UPCOMING_EVENTS,
             data: []
         })
-        if (response?.data) {
+        if (response.data) {
             dispatch({
                 type: ERRORS,
                 data: response.data.errors
