@@ -88,6 +88,11 @@ function DetailScreen(props) {
     return `${location.lat},${location.lon}`
   }
 
+  function updateMembers(newMembers) {
+    // console.log(newMembers, '@@@@@@@@@2')
+    setListMembers(event.members)
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.lower}>
@@ -139,7 +144,7 @@ function DetailScreen(props) {
         <View style={[styles.card, {height: 100, padding: 10}]}>
           <Text style={{fontWeight: 'bold'}}>What's this event about?</Text>
           <Text style={{padding: 10}}>{description}</Text>
-          {/* <Text>{timeEstimation}</Text> */}
+          {/* <Text>{JSON.stringify(props.route.params.data._id)}</Text> */}
         </View>
           <CameraModal
             visible={cameraModal}

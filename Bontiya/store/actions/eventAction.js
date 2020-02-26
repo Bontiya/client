@@ -122,7 +122,6 @@ export const inviteMember = (payload) => async (dispatch, state) => {
 }
 
 export const googleVision = (base) => async (dispatch, state) => {
-    console.log('masuk')
     try {
         const { token } = state().general.isLogged
         const { data } = await axios.post(`${apiUrl}/visions/detect`, {
