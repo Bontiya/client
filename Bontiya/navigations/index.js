@@ -7,7 +7,8 @@ import LogReg from '../screens/LoginReg'
 import Profile from '../screens/Profile'
 import Inbox from '../screens/Inbox';
 import { getStatusInvitedPending } from "../store/actions/memberAction";
-import pushNotif from "../helpers/pushNotif";
+import { getUpcomingEvent } from "../store/actions/eventAction";
+import pushNotif from "../helpers/pushNotif"
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -19,12 +20,26 @@ function RootNavigation() {
   const { statusInvitedPending } = member
 
   if (general.isLogged) {
-    const { socket, isLogged } = general
-    socket.on(`${isLogged._id} StatusInvitedPending`, resp => {
-      console.log('how many listening')
-      pushNotif('Bontiya', 'hey, someone have inited you!!')
-      dispatch(getStatusInvitedPending())
-    })
+    const { socket, isLogged, socketActive } = general
+    if (!socketActive) {
+      socket.on(`${isLogged._id} myAcceptedEvent`, res => {
+        console.log(res)
+        pushNotif('Bontiya', 'yeay!, accepted event success')
+        dispatch(getUpcomingEvent())
+      })
+      socket.on(`${isLogged._id} StatusInvitedMemberUpdated`, res => {
+        pushNotif('Bontiya', `yeay!, ${res.name} have accepted your event`)
+        dispatch(getUpcomingEvent())
+      })
+      socket.on(`${isLogged._id} StatusInvitedPending`, res => {
+        pushNotif(`Bontiya`, `hey, ${res.members[0].user.name} have inited you!!`)
+        dispatch(getStatusInvitedPending())
+      })   
+      dispatch({
+        type: 'SOCKET_ACTIVE',
+        data: true
+      })
+    }
   }
   if (!general.isLogged) {
     return <LogReg />
