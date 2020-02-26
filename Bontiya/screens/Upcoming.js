@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import useUpcomingEvent from "../hooks/useUpcomingEvent";
-import { View, ScrollView, Text, StyleSheet, Image } from 'react-native'
+import { View, ScrollView, Text, StyleSheet, RefreshControl } from 'react-native'
 import Loading from "../components/Loading";
 import EventCard from '../components/EventCard'
 import { getAllUser } from '../store/actions/userAction'
@@ -8,20 +8,24 @@ import { useDispatch, useSelector } from 'react-redux'
 import AddMemberModal from '../components/AddMemberModal'
 import { toggleModal } from '../store/actions/eventAction'
 import Calendar from '../assets/upcomingEvent.jpg'
+import { getUpcomingEvent } from "../store/actions/eventAction";
 
 const Upcoming = () => {
     const dispatch = useDispatch()
     const [eventIdTemp, setEventIdTemp] = useState(null)
     const [members, setMembers] = useState(null)
     useUpcomingEvent()
-
+    
     useEffect( () => {
         dispatch(getAllUser())
     },[])
-
+    
     const { event:eventSelector } = useSelector(state => state)
     const { upcomingEvents, upcomingEventsOnload } = eventSelector
-
+    
+    const onRefresh = useCallback(() => {  
+        dispatch(getUpcomingEvent())
+      }, [upcomingEventsOnload]);
     const general = useSelector( state => state.general )
 
     const showModalAddMember = (payload,members) => {
@@ -49,7 +53,10 @@ const Upcoming = () => {
                         </View>
                     )
                     : (
-                        <ScrollView style={[styles.container,general.modal ? {backgroundColor: 'rgba(100,100,100,0.5)'} : '']}> 
+                        <ScrollView
+                            style={[styles.container,general.modal ? {backgroundColor: 'rgba(100,100,100,0.5)'} : '']}
+                            refreshControl={
+                            <RefreshControl refreshing={upcomingEventsOnload} onRefresh={onRefresh} />}> 
                             {
                                 upcomingEvents.map( (event,i) => {
                                     return <EventCard key={i} screen={'upcoming'} payload={event}  modalShow={showModalAddMember}  />

@@ -1,12 +1,13 @@
-import React from 'react';
-import { useSelector } from "react-redux";
+import React, { useCallback } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 import { 
     StyleSheet,
     ScrollView,
     Dimensions,
     Text,
     View,
-    Image
+    Image,
+    RefreshControl
 } from 'react-native';
 import useGetStatusInvitedPending from "../hooks/useGetStatusInvitedPending";
 import Header from '../components/Header'
@@ -19,7 +20,12 @@ const DEVICE_WIDTH = Dimensions.get('window').width
 
 export default function Inbox() {
     useGetStatusInvitedPending()
+    const dispatch = useDispatch()
     const { member, general }  = useSelector(state => state)
+
+    const onRefresh = useCallback(() => {  
+        dispatch(getPastEvent())
+      }, [member.statusInvitedPendingOnload])
 
     if (general.errors) {
         return (
@@ -45,7 +51,10 @@ export default function Inbox() {
                             </View>
                         )
                         : (
-                            <ScrollView style={styles.container}>
+                            <ScrollView
+                                style={styles.container}
+                                refreshControl={
+                                    <RefreshControl refreshing={member.statusInvitedPendingOnload} onRefresh={onRefresh} />}>
                                 {
                                     member.statusInvitedPending.map(item => {
                                         return <InboxCard item={item}  key={item._id} />
