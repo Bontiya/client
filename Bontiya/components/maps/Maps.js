@@ -12,6 +12,7 @@ import {
 import {
     reverseGeolocation,
     searchPlace,
+    updateCurrentLocation
 } from '../../store/actions/mapsAction';
 import GetLocation from 'react-native-get-location'
 import MapViewDirections from 'react-native-maps-directions';
@@ -24,10 +25,12 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const Maps = () => {
     const getReverseGeoLocation = useSelector(state => state.getReverseGeoLocation);
-    const [currentLocation, setCurrentLocation] = useState({});
+    // const [currentLocation, setCurrentLocation] = useState({});
     const [locId, setLocId] = useState("");
+    const [curLocStat, setCurLocStat] = useState(true);
     const getMapCoordDirections = useSelector(state => state.getMapCoordDirections);
     const getLangLong = useSelector(state => state.getLatLong);
+    const getCurrentLocationPos = useSelector(state => state.getCurrentLocationPos);
     const dispatch = useDispatch();
     const [eventLocation, setEventLocation] = useState(
         {
@@ -43,6 +46,8 @@ const Maps = () => {
         }
     );
 
+    console.log(getCurrentLocationPos.data);
+
     if (getLangLong.data !== null) {
         if (getLangLong.data.id !== locId) {
             setEventLocation({
@@ -56,23 +61,38 @@ const Maps = () => {
                     longitudeDelta: LONGITUDE_DELTA
                 }
             });
+
             setLocId(getLangLong.data.id)
         }
     }
 
-    const setCurrentLocationDetail = (lat, lon) => {
-        if (getReverseGeoLocation.data[0] !== undefined) {
-            console.log(getReverseGeoLocation.data[0]);
-            setCurrentLocation({
-                name: getReverseGeoLocation.data[0],
-                description: getReverseGeoLocation.data.join(" "),
-                coordinates: {
-                    latitude: lat,
-                    longitude: lon,
-                    latitudeDelta: LATITUDE_DELTA,
-                    longitudeDelta: LONGITUDE_DELTA
-                }
-            });
+    const setCurrentLocationDetail = () => {
+        if (getReverseGeoLocation.data !== null && curLocStat === true) {
+            if (getReverseGeoLocation.data[0] !== undefined) {
+                // console.log(getReverseGeoLocation.data[0]);
+                // setCurrentLocation({
+                //     name: getReverseGeoLocation.data[0],
+                //     description: getReverseGeoLocation.data.join(" "),
+                //     coordinates: {
+                //         latitude: currentLocation.coordinates.latitude,
+                //         longitude: currentLocation.coordinates.longitude,
+                //         latitudeDelta: LATITUDE_DELTA,
+                //         longitudeDelta: LONGITUDE_DELTA
+                //     }
+                // });
+
+                // dispatch(updateCurrentLocation({
+                //     name: getReverseGeoLocation.data[0],
+                //     description: getReverseGeoLocation.data.join(" "),
+                //     coordinates: {
+                //         latitude: currentLocation.coordinates.latitude,
+                //         longitude: currentLocation.coordinates.longitude,
+                //         latitudeDelta: LATITUDE_DELTA,
+                //         longitudeDelta: LONGITUDE_DELTA
+                //     }
+                // }));
+                setCurLocStat(false);
+            }
         }
     };
 
@@ -81,8 +101,30 @@ const Maps = () => {
             enableHighAccuracy: true,
             timeout: 20000,
         }).then(location => {
-            dispatch(reverseGeolocation(location.latitude, location.longitude));
-            setCurrentLocationDetail(location.latitude, location.longitude);
+            // dispatch(reverseGeolocation(location.latitude, location.longitude));
+            // setCurrentLocation({
+            //     name: "",
+            //     description: "",
+            //     coordinates: {
+            //         latitude: location.latitude,
+            //         longitude: location.longitude,
+            //         latitudeDelta: LATITUDE_DELTA,
+            //         longitudeDelta: LONGITUDE_DELTA
+            //     }
+            // })
+
+            dispatch(
+                updateCurrentLocation({
+                    name: "",
+                    description: "",
+                    coordinates: {
+                        latitude: location.latitude,
+                        longitude: location.longitude,
+                        latitudeDelta: LATITUDE_DELTA,
+                        longitudeDelta: LONGITUDE_DELTA
+                    }
+                })
+            )
         }).catch(error => {
             const {code, message} = error;
             console.warn(code, message);
@@ -110,33 +152,36 @@ const Maps = () => {
 
     useEffect(() => {
         findCoordinates();
-    }, []);
+    }, [setCurrentLocationDetail()]);
 
     return (
         <>
             {
                 getMapCoordDirections.loading
                     ? <ActivityIndicator size="large" color="#0000ff"/>
-                    : <MapView
+                    : getCurrentLocationPos.data !== null
+                    ? <MapView
                         style={styles.maps}
                         showsUserLocation={true}
                         followUserLocation={true}
                         zoomEnabled={true}
                         region={
-                            currentLocation.coordinates
+                            getCurrentLocationPos.data.coordinates
                         }
                         // onPress={onPressMap}
                     >
                         {
-                            currentLocation.coordinates !== undefined
+                            getCurrentLocationPos.data !== null
+                                ? getCurrentLocationPos.data.coordinates !== undefined
                                 ? <Marker.Animated
                                     coordinate={
-                                        currentLocation.coordinates
+                                        getCurrentLocationPos.data.coordinates
                                     }
-                                    title={currentLocation.name}
-                                    description={currentLocation.name}
+                                    title={getCurrentLocationPos.data.name}
+                                    description={getCurrentLocationPos.data.name}
                                     pinColor={"blue"}
                                 />
+                                : <></>
                                 : <></>
                         }
 
@@ -152,14 +197,19 @@ const Maps = () => {
                                 : <></>
                         }
 
-                        <MapViewDirections
-                            origin={currentLocation.coordinates}
-                            destination={eventLocation.coordinates}
-                            apikey="AIzaSyBfTdhXIpe03ZX8TofG_xC58Qy0k4qZrjs"
-                            strokeWidth={3}
-                            strokeColor="hotpink"
-                        />
+                        {
+                            getCurrentLocationPos.data !== null
+                                ? <MapViewDirections
+                                    origin={getCurrentLocationPos.data.coordinates}
+                                    destination={eventLocation.coordinates}
+                                    apikey="AIzaSyBfTdhXIpe03ZX8TofG_xC58Qy0k4qZrjs"
+                                    strokeWidth={3}
+                                    strokeColor="hotpink"
+                                />
+                                : <></>
+                        }
                     </MapView>
+                    : <ActivityIndicator size="large" color="#0000ff"/>
             }
         </>
     )
