@@ -20,6 +20,10 @@ const profile = () => {
         avatar: 'https://img.icons8.com/wired/2x/small-smile.png',
         rating: 3.3
     })
+    const [ name, setName ] = useState('')
+    const [ email, setEmail ] =  useState('')
+
+
 
     const quotes = [
         `"Time is money."`,
@@ -38,10 +42,16 @@ const profile = () => {
     useEffect( () => {
         let index = (Math.random() * 8) + 1
         setQuote(quotes[Math.floor(index)])
+        nameEmail()
     },[])
 
     const signout = () => {
         dispatch(logout())
+    }
+
+    const nameEmail = async () => {
+        setName( await AsyncStorage.getItem('name'))
+        setEmail( await AsyncStorage.getItem('email'))
     }
 
     return (
@@ -50,8 +60,8 @@ const profile = () => {
             <View style={styles.container}>
                 <View style={styles.profileInfo}>
                     <Image style={styles.image} source={{uri: data.avatar}} />
-                    <Text style={styles.profileName}>{data.name}</Text>
-                    <Text style={{alignSelf: "center",fontSize:18}}>{data.email}</Text>
+                    <Text style={styles.profileName}>{name}</Text>
+                    <Text style={{alignSelf: "center",fontSize:18,color: '#323678'}}>{email}</Text>
                 </View>
                 <View 
                     style={
@@ -103,6 +113,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         alignSelf: "center",
         marginTop: 0.03 * DEVICE_HEIGHT,
+        color: '#323678'
     },
     logoutBtn: {
         alignSelf: "center",

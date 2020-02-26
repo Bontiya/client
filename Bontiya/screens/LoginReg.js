@@ -44,6 +44,10 @@ const loginReg = () => {
 
     const switchFormHandler = (e,payload) => {
         setForm(payload)
+        setEmail('')
+        setName('')
+        setPassword('')
+        setGender('male')
     }
 
     const login = () => {
@@ -170,6 +174,7 @@ const loginReg = () => {
                             value={password}
                             onChangeText={ val => setPassword(val) }
                             placeholder={"Input password"}
+                            secureTextEntry={true}
                         />
                     </View>
                     {
