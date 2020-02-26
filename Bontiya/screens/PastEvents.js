@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import usePastEvent from "../hooks/usePastEvent";
-import { View, ScrollView, Text, StyleSheet, RefreshControl } from 'react-native'
+import { View, ScrollView, Text, StyleSheet, RefreshControl, Image } from 'react-native'
 import Loading from "../components/Loading";
 import EventCard from '../components/EventCard'
 import Calendar from '../assets/upcomingEvent.jpg'

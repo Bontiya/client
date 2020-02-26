@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import useUpcomingEvent from "../hooks/useUpcomingEvent";
-import { View, ScrollView, Text, StyleSheet, RefreshControl } from 'react-native'
+import { View, ScrollView, Text, StyleSheet, RefreshControl, Image } from 'react-native'
 import Loading from "../components/Loading";
 import EventCard from '../components/EventCard'
 import { getAllUser } from '../store/actions/userAction'
