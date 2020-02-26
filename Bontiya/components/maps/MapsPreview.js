@@ -59,22 +59,22 @@ const MapsPreview = (props) => {
                 />
 
                 {
-                    // eventMember.map(marker => (
-                    //     marker.location !== undefined
-                    //     && marker.location !== null
-                    //     && marker.location.lat !== null
-                    //     && marker.location.lat !== undefined
-                    //         ? <Marker.Animated
-                    //             coordinate={{
-                    //                 latitude: marker.location.lat,
-                    //                 longitude: marker.location.lon
-                    //             }}
-                    //             title={marker.name}
-                    //             description={marker.location.name}
-                    //             pinColor={"blue"}
-                    //         />
-                    //         : <></>
-                    // ))
+                    eventMember.map(marker => (
+                        marker.location !== undefined
+                        && marker.location !== null
+                        && marker.location.lat !== null
+                        && marker.location.lat !== undefined
+                            ? <Marker.Animated
+                                coordinate={{
+                                    latitude: marker.location.lat,
+                                    longitude: marker.location.lon
+                                }}
+                                title={marker.name}
+                                description={marker.location.name}
+                                pinColor={"blue"}
+                            />
+                            : <></>
+                    ))
                 }
 
 
