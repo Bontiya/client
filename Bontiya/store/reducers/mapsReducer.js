@@ -11,7 +11,8 @@ import {
     GET_LATLONG_LOADING,
     GET_LATLONG,
     GET_LATLONG_ERROR,
-    GET_CURRENT_LOCATION
+    GET_CURRENT_LOCATION,
+    UPDATE_CURRENT_LOCATION
 } from '../actionTypes';
 
 const initalState = {
@@ -118,6 +119,20 @@ export const getLatLong = (state = initalState, action) => {
 
 export const getCurrentLocationPos = (state=initalState, action) => {
     if (action.type === GET_CURRENT_LOCATION) {
+        return {
+            ...state,
+            loading: false,
+            error: false,
+            data: action.data
+        };
+    } else {
+        return state
+    }
+};
+
+export const getUpdateCurrentLocationPos = (state=initalState, action) => {
+    if (action.type === UPDATE_CURRENT_LOCATION) {
+        console.log(action.data);
         return {
             ...state,
             loading: false,

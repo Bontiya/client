@@ -64,35 +64,35 @@ const Maps = () => {
         }
     }
 
-    const setCurrentLocationDetail = () => {
-        if (getReverseGeoLocation.data !== null && curLocStat === true) {
-            if (getReverseGeoLocation.data[0] !== undefined) {
-                // console.log(getReverseGeoLocation.data[0]);
-                // setCurrentLocation({
-                //     name: getReverseGeoLocation.data[0],
-                //     description: getReverseGeoLocation.data.join(" "),
-                //     coordinates: {
-                //         latitude: currentLocation.coordinates.latitude,
-                //         longitude: currentLocation.coordinates.longitude,
-                //         latitudeDelta: LATITUDE_DELTA,
-                //         longitudeDelta: LONGITUDE_DELTA
-                //     }
-                // });
-
-                // dispatch(updateCurrentLocation({
-                //     name: getReverseGeoLocation.data[0],
-                //     description: getReverseGeoLocation.data.join(" "),
-                //     coordinates: {
-                //         latitude: currentLocation.coordinates.latitude,
-                //         longitude: currentLocation.coordinates.longitude,
-                //         latitudeDelta: LATITUDE_DELTA,
-                //         longitudeDelta: LONGITUDE_DELTA
-                //     }
-                // }));
-                setCurLocStat(false);
-            }
-        }
-    };
+    // const setCurrentLocationDetail = () => {
+    //     if (getReverseGeoLocation.data !== null && curLocStat === true) {
+    //         if (getReverseGeoLocation.data[0] !== undefined) {
+    //             // console.log(getReverseGeoLocation.data[0]);
+    //             // setCurrentLocation({
+    //             //     name: getReverseGeoLocation.data[0],
+    //             //     description: getReverseGeoLocation.data.join(" "),
+    //             //     coordinates: {
+    //             //         latitude: currentLocation.coordinates.latitude,
+    //             //         longitude: currentLocation.coordinates.longitude,
+    //             //         latitudeDelta: LATITUDE_DELTA,
+    //             //         longitudeDelta: LONGITUDE_DELTA
+    //             //     }
+    //             // });
+    //
+    //             // dispatch(updateCurrentLocation({
+    //             //     name: getReverseGeoLocation.data[0],
+    //             //     description: getReverseGeoLocation.data.join(" "),
+    //             //     coordinates: {
+    //             //         latitude: currentLocation.coordinates.latitude,
+    //             //         longitude: currentLocation.coordinates.longitude,
+    //             //         latitudeDelta: LATITUDE_DELTA,
+    //             //         longitudeDelta: LONGITUDE_DELTA
+    //             //     }
+    //             // }));
+    //             setCurLocStat(false);
+    //         }
+    //     }
+    // };
 
     const findCoordinates = () => {
         GetLocation.getCurrentPosition({
@@ -138,7 +138,7 @@ const Maps = () => {
 
     useEffect(() => {
         findCoordinates();
-    }, [setCurrentLocationDetail()]);
+    }, []);
 
     return (
         <>
