@@ -32,11 +32,11 @@ function RootNavigation() {
         dispatch(getUpcomingEvent())
       })
       socket.on(`${isLogged._id} StatusInvitedMemberUpdated`, res => {
-        pushNotif('Bontiya', `yeay!, ${res.name} have accepted your event`)
+        pushNotif('Bontiya', `yeay!, someone have accepted your event`)
         dispatch(getUpcomingEvent())
       })
       socket.on(`${isLogged._id} StatusInvitedPending`, res => {
-        pushNotif(`Bontiya`, `hey, ${res.members[0].user.name} have inited you!!`)
+        pushNotif(`Bontiya`, `hey, ${res.members[0].user.name} have invited you!!`)
         dispatch(getStatusInvitedPending())
       })   
       dispatch({

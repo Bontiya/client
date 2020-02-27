@@ -35,6 +35,9 @@ export const getStatusInvitedPending = () => async (dispatch, state) => {
 
 export const updateStatusInvited = (form, memberId) => async (dispatch, state) => {
     try {
+        dispatch({
+            type: member.GET_STATUS_INVITED_PENDING_ONLOAD
+        })
         const { token } = state().general.isLogged
         await axios.patch(`${apiUrl}/events/members/${memberId}/status-invited`, form, {
             headers: {
