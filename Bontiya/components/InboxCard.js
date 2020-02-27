@@ -47,7 +47,6 @@ export default function InboxCard({item}) {
                             </Text>
                             <Text style={[styles.colorText, {opacity: 0.6, fontWeight: 'bold'}]}>
                                 {item.event.members[0].user.name}
-                                Ahmad Muzakki
                             </Text>
                         </View>
                         <View style={{
