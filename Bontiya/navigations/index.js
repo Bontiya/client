@@ -23,34 +23,35 @@ function RootNavigation() {
   if (general.isLogged) {
     const { socket, isLogged, socketActive } = general
     if (!socketActive) {
-      socket.on(`${isLogged._id} StatusInvitedPending`, res => {
-        pushNotif(`Bontiya`, `hey, someone have invited you!!`)
-        dispatch(getStatusInvitedPending())
-      })
-      socket.on(`${isLogged._id} updatedStatusEventToDone`, function(msg) {
-        pushNotif('Bontiya', 'yeay!, your event have done')
-        dispatch(getPastEvent())
-      })
-      socket.on(`${isLogged._id} myAcceptedEvent`, res => {
-        console.log(res)
-        pushNotif('Bontiya', 'yeay!, accepted event success')
-        dispatch(getUpcomingEvent())
-      })
-      socket.on(`${isLogged._id} StatusInvitedMemberUpdated`, res => {
-        pushNotif('Bontiya', `yeay!, someone have accepted your event`)
-        dispatch(getUpcomingEvent())
-      })
-      setTimeout(() => {
-        dispatch({
-          type: ISLOGIN,
-          data: isLogged,
-          socket: socket
-        })
-        dispatch({
-          type: 'SOCKET_ACTIVE',
-          data: true
-        })
-      }, 1000)   
+      // socket.on(`${isLogged._id} StatusInvitedPending`, res => {
+      //   console.log('================')
+      //   pushNotif(`Bontiya`, `hey, someone have invited you!!`)
+      //   dispatch(getStatusInvitedPending())
+      // })
+      // socket.on(`${isLogged._id} updatedStatusEventToDone`, function(msg) {
+      //   pushNotif('Bontiya', 'yeay!, your event have done')
+      //   dispatch(getPastEvent())
+      // })
+      // socket.on(`${isLogged._id} myAcceptedEvent`, res => {
+      //   console.log(res)
+      //   pushNotif('Bontiya', 'yeay!, accepted event success')
+      //   dispatch(getUpcomingEvent())
+      // })
+      // socket.on(`${isLogged._id} StatusInvitedMemberUpdated`, res => {
+      //   pushNotif('Bontiya', `yeay!, someone have accepted your event`)
+      //   dispatch(getUpcomingEvent())
+      // })
+      // setTimeout(() => {
+      //   dispatch({
+      //     type: ISLOGIN,
+      //     data: isLogged,
+      //     socket: socket
+      //   })
+      //   dispatch({
+      //     type: 'SOCKET_ACTIVE',
+      //     data: true
+      //   })
+      // }, 1000)   
     }
   }
   if (!general.isLogged) {

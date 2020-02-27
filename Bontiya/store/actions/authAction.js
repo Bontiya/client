@@ -5,6 +5,8 @@ import { apiUrl } from '../urlTypes';
 import { AsyncStorage } from 'react-native';
 import { firebase } from '@react-native-firebase/messaging'
 import { getStatusInvitedPending } from "./memberAction";
+import { getUpcomingEvent, getPastEvent } from "./eventAction";
+import pushNotif from "../../helpers/pushNotif"
 console.disableYellowBox = true;
 
 export const registerAction = (form) => async dispatch => {
@@ -78,7 +80,7 @@ export const checkIsLogged = () =>  (dispatch, state) => {
                     token: result[3],
                     tokenDeviceFirebase: result[4]
                 },
-                socket: _connetSocket()
+                socket: _connetSocket(dispatch, result[0])
             })
             dispatch({
                 type: 'SOCKET_ACTIVE',
@@ -90,13 +92,31 @@ export const checkIsLogged = () =>  (dispatch, state) => {
     .catch(console.log)
 }
 
-export const _connetSocket = () => {
+export const _connetSocket = (dispatch, id) => {
     const socket = io(apiUrl, {
       transports: ['websocket'],
       jsonp: false
     })
     socket.on('chat message', msg => {
         console.log(msg)
+    })
+    socket.on(`${id} StatusInvitedPending`, res => {
+        console.log('================')
+            pushNotif(`Bontiya`, `hey, someone have invited you!!`)
+            dispatch(getStatusInvitedPending())
+        })
+        socket.on(`${id} updatedStatusEventToDone`, function(msg) {
+            pushNotif('Bontiya', 'yeay!, your event have done')
+            dispatch(getPastEvent())
+        })
+        socket.on(`${id} myAcceptedEvent`, res => {
+            console.log(res)
+            pushNotif('Bontiya', 'yeay!, accepted event success')
+            dispatch(getUpcomingEvent())
+        })
+        socket.on(`${id} StatusInvitedMemberUpdated`, res => {
+            pushNotif('Bontiya', `yeay!, someone have accepted your event`)
+            dispatch(getUpcomingEvent())
     })
     return socket
 }
@@ -120,7 +140,7 @@ const updateTokenFirebase = async (token,dispatch,user) => {
                 ...user,
                 tokenFirebase,
             },
-            socket: _connetSocket()
+            socket: _connetSocket(dispatch,user._id)
         })
         dispatch({
             type: 'SOCKET_ACTIVE',
