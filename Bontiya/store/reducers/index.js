@@ -7,7 +7,8 @@ import {
     getReverseGeoLocation,
     getPlace,
     getLatLong,
-    getCurrentLocationPos
+    getCurrentLocationPos,
+    getUpdateCurrentLocationPos
 } from "./mapsReducer";
 import {
     user
@@ -77,6 +78,7 @@ export default combineReducers({
     getPlace,
     getLatLong,
     getCurrentLocationPos,
+    getUpdateCurrentLocationPos,
     user,
     member
 })
