@@ -80,6 +80,10 @@ export const checkIsLogged = () =>  (dispatch, state) => {
                 },
                 socket: _connetSocket()
             })
+            dispatch({
+                type: 'SOCKET_ACTIVE',
+                data: false
+            })
             dispatch(getStatusInvitedPending())
       }
     })
@@ -117,6 +121,10 @@ const updateTokenFirebase = async (token,dispatch,user) => {
                 tokenFirebase,
             },
             socket: _connetSocket()
+        })
+        dispatch({
+            type: 'SOCKET_ACTIVE',
+            data: false
         })
         dispatch(getStatusInvitedPending())
     }

@@ -9,6 +9,7 @@ import Inbox from '../screens/Inbox';
 import { getStatusInvitedPending } from "../store/actions/memberAction";
 import { getUpcomingEvent, getPastEvent } from "../store/actions/eventAction";
 import pushNotif from "../helpers/pushNotif"
+import { ISLOGIN } from '../store/actionTypes';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -22,6 +23,10 @@ function RootNavigation() {
   if (general.isLogged) {
     const { socket, isLogged, socketActive } = general
     if (!socketActive) {
+      socket.on(`${isLogged._id} StatusInvitedPending`, res => {
+        pushNotif(`Bontiya`, `hey, someone have invited you!!`)
+        dispatch(getStatusInvitedPending())
+      })
       socket.on(`${isLogged._id} updatedStatusEventToDone`, function(msg) {
         pushNotif('Bontiya', 'yeay!, your event have done')
         dispatch(getPastEvent())
@@ -35,14 +40,17 @@ function RootNavigation() {
         pushNotif('Bontiya', `yeay!, someone have accepted your event`)
         dispatch(getUpcomingEvent())
       })
-      socket.on(`${isLogged._id} StatusInvitedPending`, res => {
-        pushNotif(`Bontiya`, `hey, ${res.members[0].user.name} have invited you!!`)
-        dispatch(getStatusInvitedPending())
-      })   
-      dispatch({
-        type: 'SOCKET_ACTIVE',
-        data: true
-      })
+      setTimeout(() => {
+        dispatch({
+          type: ISLOGIN,
+          data: isLogged,
+          socket: socket
+        })
+        dispatch({
+          type: 'SOCKET_ACTIVE',
+          data: true
+        })
+      }, 1000)   
     }
   }
   if (!general.isLogged) {
